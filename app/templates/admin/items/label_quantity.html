@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tételcímke - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>Tételcímke nyomtatása</h1>
+
+    <p>
+        <strong>{{ item.name }}</strong>
+    </p>
+
+    <p class="muted">
+        Saját kód:
+        {{ item.internal_code }}
+    </p>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Címkék száma
+
+            <input
+                type="number"
+                name="quantity"
+                min="1"
+                max="200"
+                required
+                value="{{ quantity }}"
+            >
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Nyomtatási előnézet
+            </button>
+
+            <a
+                class="button"
+                href="{{ url_for('admin.items') }}"
+            >
+                Mégse
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if item %}
+        Tétel szerkesztése
+    {% else %}
+        Új tétel
+    {% endif %}
+    - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>
+        {% if item %}
+            Tétel szerkesztése
+        {% else %}
+            Új tétel
+        {% endif %}
+    </h1>
+
+    {% if item %}
+        <p class="muted">
+            Saját kód:
+            <strong>
+                {{ item.internal_code }}
+            </strong>
+        </p>
+    {% endif %}
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Megnevezés
+
+            <input
+                type="text"
+                name="name"
+                maxlength="255"
+                required
+                value="{{
+                    request.form.get(
+                        'name',
+                        item.name
+                        if item
+                        else ''
+                    )
+                }}"
+            >
+        </label>
+
+        <label>
+            Tételtípus
+
+            {% set selected_type =
+                request.form.get(
+                    'item_type_id',
+                    item.item_type_id
+                    if item
+                    else ''
+                )
+            %}
+
+            <select
+                name="item_type_id"
+                required
+            >
+                <option value="">
+                    — válassz —
+                </option>
+
+                {% for item_type in item_types %}
+
+                    <option
+                        value="{{ item_type.id }}"
+                        {% if
+                            selected_type|string
+                            == item_type.id|string
+                        %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ item_type.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Gyári vonalkód / azonosító
+
+            <input
+                type="text"
+                name="barcode_value"
+                maxlength="100"
+                value="{{
+                    request.form.get(
+                        'barcode_value',
+                        barcode_value
+                    )
+                }}"
+            >
+        </label>
+
+        <p class="field-help">
+            Opcionális. A saját ITEM-kód minden
+            tételhez automatikusan létrejön.
+        </p>
+
+        <label>
+            Megjegyzés
+
+            <textarea
+                name="description"
+                rows="4"
+            >{{
+                request.form.get(
+                    'description',
+                    item.description
+                    if item
+                    and item.description
+                    else ''
+                )
+            }}</textarea>
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Mentés
+            </button>
+
+            <a
+                class="button"
+                href="{{ url_for('admin.items') }}"
+            >
+                Mégse
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

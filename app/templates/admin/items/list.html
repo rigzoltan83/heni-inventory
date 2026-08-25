@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tételek - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Tételek</h1>
+
+        <p class="muted">
+            Könyvek, társasjátékok és egyéb
+            nyilvántartott tételek.
+        </p>
+    </div>
+
+    <a
+        class="button primary"
+        href="{{ url_for('admin.item_new') }}"
+    >
+        + Új tétel
+    </a>
+
+</div>
+
+<div class="table-wrap">
+
+    <table class="data-table">
+
+        <thead>
+            <tr>
+                <th>Saját kód</th>
+                <th>Megnevezés</th>
+                <th>Típus</th>
+                <th>Gyári kód</th>
+                <th>Állapot</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for item in items %}
+
+            <tr
+                {% if not item.is_active %}
+                    class="inactive-row"
+                {% endif %}
+            >
+
+                <td>
+                    <code>
+                        {{ item.internal_code }}
+                    </code>
+                </td>
+
+                <td>
+                    {{ item.name }}
+                </td>
+
+                <td>
+                    {{ item.item_type.name }}
+                </td>
+
+                <td>
+                    {% set active_ids =
+                        item.identifiers
+                        | selectattr(
+                            'is_active',
+                            'equalto',
+                            true
+                        )
+                        | list
+                    %}
+
+                    {% if active_ids %}
+                        {{ active_ids[0].identifier_value }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if item.is_active %}
+                        <span class="status active">
+                            Aktív
+                        </span>
+                    {% else %}
+                        <span class="status inactive">
+                            Inaktív
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td class="actions">
+
+                    <a
+                        class="button small"
+                        href="{{
+                            url_for(
+                                'admin.item_edit',
+                                item_id=item.id
+                            )
+                        }}"
+                    >
+                        Szerkesztés
+                    </a>
+
+                    <a
+                        class="button small"
+                        href="{{
+                            url_for(
+                                'admin.item_label',
+                                item_id=item.id
+                            )
+                        }}"
+                    >
+                        Címke
+                    </a>
+
+                    <form
+                        method="post"
+                        action="{{
+                            url_for(
+                                'admin.item_toggle',
+                                item_id=item.id
+                            )
+                        }}"
+                    >
+                        <button
+                            class="button small"
+                            type="submit"
+                        >
+                            {% if item.is_active %}
+                                Inaktiválás
+                            {% else %}
+                                Aktiválás
+                            {% endif %}
+                        </button>
+                    </form>
+
+                </td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+                <td colspan="6">
+                    Még nincs tétel.
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -13,6 +13,7 @@ Mako==1.4.1
 MarkupSafe==3.0.3
 psycopg==3.3.4
 psycopg-binary==3.3.4
+python-barcode==0.16.1
 python-dotenv==1.2.3
 SQLAlchemy==2.0.52
 typing_extensions==4.16.0

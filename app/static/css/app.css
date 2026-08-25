@@ -451,3 +451,117 @@ h1 {
         );
     }
 }
+
+.page-header-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.label-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.label-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(240px, 1fr)
+        );
+    gap: 14px;
+}
+
+.print-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    padding: 12px;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    text-align: center;
+    break-inside: avoid;
+}
+
+.print-label-name {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.print-label-parent {
+    margin-top: 2px;
+    color: #6b7280;
+    font-size: 0.8rem;
+}
+
+.print-label-barcode {
+    width: 100%;
+    max-width: 220px;
+    height: 65px;
+    margin-top: 8px;
+}
+
+.print-label-code {
+    margin-top: 4px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+@media (max-width: 700px) {
+    .page-header-actions {
+        width: 100%;
+    }
+
+    .page-header-actions .button {
+        width: 100%;
+    }
+}
+
+@media print {
+    .topbar,
+    .back-row,
+    .page-header,
+    .label-toolbar,
+    .flash {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .content {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .label-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
+        gap: 5mm;
+    }
+
+    .print-label {
+        min-height: 35mm;
+        padding: 3mm;
+        border: 0.3mm solid #aaa;
+        border-radius: 0;
+    }
+}
+
+.form-card textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    resize: vertical;
+    font: inherit;
+}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ item.internal_code }} címkék
+{% endblock %}
+
+{% block content %}
+
+<div class="label-toolbar">
+
+    <button
+        class="button primary"
+        type="button"
+        onclick="window.print()"
+    >
+        Nyomtatás
+    </button>
+
+</div>
+
+<div class="label-grid">
+
+    {% for _ in range(quantity) %}
+
+        <div class="print-label">
+
+            <div class="print-label-name">
+                {{ item.name }}
+            </div>
+
+            <img
+                class="print-label-barcode"
+                src="{{
+                    url_for(
+                        'admin.item_barcode',
+                        item_id=item.id
+                    )
+                }}"
+                alt="{{ item.internal_code }}"
+            >
+
+            <div class="print-label-code">
+                {{ item.internal_code }}
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,3 +1,9 @@
+from io import BytesIO
+
+import barcode
+from barcode.writer import SVGWriter
+from flask import Response
+
 from flask import (
     flash,
     redirect,
@@ -8,7 +14,13 @@ from flask import (
 
 from . import admin_bp
 from ..extensions import db
-from ..models import ItemType, Location, User
+from ..models import (
+    Item,
+    ItemIdentifier,
+    ItemType,
+    Location,
+    User,
+)
 
 
 @admin_bp.route("/")
@@ -970,4 +982,542 @@ def location_toggle(location_id):
         url_for(
             "admin.locations"
         )
+    )
+
+@admin_bp.route(
+    "/locations/<int:location_id>/barcode.svg"
+)
+def location_barcode(location_id):
+    location = db.get_or_404(
+        Location,
+        location_id,
+    )
+
+    output = BytesIO()
+
+    code = barcode.get(
+        "code128",
+        location.internal_code,
+        writer=SVGWriter(),
+    )
+
+    code.write(
+        output,
+        options={
+            "write_text": False,
+            "module_height": 12.0,
+            "quiet_zone": 2.0,
+        },
+    )
+
+    return Response(
+        output.getvalue(),
+        mimetype="image/svg+xml",
+        headers={
+            "Cache-Control": "no-store",
+        },
+    )
+
+
+@admin_bp.route(
+    "/locations/<int:location_id>/label"
+)
+def location_label(location_id):
+    location = db.get_or_404(
+        Location,
+        location_id,
+    )
+
+    return render_template(
+        "admin/locations/label.html",
+        location=location,
+        back_url=url_for(
+            "admin.locations"
+        ),
+    )
+
+
+@admin_bp.route(
+    "/locations/labels"
+)
+def location_labels():
+    rows = (
+        Location.query
+        .filter_by(is_active=True)
+        .order_by(
+            Location.sort_order,
+            Location.name,
+        )
+        .all()
+    )
+
+    tree = build_location_tree(
+        rows
+    )
+
+    locations = [
+        row["location"]
+        for row in tree
+    ]
+
+    return render_template(
+        "admin/locations/labels.html",
+        locations=locations,
+        back_url=url_for(
+            "admin.locations"
+        ),
+    )
+
+@admin_bp.route("/items")
+def items():
+    rows = (
+        Item.query
+        .order_by(
+            Item.name,
+        )
+        .all()
+    )
+
+    return render_template(
+        "admin/items/list.html",
+        items=rows,
+        back_url=url_for("admin.index"),
+    )
+
+
+@admin_bp.route(
+    "/items/new",
+    methods=["GET", "POST"],
+)
+def item_new():
+    item_types = (
+        ItemType.query
+        .filter_by(is_active=True)
+        .order_by(
+            ItemType.sort_order,
+            ItemType.name,
+        )
+        .all()
+    )
+
+    if request.method == "POST":
+        name = (
+            request.form.get("name", "")
+            .strip()
+        )
+
+        item_type_id = request.form.get(
+            "item_type_id",
+            type=int,
+        )
+
+        description = (
+            request.form.get(
+                "description",
+                "",
+            )
+            .strip()
+        )
+
+        barcode_value = (
+            request.form.get(
+                "barcode_value",
+                "",
+            )
+            .strip()
+        )
+
+        if not name:
+            flash(
+                "A megnevezés kötelező.",
+                "error",
+            )
+
+        elif item_type_id is None:
+            flash(
+                "A tételtípus kiválasztása kötelező.",
+                "error",
+            )
+
+        else:
+            item_type = db.session.get(
+                ItemType,
+                item_type_id,
+            )
+
+            if (
+                item_type is None
+                or not item_type.is_active
+            ):
+                flash(
+                    "Érvénytelen tételtípus.",
+                    "error",
+                )
+
+            elif (
+                barcode_value
+                and ItemIdentifier.query
+                .filter_by(
+                    identifier_value=barcode_value
+                )
+                .first()
+                is not None
+            ):
+                flash(
+                    "Ez a vonalkód már egy másik tételhez tartozik.",
+                    "error",
+                )
+
+            else:
+                item = Item(
+                    item_type=item_type,
+                    name=name,
+                    description=(
+                        description or None
+                    ),
+                    is_active=True,
+                )
+
+                db.session.add(item)
+                db.session.flush()
+
+                if barcode_value:
+                    identifier = ItemIdentifier(
+                        item=item,
+                        identifier_type="BARCODE",
+                        identifier_value=barcode_value,
+                        is_primary=True,
+                        is_active=True,
+                    )
+
+                    db.session.add(identifier)
+
+                db.session.commit()
+
+                flash(
+                    (
+                        "A tétel létrejött. "
+                        f"Saját kód: {item.internal_code}"
+                    ),
+                    "success",
+                )
+
+                return redirect(
+                    url_for(
+                        "admin.items"
+                    )
+                )
+
+    return render_template(
+        "admin/items/form.html",
+        item=None,
+        item_types=item_types,
+        barcode_value="",
+        back_url=url_for("admin.items"),
+    )
+
+
+@admin_bp.route(
+    "/items/<int:item_id>/edit",
+    methods=["GET", "POST"],
+)
+def item_edit(item_id):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    item_types = (
+        ItemType.query
+        .order_by(
+            ItemType.sort_order,
+            ItemType.name,
+        )
+        .all()
+    )
+
+    primary_identifier = (
+        ItemIdentifier.query
+        .filter_by(
+            item_id=item.id,
+            is_primary=True,
+            is_active=True,
+        )
+        .first()
+    )
+
+    if request.method == "POST":
+        name = (
+            request.form.get("name", "")
+            .strip()
+        )
+
+        item_type_id = request.form.get(
+            "item_type_id",
+            type=int,
+        )
+
+        description = (
+            request.form.get(
+                "description",
+                "",
+            )
+            .strip()
+        )
+
+        barcode_value = (
+            request.form.get(
+                "barcode_value",
+                "",
+            )
+            .strip()
+        )
+
+        if not name:
+            flash(
+                "A megnevezés kötelező.",
+                "error",
+            )
+
+        elif item_type_id is None:
+            flash(
+                "A tételtípus kiválasztása kötelező.",
+                "error",
+            )
+
+        else:
+            item_type = db.session.get(
+                ItemType,
+                item_type_id,
+            )
+
+            duplicate = None
+
+            if barcode_value:
+                duplicate = (
+                    ItemIdentifier.query
+                    .filter(
+                        ItemIdentifier.identifier_value
+                        == barcode_value,
+                        ItemIdentifier.item_id
+                        != item.id,
+                    )
+                    .first()
+                )
+
+            if item_type is None:
+                flash(
+                    "Érvénytelen tételtípus.",
+                    "error",
+                )
+
+            elif duplicate is not None:
+                flash(
+                    "Ez a vonalkód már egy másik tételhez tartozik.",
+                    "error",
+                )
+
+            else:
+                item.name = name
+                item.item_type = item_type
+                item.description = (
+                    description or None
+                )
+
+                if barcode_value:
+                    if primary_identifier is None:
+                        primary_identifier = (
+                            ItemIdentifier(
+                                item=item,
+                                identifier_type="BARCODE",
+                                identifier_value=barcode_value,
+                                is_primary=True,
+                                is_active=True,
+                            )
+                        )
+
+                        db.session.add(
+                            primary_identifier
+                        )
+                    else:
+                        primary_identifier.identifier_value = (
+                            barcode_value
+                        )
+                        primary_identifier.is_active = True
+
+                elif primary_identifier is not None:
+                    primary_identifier.is_active = False
+
+                db.session.commit()
+
+                flash(
+                    "A tétel módosítva.",
+                    "success",
+                )
+
+                return redirect(
+                    url_for(
+                        "admin.items"
+                    )
+                )
+
+    return render_template(
+        "admin/items/form.html",
+        item=item,
+        item_types=item_types,
+        barcode_value=(
+            primary_identifier.identifier_value
+            if primary_identifier
+            else ""
+        ),
+        back_url=url_for("admin.items"),
+    )
+
+
+@admin_bp.route(
+    "/items/<int:item_id>/toggle",
+    methods=["POST"],
+)
+def item_toggle(item_id):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    item.is_active = (
+        not item.is_active
+    )
+
+    db.session.commit()
+
+    flash(
+        (
+            "A tétel aktiválva."
+            if item.is_active
+            else "A tétel inaktiválva."
+        ),
+        "success",
+    )
+
+    return redirect(
+        url_for("admin.items")
+    )
+
+@admin_bp.route(
+    "/items/<int:item_id>/barcode.svg"
+)
+def item_barcode(item_id):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    output = BytesIO()
+
+    code = barcode.get(
+        "code128",
+        item.internal_code,
+        writer=SVGWriter(),
+    )
+
+    code.write(
+        output,
+        options={
+            "write_text": False,
+            "module_height": 12.0,
+            "quiet_zone": 2.0,
+        },
+    )
+
+    return Response(
+        output.getvalue(),
+        mimetype="image/svg+xml",
+        headers={
+            "Cache-Control": "no-store",
+        },
+    )
+
+@admin_bp.route(
+    "/items/<int:item_id>/label",
+    methods=["GET", "POST"],
+)
+def item_label(item_id):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    quantity = request.args.get(
+        "quantity",
+        default=1,
+        type=int,
+    )
+
+    if request.method == "POST":
+        quantity = request.form.get(
+            "quantity",
+            type=int,
+        )
+
+        if quantity is None or quantity < 1:
+            flash(
+                "A darabszám legalább 1 legyen.",
+                "error",
+            )
+
+            quantity = 1
+
+        elif quantity > 200:
+            flash(
+                "Egyszerre legfeljebb 200 címke nyomtatható.",
+                "error",
+            )
+
+            quantity = 200
+
+        else:
+            return redirect(
+                url_for(
+                    "admin.item_label_print",
+                    item_id=item.id,
+                    quantity=quantity,
+                )
+            )
+
+    return render_template(
+        "admin/items/label_quantity.html",
+        item=item,
+        quantity=quantity,
+        back_url=url_for("admin.items"),
+    )
+
+
+@admin_bp.route(
+    "/items/<int:item_id>/label/print"
+)
+def item_label_print(item_id):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    quantity = request.args.get(
+        "quantity",
+        default=1,
+        type=int,
+    )
+
+    quantity = max(
+        1,
+        min(quantity, 200),
+    )
+
+    return render_template(
+        "admin/items/label_print.html",
+        item=item,
+        quantity=quantity,
+        back_url=url_for(
+            "admin.item_label",
+            item_id=item.id,
+        ),
     )
