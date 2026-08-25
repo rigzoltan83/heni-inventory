@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        {% block title %}
+            Heni Inventory
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app.css') }}"
+    >
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+
+        <a
+            class="brand"
+            href="{{ url_for('main.index') }}"
+        >
+            Heni Inventory
+        </a>
+
+        <div class="topbar-spacer"></div>
+
+        {% block topbar_actions %}
+        {% endblock %}
+
+    </div>
+</header>
+
+<main class="content">
+
+    {% with messages =
+        get_flashed_messages(
+            with_categories=true
+        )
+    %}
+        {% for category, message in messages %}
+            <div
+                class="flash flash-{{ category }}"
+            >
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    {% if back_url %}
+        <div class="back-row">
+            <a
+                class="button back-button"
+                href="{{ back_url }}"
+            >
+                ← Vissza
+            </a>
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Admin - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Adminisztráció</h1>
+
+        <p class="muted">
+            A rendszer törzsadatainak és
+            beállításainak kezelése.
+        </p>
+    </div>
+
+</div>
+
+<div class="admin-grid">
+
+    <a
+        class="admin-card"
+        href="{{ url_for('admin.item_types') }}"
+    >
+        <strong>Tételtípusok</strong>
+
+        <span>
+            Könyv, társasjáték és további
+            tételtípusok kezelése.
+        </span>
+    </a>
+
+    <div class="admin-card disabled">
+        <strong>Tárhelyek</strong>
+
+        <span>
+            Dinamikus tárhelystruktúra kezelése.
+        </span>
+    </div>
+
+    <div class="admin-card disabled">
+        <strong>Felhasználók</strong>
+
+        <span>
+            Admin / Editor / Viewer jogosultságok.
+        </span>
+    </div>
+
+</div>
+
+{% endblock %}

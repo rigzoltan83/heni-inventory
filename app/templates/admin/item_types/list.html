@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tételtípusok - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Tételtípusok</h1>
+
+        <p class="muted">
+            A rendszerben használható
+            tételtípusok kezelése.
+        </p>
+    </div>
+
+    <a
+        class="button primary"
+        href="{{ url_for('admin.item_type_new') }}"
+    >
+        + Új tételtípus
+    </a>
+
+</div>
+
+<div class="table-wrap">
+
+    <table class="data-table">
+
+        <thead>
+            <tr>
+                <th>Sorrend</th>
+                <th>Kód</th>
+                <th>Megnevezés</th>
+                <th>Állapot</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for item_type in item_types %}
+
+            <tr
+                {% if not item_type.is_active %}
+                    class="inactive-row"
+                {% endif %}
+            >
+
+                <td>
+                    {{ item_type.sort_order }}
+                </td>
+
+                <td>
+                    <code>
+                        {{ item_type.code }}
+                    </code>
+                </td>
+
+                <td>
+                    {{ item_type.name }}
+                </td>
+
+                <td>
+                    {% if item_type.is_active %}
+                        <span class="status active">
+                            Aktív
+                        </span>
+                    {% else %}
+                        <span class="status inactive">
+                            Inaktív
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td class="actions">
+
+                    <a
+                        class="button small"
+                        href="{{
+                            url_for(
+                                'admin.item_type_edit',
+                                item_type_id=item_type.id
+                            )
+                        }}"
+                    >
+                        Szerkesztés
+                    </a>
+
+                    <form
+                        method="post"
+                        action="{{
+                            url_for(
+                                'admin.item_type_toggle',
+                                item_type_id=item_type.id
+                            )
+                        }}"
+                    >
+
+                        <button
+                            class="button small"
+                            type="submit"
+                        >
+                            {% if item_type.is_active %}
+                                Inaktiválás
+                            {% else %}
+                                Aktiválás
+                            {% endif %}
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

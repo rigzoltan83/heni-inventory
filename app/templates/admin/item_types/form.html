@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if item_type %}
+        Tételtípus szerkesztése
+    {% else %}
+        Új tételtípus
+    {% endif %}
+    - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>
+        {% if item_type %}
+            Tételtípus szerkesztése
+        {% else %}
+            Új tételtípus
+        {% endif %}
+    </h1>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Kód
+
+            <input
+                type="text"
+                name="code"
+                maxlength="50"
+                required
+                value="{{
+                    request.form.get(
+                        'code',
+                        item_type.code
+                        if item_type
+                        else ''
+                    )
+                }}"
+            >
+        </label>
+
+        <p class="field-help">
+            Például BOOK vagy BOARD_GAME.
+        </p>
+
+        <label>
+            Megnevezés
+
+            <input
+                type="text"
+                name="name"
+                maxlength="100"
+                required
+                value="{{
+                    request.form.get(
+                        'name',
+                        item_type.name
+                        if item_type
+                        else ''
+                    )
+                }}"
+            >
+        </label>
+
+        <label>
+            Sorrend
+
+            <input
+                type="number"
+                name="sort_order"
+                value="{{
+                    request.form.get(
+                        'sort_order',
+                        item_type.sort_order
+                        if item_type
+                        else 0
+                    )
+                }}"
+            >
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Mentés
+            </button>
+
+            <a
+                class="button"
+                href="{{ url_for('admin.item_types') }}"
+            >
+                Mégse
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
