@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tételek - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Tételek</h1>
+
+        <p class="muted">
+            Aktív tételek és aktuális készletük.
+        </p>
+    </div>
+
+</div>
+
+<div class="stock-position-list">
+
+    {% for item in items %}
+
+        <a
+            class="inventory-item-card"
+            href="{{
+                url_for(
+                    'inventory.item_stock',
+                    item_id=item.id
+                )
+            }}"
+        >
+
+            <div>
+                <div class="stock-position-name">
+                    {{ item.name }}
+                </div>
+
+                <div class="stock-position-code">
+                    {{ item.internal_code }}
+                    ·
+                    {{ item.item_type.name }}
+                </div>
+            </div>
+
+            <div class="inventory-card-arrow">
+                →
+            </div>
+
+        </a>
+
+    {% else %}
+
+        <div class="empty-state">
+            Nincs aktív tétel.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

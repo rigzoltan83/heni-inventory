@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tárhelycímkék - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Tárhelycímkék</h1>
+
+        <p class="muted">
+            Minden aktív tárhely nyomtatható
+            LOC-azonosítója.
+        </p>
+    </div>
+
+    <button
+        class="button primary"
+        type="button"
+        onclick="window.print()"
+    >
+        Nyomtatás
+    </button>
+
+</div>
+
+<div class="label-grid">
+
+    {% for location in locations %}
+
+        <div class="print-label">
+
+            <div class="print-label-name">
+                {{ location.name }}
+            </div>
+
+            {% if location.parent %}
+                <div class="print-label-parent">
+                    {{ location.parent.name }}
+                </div>
+            {% endif %}
+
+            <img
+                class="print-label-barcode"
+                src="{{
+                    url_for(
+                        'admin.location_barcode',
+                        location_id=location.id
+                    )
+                }}"
+                alt="{{ location.internal_code }}"
+            >
+
+            <div class="print-label-code">
+                {{ location.internal_code }}
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            Nincs aktív tárhely.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

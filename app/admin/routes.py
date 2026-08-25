@@ -3,6 +3,7 @@ from io import BytesIO
 import barcode
 from barcode.writer import SVGWriter
 from flask import Response
+from flask_login import current_user
 
 from flask import (
     flash,
@@ -15,11 +16,19 @@ from flask import (
 from . import admin_bp
 from ..extensions import db
 from ..models import (
+    InventoryStock,
     Item,
     ItemIdentifier,
     ItemType,
     Location,
     User,
+)
+from ..inventory_service import (
+    InventoryError,
+    issue,
+    move,
+    receipt,
+    set_counted_quantity,
 )
 
 
@@ -1521,3 +1530,4 @@ def item_label_print(item_id):
             item_id=item.id,
         ),
     )
+

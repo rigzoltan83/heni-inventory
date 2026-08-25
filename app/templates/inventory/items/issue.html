@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Kiadás - {{ item.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>Kiadás</h1>
+
+    <p>
+        <strong>{{ item.name }}</strong>
+    </p>
+
+    <p class="muted">
+        {{ location.name }}
+        ·
+        jelenlegi készlet:
+        {{ stock.quantity }} db
+    </p>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Kiadandó mennyiség
+
+            <input
+                type="number"
+                name="quantity"
+                min="1"
+                max="{{ stock.quantity }}"
+                required
+            >
+        </label>
+
+        <label>
+            Megjegyzés
+
+            <textarea
+                name="note"
+                rows="3"
+            ></textarea>
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Kiadás
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

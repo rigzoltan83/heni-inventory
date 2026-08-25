@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ location.internal_code }} címke
+{% endblock %}
+
+{% block content %}
+
+<div class="label-toolbar">
+    <button
+        class="button primary"
+        type="button"
+        onclick="window.print()"
+    >
+        Nyomtatás
+    </button>
+</div>
+
+<div class="print-label">
+
+    <div class="print-label-name">
+        {{ location.name }}
+    </div>
+
+    {% if location.parent %}
+        <div class="print-label-parent">
+            {{ location.parent.name }}
+        </div>
+    {% endif %}
+
+    <img
+        class="print-label-barcode"
+        src="{{
+            url_for(
+                'admin.location_barcode',
+                location_id=location.id
+            )
+        }}"
+        alt="{{ location.internal_code }}"
+    >
+
+    <div class="print-label-code">
+        {{ location.internal_code }}
+    </div>
+
+</div>
+
+{% endblock %}

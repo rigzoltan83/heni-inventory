@@ -17,12 +17,23 @@
         </p>
     </div>
 
+<div class="page-header-actions">
+
+    <a
+        class="button"
+        href="{{ url_for('admin.location_labels') }}"
+    >
+        Címkék nyomtatása
+    </a>
+
     <a
         class="button primary"
         href="{{ url_for('admin.location_new') }}"
     >
         + Új helyiség / tárhely
     </a>
+
+</div>
 
 </div>
 
@@ -110,6 +121,18 @@
                 >
                     + Alárendelt hely
                 </a>
+
+<a
+    class="button small"
+    href="{{
+        url_for(
+            'admin.location_label',
+            location_id=location.id
+        )
+    }}"
+>
+    Címke
+</a>
 
                 <a
                     class="button small"

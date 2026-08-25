@@ -565,3 +565,110 @@ h1 {
     resize: vertical;
     font: inherit;
 }
+
+.stock-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding: 18px 20px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.stock-summary strong {
+    font-size: 1.5rem;
+}
+
+.stock-position-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stock-position-card {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto
+        auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.stock-position-name {
+    font-weight: 700;
+}
+
+.stock-position-code {
+    margin-top: 3px;
+    color: #6b7280;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.stock-position-quantity {
+    font-size: 1.25rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.stock-position-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.stock-current {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+@media (max-width: 700px) {
+    .stock-position-card {
+        grid-template-columns: 1fr;
+    }
+
+    .stock-position-quantity {
+        font-size: 1.4rem;
+    }
+
+    .stock-position-actions {
+        width: 100%;
+    }
+
+    .stock-position-actions .button {
+        flex: 1 1 100%;
+    }
+}
+
+.inventory-item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.inventory-item-card:hover {
+    border-color: #9ca3af;
+}
+
+.inventory-card-arrow {
+    font-size: 1.5rem;
+    color: #6b7280;
+}

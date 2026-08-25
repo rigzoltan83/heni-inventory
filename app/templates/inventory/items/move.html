@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Áthelyezés - {{ item.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>Áthelyezés</h1>
+
+    <p>
+        <strong>{{ item.name }}</strong>
+    </p>
+
+    <p class="muted">
+        Forrás:
+        {{ source.name }}
+        ·
+        jelenlegi készlet:
+        {{ stock.quantity }} db
+    </p>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Cél tárhely
+
+            <select
+                name="destination_id"
+                required
+            >
+                <option value="">
+                    — válassz —
+                </option>
+
+                {% for location in destinations %}
+                    <option
+                        value="{{ location.id }}"
+                    >
+                        {{ location.name }}
+                        ({{ location.internal_code }})
+                    </option>
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Mennyiség
+
+            <input
+                type="number"
+                name="quantity"
+                min="1"
+                max="{{ stock.quantity }}"
+                required
+            >
+        </label>
+
+        <label>
+            Megjegyzés
+
+            <textarea
+                name="note"
+                rows="3"
+            ></textarea>
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Áthelyezés
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

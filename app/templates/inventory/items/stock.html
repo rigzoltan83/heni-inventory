@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ item.name }} készlete
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>{{ item.name }}</h1>
+
+        <p class="muted">
+            {{ item.internal_code }}
+            ·
+            {{ item.item_type.name }}
+        </p>
+    </div>
+
+    <a
+        class="button primary"
+        href="{{
+            url_for(
+                'inventory.item_receipt',
+                item_id=item.id
+            )
+        }}"
+    >
+        + Bevételezés
+    </a>
+
+</div>
+
+<div class="stock-summary">
+
+    <span>
+        Összes készlet
+    </span>
+
+    <strong>
+        {{ total_quantity }} db
+    </strong>
+
+</div>
+
+<div class="stock-position-list">
+
+    {% for position in positions %}
+
+        <div class="stock-position-card">
+
+            <div class="stock-position-main">
+
+                <div class="stock-position-name">
+                    {{ position.location.name }}
+                </div>
+
+                <div class="stock-position-code">
+                    {{ position.location.internal_code }}
+                </div>
+
+            </div>
+
+            <div class="stock-position-quantity">
+                {{ position.quantity }} db
+            </div>
+
+            <div class="stock-position-actions">
+
+                <a
+                    class="button small"
+                    href="{{
+                        url_for(
+                            'inventory.item_move',
+                            item_id=item.id,
+                            from_location_id=position.location.id
+                        )
+                    }}"
+                >
+                    Áthelyezés
+                </a>
+
+                <a
+                    class="button small"
+                    href="{{
+                        url_for(
+                            'inventory.item_issue',
+                            item_id=item.id,
+                            location_id=position.location.id
+                        )
+                    }}"
+                >
+                    Kiadás
+                </a>
+
+                <a
+                    class="button small"
+                    href="{{
+                        url_for(
+                            'inventory.item_correct',
+                            item_id=item.id,
+                            location_id=position.location.id
+                        )
+                    }}"
+                >
+                    Korrekció
+                </a>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            A tételből jelenleg nincs készlet.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

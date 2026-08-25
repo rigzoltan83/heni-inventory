@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Bevételezés - {{ item.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>Bevételezés</h1>
+
+    <p>
+        <strong>{{ item.name }}</strong>
+    </p>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Tárhely
+
+            <select
+                name="location_id"
+                required
+            >
+                <option value="">
+                    — válassz —
+                </option>
+
+                {% for location in locations %}
+                    <option
+                        value="{{ location.id }}"
+                    >
+                        {{ location.name }}
+                        ({{ location.internal_code }})
+                    </option>
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Mennyiség
+
+            <input
+                type="number"
+                name="quantity"
+                min="1"
+                required
+            >
+        </label>
+
+        <label>
+            Megjegyzés
+
+            <textarea
+                name="note"
+                rows="3"
+            ></textarea>
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Bevételezés
+            </button>
+
+            <a
+                class="button"
+                href="{{
+                    url_for(
+                        'inventory.item_stock',
+                        item_id=item.id
+                    )
+                }}"
+            >
+                Mégse
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
