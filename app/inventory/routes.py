@@ -1,4 +1,7 @@
 from flask import (
+    abort,
+    current_app,
+    send_from_directory,
     Response,
     flash,
     redirect,
@@ -32,6 +35,7 @@ from ..models import (
     InventoryStock,
     Item,
     ItemIdentifier,
+    ItemImage,
     Location,
     User,
 )
@@ -1518,4 +1522,33 @@ def movements():
         total_rows=total_rows,
         return_url=return_url,
         back_url=url_for("main.index"),
+    )
+
+
+@inventory_bp.route(
+    "/items/<int:item_id>/images/<int:image_id>"
+)
+@login_required
+def item_image(
+    item_id,
+    image_id,
+):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    image = db.get_or_404(
+        ItemImage,
+        image_id,
+    )
+
+    if image.item_id != item.id:
+        abort(404)
+
+    return send_from_directory(
+        current_app.config[
+            "ITEM_UPLOAD_FOLDER"
+        ],
+        image.filename,
     )

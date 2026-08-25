@@ -1703,34 +1703,6 @@ def item_label_print(item_id):
 
 
 @admin_bp.route(
-    "/items/<int:item_id>/images/<int:image_id>"
-)
-def item_image(
-    item_id,
-    image_id,
-):
-    item = db.get_or_404(
-        Item,
-        item_id,
-    )
-
-    image = db.get_or_404(
-        ItemImage,
-        image_id,
-    )
-
-    if image.item_id != item.id:
-        abort(404)
-
-    return send_from_directory(
-        current_app.config[
-            "ITEM_UPLOAD_FOLDER"
-        ],
-        image.filename,
-    )
-
-
-@admin_bp.route(
     "/items/<int:item_id>/images/<int:image_id>/delete-confirm"
 )
 def item_image_delete_confirm(
