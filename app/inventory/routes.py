@@ -1,4 +1,5 @@
 from flask import (
+    Response,
     flash,
     redirect,
     render_template,
@@ -10,6 +11,10 @@ from flask_login import (
     login_required,
 )
 
+import csv
+from io import BytesIO, StringIO
+
+import xlsxwriter
 from datetime import datetime, time
 from sqlalchemy import or_
 from urllib.parse import urlparse
@@ -122,6 +127,42 @@ def items():
         has_stock=has_stock,
         back_url=url_for("main.index"),
     )
+
+
+def build_stock_query(
+    search="",
+    location_id=None,
+):
+    query = (
+        InventoryStock.query
+        .join(Item)
+        .join(Location)
+        .filter(
+            InventoryStock.quantity > 0,
+            Item.is_active.is_(True),
+            Location.is_active.is_(True),
+        )
+    )
+
+    if search:
+        query = query.filter(
+            or_(
+                Item.name.ilike(
+                    f"%{search}%"
+                ),
+                Location.name.ilike(
+                    f"%{search}%"
+                ),
+            )
+        )
+
+    if location_id is not None:
+        query = query.filter(
+            InventoryStock.location_id
+            == location_id
+        )
+
+    return query
 
 
 @inventory_bp.route(
@@ -888,6 +929,283 @@ def scanner():
         back_url=url_for("main.index"),
     )
 
+
+@inventory_bp.route("/stock/export.csv")
+@login_required
+def stock_export_csv():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    location_id = request.args.get(
+        "location_id",
+        type=int,
+    )
+
+    rows = (
+        build_stock_query(
+            search=search,
+            location_id=location_id,
+        )
+        .order_by(
+            Item.name,
+            Location.name,
+        )
+        .all()
+    )
+
+    output = StringIO()
+
+    writer = csv.writer(
+        output,
+        delimiter=";",
+        lineterminator="\n",
+    )
+
+    writer.writerow(
+        [
+            "Tétel",
+            "Saját kód",
+            "Típus",
+            "Tárhely",
+            "Tárhelykód",
+            "Mennyiség",
+        ]
+    )
+
+    for row in rows:
+        writer.writerow(
+            [
+                row.item.name,
+                row.item.internal_code,
+                row.item.item_type.name,
+                row.location.full_path,
+                row.location.internal_code,
+                row.quantity,
+            ]
+        )
+
+    csv_content = (
+        "\ufeff"
+        + output.getvalue()
+    )
+
+    return Response(
+        csv_content,
+        mimetype="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition":
+                'attachment; filename="heni_inventory_stock.csv"'
+        },
+    )
+
+
+@inventory_bp.route("/stock/export.xlsx")
+@login_required
+def stock_export_xlsx():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    location_id = request.args.get(
+        "location_id",
+        type=int,
+    )
+
+    rows = (
+        build_stock_query(
+            search=search,
+            location_id=location_id,
+        )
+        .order_by(
+            Item.name,
+            Location.name,
+        )
+        .all()
+    )
+
+    output = BytesIO()
+
+    workbook = xlsxwriter.Workbook(
+        output,
+        {
+            "in_memory": True,
+        },
+    )
+
+    worksheet = workbook.add_worksheet(
+        "Készlet"
+    )
+
+    header_format = workbook.add_format(
+        {
+            "bold": True,
+            "bg_color": "#E5E7EB",
+            "border": 1,
+            "align": "center",
+            "valign": "vcenter",
+        }
+    )
+
+    text_format = workbook.add_format(
+        {
+            "border": 1,
+            "valign": "top",
+        }
+    )
+
+    quantity_format = workbook.add_format(
+        {
+            "border": 1,
+            "align": "right",
+            "num_format": "0",
+        }
+    )
+
+    headers = [
+        "Tétel",
+        "Saját kód",
+        "Típus",
+        "Tárhely",
+        "Tárhelykód",
+        "Mennyiség",
+    ]
+
+    for column, header in enumerate(
+        headers
+    ):
+        worksheet.write(
+            0,
+            column,
+            header,
+            header_format,
+        )
+
+    for row_number, stock_row in enumerate(
+        rows,
+        start=1,
+    ):
+        worksheet.write(
+            row_number,
+            0,
+            stock_row.item.name,
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            1,
+            stock_row.item.internal_code,
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            2,
+            stock_row.item.item_type.name,
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            3,
+            stock_row.location.full_path,
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            4,
+            stock_row.location.internal_code,
+            text_format,
+        )
+
+        worksheet.write_number(
+            row_number,
+            5,
+            stock_row.quantity,
+            quantity_format,
+        )
+
+    last_row = max(
+        len(rows),
+        1,
+    )
+
+    worksheet.autofilter(
+        0,
+        0,
+        last_row,
+        len(headers) - 1,
+    )
+
+    worksheet.freeze_panes(
+        1,
+        0,
+    )
+
+    worksheet.set_column(
+        0,
+        0,
+        32,
+    )
+
+    worksheet.set_column(
+        1,
+        1,
+        16,
+    )
+
+    worksheet.set_column(
+        2,
+        2,
+        18,
+    )
+
+    worksheet.set_column(
+        3,
+        3,
+        42,
+    )
+
+    worksheet.set_column(
+        4,
+        4,
+        16,
+    )
+
+    worksheet.set_column(
+        5,
+        5,
+        12,
+    )
+
+    workbook.close()
+
+    output.seek(0)
+
+    return Response(
+        output.getvalue(),
+        mimetype=(
+            "application/"
+            "vnd.openxmlformats-officedocument."
+            "spreadsheetml.sheet"
+        ),
+        headers={
+            "Content-Disposition":
+                'attachment; filename="heni_inventory_stock.xlsx"'
+        },
+    )
+
+
 @inventory_bp.route("/stock")
 @login_required
 def stock():
@@ -904,15 +1222,9 @@ def stock():
         type=int,
     )
 
-    query = (
-        InventoryStock.query
-        .join(Item)
-        .join(Location)
-        .filter(
-            InventoryStock.quantity > 0,
-            Item.is_active.is_(True),
-            Location.is_active.is_(True),
-        )
+    query = build_stock_query(
+        search=search,
+        location_id=location_id,
     )
 
     if search:

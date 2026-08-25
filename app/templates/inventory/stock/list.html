@@ -16,6 +16,36 @@
         </p>
     </div>
 
+<div class="page-header-actions">
+
+    <a
+        class="button"
+        href="{{
+            url_for(
+                'inventory.stock_export_csv',
+                q=search or None,
+                location_id=selected_location_id
+            )
+        }}"
+    >
+        CSV export
+    </a>
+
+    <a
+        class="button primary"
+        href="{{
+            url_for(
+                'inventory.stock_export_xlsx',
+                q=search or None,
+                location_id=selected_location_id
+            )
+        }}"
+    >
+        XLSX export
+    </a>
+
+</div>
+
 </div>
 
 <form
