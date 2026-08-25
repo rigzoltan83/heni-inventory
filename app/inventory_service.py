@@ -103,13 +103,13 @@ def _get_stock_position(
 
     return stock
 
-
 def receipt(
     item_id,
     location_id,
     quantity,
     user_id,
     note=None,
+    commit=True,
 ):
     quantity = _validate_quantity(quantity)
 
@@ -144,7 +144,11 @@ def receipt(
         )
 
         db.session.add(movement)
-        db.session.commit()
+
+        if commit:
+            db.session.commit()
+        else:
+            db.session.flush()
 
         return movement
 
