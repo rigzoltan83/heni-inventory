@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ item.name }} készlete
+    {{ location.name }} - Heni Inventory
 {% endblock %}
 
 {% block content %}
@@ -9,54 +9,48 @@
 <div class="page-header">
 
     <div>
-        <h1>{{ item.name }}</h1>
+
+        <h1>
+            {{ location.name }}
+        </h1>
 
         <p class="muted">
-            {{ item.internal_code }}
-            ·
-            {{ item.item_type.name }}
+            {{ location.full_path }}
         </p>
+
+        <p class="stock-position-code">
+            {{ location.internal_code }}
+        </p>
+
     </div>
 
-<div class="page-header-actions">
-
-    <a
-        class="button"
-        href="{{
-            url_for(
-                'admin.item_label',
-                item_id=item.id
-            )
-        }}"
-    >
-        Címke
-    </a>
-
-    {% if current_user.can_edit %}
+    {% if
+        current_user.can_edit
+        and location.can_hold_stock
+        and location.is_active
+    %}
 
 <a
     class="button primary"
     href="{{
         url_for(
-            'inventory.item_receipt',
-            item_id=item.id,
+            'inventory.location_receipt',
+            location_id=location.id,
             return_to=current_url
         )
     }}"
 >
-    + Bevételezés
+    + Tétel készletre vétele
 </a>
 
     {% endif %}
 
 </div>
 
-</div>
-
 <div class="stock-summary">
 
     <span>
-        Összes készlet
+        Összes darabszám ezen a helyen
     </span>
 
     <strong>
@@ -74,11 +68,13 @@
             <div class="stock-position-main">
 
                 <div class="stock-position-name">
-                    {{ position.location.name }}
+                    {{ position.item.name }}
                 </div>
 
                 <div class="stock-position-code">
-                    {{ position.location.internal_code }}
+                    {{ position.item.internal_code }}
+                    ·
+                    {{ position.item.item_type.name }}
                 </div>
 
             </div>
@@ -93,9 +89,24 @@
     class="button small"
     href="{{
         url_for(
+            'inventory.item_stock',
+            item_id=position.item.id,
+            return_to=current_url
+        )
+    }}"
+>
+    Tétel
+</a>
+
+                {% if current_user.can_edit %}
+
+<a
+    class="button small"
+    href="{{
+        url_for(
             'inventory.item_move',
-            item_id=item.id,
-            from_location_id=position.location.id,
+            item_id=position.item.id,
+            from_location_id=location.id,
             return_to=current_url
         )
     }}"
@@ -108,8 +119,8 @@
     href="{{
         url_for(
             'inventory.item_issue',
-            item_id=item.id,
-            location_id=position.location.id,
+            item_id=position.item.id,
+            location_id=location.id,
             return_to=current_url
         )
     }}"
@@ -122,14 +133,16 @@
     href="{{
         url_for(
             'inventory.item_correct',
-            item_id=item.id,
-            location_id=position.location.id,
+            item_id=position.item.id,
+            location_id=location.id,
             return_to=current_url
         )
     }}"
 >
     Korrekció
 </a>
+
+                {% endif %}
 
             </div>
 
@@ -138,7 +151,7 @@
     {% else %}
 
         <div class="empty-state">
-            A tételből jelenleg nincs készlet.
+            Ezen a tárhelyen jelenleg nincs készlet.
         </div>
 
     {% endfor %}

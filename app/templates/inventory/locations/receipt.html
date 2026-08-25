@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tétel készletre vétele
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>Tétel készletre vétele</h1>
+
+    <p>
+        <strong>
+            {{ location.full_path }}
+        </strong>
+    </p>
+
+    <p class="muted">
+        {{ location.internal_code }}
+    </p>
+
+    <form
+        method="get"
+        class="search-bar"
+    >
+
+        <input
+            type="search"
+            name="q"
+            placeholder="Tétel keresése..."
+            value="{{ search }}"
+        >
+
+        <button
+            class="button"
+            type="submit"
+        >
+            Keresés
+        </button>
+
+
+    </form>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Tétel
+
+            <select
+                name="item_id"
+                required
+            >
+                <option value="">
+                    — válassz —
+                </option>
+
+                {% for item in items %}
+
+                    <option
+                        value="{{ item.id }}"
+                    >
+                        {{ item.name }}
+                        ·
+                        {{ item.internal_code }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Mennyiség
+
+            <input
+                type="number"
+                name="quantity"
+                min="1"
+                required
+            >
+        </label>
+
+        <label>
+            Megjegyzés
+
+            <textarea
+                name="note"
+                rows="3"
+            ></textarea>
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Készletre vétel
+            </button>
+
+<a
+    class="button"
+    href="{{ back_url }}"
+>
+    Mégse
+</a>
+
+            <a
+                class="button"
+                href="{{
+                    url_for(
+                        'inventory.location_stock',
+                        location_id=location.id
+                    )
+                }}"
+            >
+                Mégse
+            </a>
+
+        </div>
+
+    </form>
+
+    {% if current_user.is_admin %}
+
+        <p class="admin-hint">
+            Ha a tétel még nem létezik a törzsben,
+            előbb az Admin → Tételek alatt kell
+            létrehozni.
+        </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

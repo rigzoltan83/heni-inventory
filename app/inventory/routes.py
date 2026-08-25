@@ -10,6 +10,7 @@ from flask_login import (
     login_required,
 )
 
+from urllib.parse import urlparse
 from . import inventory_bp
 from ..extensions import db
 from ..inventory_service import (
@@ -26,20 +27,94 @@ from ..models import (
 )
 from ..permissions import editor_required
 
+def get_safe_return_to(default_url):
+    return_to = (
+        request.args.get(
+            "return_to",
+            "",
+        )
+        .strip()
+    )
+
+    if not return_to:
+        return default_url
+
+    parsed = urlparse(return_to)
+
+    if parsed.scheme or parsed.netloc:
+        return default_url
+
+    if not return_to.startswith("/"):
+        return default_url
+
+    return return_to
+
 
 @inventory_bp.route("/items")
 @login_required
 def items():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    has_stock = (
+        request.args.get("has_stock")
+        == "1"
+    )
+
+    query = (
+        db.session.query(
+            Item,
+            db.func.coalesce(
+                db.func.sum(
+                    InventoryStock.quantity
+                ),
+                0,
+            ).label("total_quantity"),
+        )
+        .outerjoin(
+            InventoryStock,
+            InventoryStock.item_id == Item.id,
+        )
+        .filter(
+            Item.is_active.is_(True)
+        )
+        .group_by(Item.id)
+    )
+
+    if search:
+        query = query.filter(
+            Item.name.ilike(
+                f"%{search}%"
+            )
+        )
+
+    if has_stock:
+        query = query.having(
+            db.func.coalesce(
+                db.func.sum(
+                    InventoryStock.quantity
+                ),
+                0,
+            )
+            > 0
+        )
+
     rows = (
-        Item.query
-        .filter_by(is_active=True)
+        query
         .order_by(Item.name)
         .all()
     )
 
     return render_template(
         "inventory/items/list.html",
-        items=rows,
+        rows=rows,
+        search=search,
+        has_stock=has_stock,
         back_url=url_for("main.index"),
     )
 
@@ -72,12 +147,33 @@ def item_stock(item_id):
         for row in positions
     )
 
+    default_back_url = url_for(
+        "inventory.items"
+    )
+
+    back_url = get_safe_return_to(
+        default_back_url
+    )
+
+    if back_url != default_back_url:
+        current_url = url_for(
+            "inventory.item_stock",
+            item_id=item.id,
+            return_to=back_url,
+        )
+    else:
+        current_url = url_for(
+            "inventory.item_stock",
+            item_id=item.id,
+        )
+
     return render_template(
         "inventory/items/stock.html",
         item=item,
         positions=positions,
         total_quantity=total_quantity,
-        back_url=url_for("main.index"),
+        back_url=back_url,
+        current_url=current_url,
     )
 
 
@@ -90,6 +186,13 @@ def item_receipt(item_id):
     item = db.get_or_404(
         Item,
         item_id,
+    )
+
+    return_to = get_safe_return_to(
+        url_for(
+            "inventory.item_stock",
+            item_id=item.id,
+        )
     )
 
     locations = (
@@ -134,12 +237,7 @@ def item_receipt(item_id):
                 "success",
             )
 
-            return redirect(
-                url_for(
-                    "inventory.item_stock",
-                    item_id=item.id,
-                )
-            )
+            return redirect(return_to)
 
         except InventoryError as exc:
             flash(
@@ -147,15 +245,12 @@ def item_receipt(item_id):
                 "error",
             )
 
-    return render_template(
-        "inventory/items/receipt.html",
-        item=item,
-        locations=locations,
-        back_url=url_for(
-            "inventory.item_stock",
-            item_id=item.id,
-        ),
-    )
+        return render_template(
+            "inventory/items/receipt.html",
+            item=item,
+            locations=locations,
+            back_url=return_to,
+        )
 
 
 @inventory_bp.route(
@@ -170,6 +265,13 @@ def item_move(
     item = db.get_or_404(
         Item,
         item_id,
+    )
+
+    return_to = get_safe_return_to(
+        url_for(
+            "inventory.item_stock",
+            item_id=item.id,
+        )
     )
 
     source = db.get_or_404(
@@ -230,12 +332,7 @@ def item_move(
                 "success",
             )
 
-            return redirect(
-                url_for(
-                    "inventory.item_stock",
-                    item_id=item.id,
-                )
-            )
+            return redirect(return_to)
 
         except InventoryError as exc:
             flash(
@@ -249,10 +346,7 @@ def item_move(
         source=source,
         stock=stock,
         destinations=destinations,
-        back_url=url_for(
-            "inventory.item_stock",
-            item_id=item.id,
-        ),
+        back_url=return_to,
     )
 
 
@@ -268,6 +362,13 @@ def item_issue(
     item = db.get_or_404(
         Item,
         item_id,
+    )
+
+    return_to = get_safe_return_to(
+        url_for(
+            "inventory.item_stock",
+            item_id=item.id,
+        )
     )
 
     location = db.get_or_404(
@@ -311,12 +412,7 @@ def item_issue(
                 "success",
             )
 
-            return redirect(
-                url_for(
-                    "inventory.item_stock",
-                    item_id=item.id,
-                )
-            )
+            return redirect(return_to)
 
         except InventoryError as exc:
             flash(
@@ -329,10 +425,7 @@ def item_issue(
         item=item,
         location=location,
         stock=stock,
-        back_url=url_for(
-            "inventory.item_stock",
-            item_id=item.id,
-        ),
+        back_url=return_to,
     )
 
 
@@ -348,6 +441,13 @@ def item_correct(
     item = db.get_or_404(
         Item,
         item_id,
+    )
+
+    return_to = get_safe_return_to(
+        url_for(
+            "inventory.item_stock",
+            item_id=item.id,
+        )
     )
 
     location = db.get_or_404(
@@ -391,12 +491,7 @@ def item_correct(
                 "success",
             )
 
-            return redirect(
-                url_for(
-                    "inventory.item_stock",
-                    item_id=item.id,
-                )
-            )
+            return redirect(return_to)
 
         except InventoryError as exc:
             flash(
@@ -409,8 +504,250 @@ def item_correct(
         item=item,
         location=location,
         stock=stock,
+        back_url=return_to,
+    )
+
+@inventory_bp.route("/locations")
+@login_required
+def locations():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    has_stock = (
+        request.args.get("has_stock")
+        == "1"
+    )
+
+    query = (
+        db.session.query(
+            Location,
+            db.func.coalesce(
+                db.func.sum(
+                    InventoryStock.quantity
+                ),
+                0,
+            ).label("total_quantity"),
+            db.func.count(
+                db.distinct(
+                    InventoryStock.item_id
+                )
+            ).label("item_count"),
+        )
+        .outerjoin(
+            InventoryStock,
+            InventoryStock.location_id
+            == Location.id,
+        )
+        .filter(
+            Location.is_active.is_(True),
+            Location.can_hold_stock.is_(True),
+        )
+        .group_by(Location.id)
+    )
+
+    if search:
+        query = query.filter(
+            Location.name.ilike(
+                f"%{search}%"
+            )
+        )
+
+    if has_stock:
+        query = query.having(
+            db.func.coalesce(
+                db.func.sum(
+                    InventoryStock.quantity
+                ),
+                0,
+            )
+            > 0
+        )
+
+    rows = (
+        query
+        .order_by(
+            Location.name
+        )
+        .all()
+    )
+
+    return render_template(
+        "inventory/locations/list.html",
+        rows=rows,
+        search=search,
+        has_stock=has_stock,
+        back_url=url_for("main.index"),
+    )
+
+
+@inventory_bp.route(
+    "/locations/<int:location_id>"
+)
+@login_required
+def location_stock(location_id):
+    location = db.get_or_404(
+        Location,
+        location_id,
+    )
+
+    positions = (
+        InventoryStock.query
+        .filter(
+            InventoryStock.location_id
+            == location.id,
+            InventoryStock.quantity > 0,
+        )
+        .join(Item)
+        .order_by(
+            Item.name
+        )
+        .all()
+    )
+
+    total_quantity = sum(
+        position.quantity
+        for position in positions
+    )
+
+    current_url = url_for(
+        "inventory.location_stock",
+        location_id=location.id,
+    )
+
+    return render_template(
+        "inventory/locations/stock.html",
+        location=location,
+        positions=positions,
+        total_quantity=total_quantity,
         back_url=url_for(
-            "inventory.item_stock",
-            item_id=item.id,
+            "inventory.locations"
         ),
+        current_url=current_url,
+    )
+
+@inventory_bp.route(
+    "/locations/<int:location_id>/receipt",
+    methods=["GET", "POST"],
+)
+@editor_required
+def location_receipt(location_id):
+    location = db.get_or_404(
+        Location,
+        location_id,
+    )
+
+    return_to = get_safe_return_to(
+        url_for(
+            "inventory.location_stock",
+            location_id=location.id,
+        )
+    )
+
+    if not location.is_active:
+        flash(
+            "Inaktív tárhely nem használható.",
+            "error",
+        )
+
+        return redirect(return_to)
+
+    if not location.can_hold_stock:
+        flash(
+            "Ezen a helyen nem tárolható készlet.",
+            "error",
+        )
+
+        return redirect(
+            url_for(
+                "inventory.location_stock",
+                location_id=location.id,
+            )
+        )
+
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    query = (
+        Item.query
+        .filter(
+            Item.is_active.is_(True)
+        )
+    )
+
+    if search:
+        query = query.filter(
+            Item.name.ilike(
+                f"%{search}%"
+            )
+        )
+
+    items = (
+        query
+        .order_by(
+            Item.name
+        )
+        .all()
+    )
+
+    if request.method == "POST":
+        item_id = request.form.get(
+            "item_id",
+            type=int,
+        )
+
+        quantity = request.form.get(
+            "quantity"
+        )
+
+        note = (
+            request.form.get(
+                "note",
+                "",
+            )
+            .strip()
+        )
+
+        try:
+            receipt(
+                item_id=item_id,
+                location_id=location.id,
+                quantity=quantity,
+                user_id=current_user.id,
+                note=note,
+            )
+
+            flash(
+                "A készletfelvitel megtörtént.",
+                "success",
+            )
+
+            return redirect(
+                url_for(
+                    "inventory.location_stock",
+                    location_id=location.id,
+                )
+            )
+
+        except InventoryError as exc:
+            flash(
+                str(exc),
+                "error",
+            )
+
+    return render_template(
+        "inventory/locations/receipt.html",
+        location=location,
+        items=items,
+        search=search,
+        back_url=return_to,
     )

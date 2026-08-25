@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tárhelyek - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Tárhelyek</h1>
+
+        <p class="muted">
+            Tárhely kiválasztása és
+            aktuális készletének megtekintése.
+        </p>
+    </div>
+
+</div>
+
+<form
+    method="get"
+    class="search-bar"
+>
+
+    <input
+        type="search"
+        name="q"
+        placeholder="Keresés tárhelynévre..."
+        value="{{ search }}"
+    >
+
+    <label class="filter-toggle">
+
+        <input
+            type="checkbox"
+            name="has_stock"
+            value="1"
+            {% if has_stock %}
+                checked
+            {% endif %}
+            onchange="this.form.submit()"
+        >
+
+        <span>
+            Van készlet
+        </span>
+
+    </label>
+
+    <button
+        class="button primary"
+        type="submit"
+    >
+        Keresés
+    </button>
+
+    {% if search or has_stock %}
+
+        <a
+            class="button"
+            href="{{ url_for('inventory.locations') }}"
+        >
+            Szűrés törlése
+        </a>
+
+    {% endif %}
+
+</form>
+
+<div class="stock-position-list">
+
+    {% for location, total_quantity, item_count in rows %}
+
+        <a
+            class="inventory-item-card"
+            href="{{
+                url_for(
+                    'inventory.location_stock',
+                    location_id=location.id
+                )
+            }}"
+        >
+
+            <div>
+
+                <div class="stock-position-name">
+                    {{ location.name }}
+                </div>
+
+                <div class="stock-position-code">
+                    {{ location.internal_code }}
+                </div>
+
+                <div class="location-path">
+                    {{ location.full_path }}
+                </div>
+
+                <div class="inventory-total">
+                    {{ item_count }} tétel
+                    ·
+                    <strong>
+                        {{ total_quantity }} db
+                    </strong>
+                </div>
+
+            </div>
+
+            <div class="inventory-card-arrow">
+                →
+            </div>
+
+        </a>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            {% if search or has_stock %}
+                Nincs a szűrésnek megfelelő tárhely.
+            {% else %}
+                Nincs aktív tárhely.
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

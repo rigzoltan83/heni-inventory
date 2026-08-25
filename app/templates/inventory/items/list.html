@@ -18,45 +18,131 @@
 
 </div>
 
-<div class="stock-position-list">
+<form
+    method="get"
+    class="search-bar"
+>
 
-    {% for item in items %}
+    <input
+        type="search"
+        name="q"
+        placeholder="Keresés megnevezésre..."
+        value="{{ search }}"
+    >
 
-        <a
-            class="inventory-item-card"
-            href="{{
-                url_for(
-                    'inventory.item_stock',
-                    item_id=item.id
-                )
-            }}"
+    <label class="filter-toggle">
+
+        <input
+            type="checkbox"
+            name="has_stock"
+            value="1"
+            {% if has_stock %}
+                checked
+            {% endif %}
+            onchange="this.form.submit()"
         >
 
-            <div>
-                <div class="stock-position-name">
-                    {{ item.name }}
-                </div>
+        <span>
+            Van készlet
+        </span>
 
-                <div class="stock-position-code">
-                    {{ item.internal_code }}
-                    ·
-                    {{ item.item_type.name }}
-                </div>
-            </div>
+    </label>
 
-            <div class="inventory-card-arrow">
-                →
-            </div>
+    <button
+        class="button primary"
+        type="submit"
+    >
+        Keresés
+    </button>
 
+    {% if search or has_stock %}
+
+        <a
+            class="button"
+            href="{{ url_for('inventory.items') }}"
+        >
+            Szűrés törlése
         </a>
 
-    {% else %}
+    {% endif %}
 
-        <div class="empty-state">
-            Nincs aktív tétel.
+</form>
+
+<div class="stock-position-list">
+
+{% for item, total_quantity in rows %}
+
+        <div class="inventory-item-card">
+
+            <a
+                class="inventory-item-main"
+                href="{{
+                    url_for(
+                        'inventory.item_stock',
+                        item_id=item.id
+                    )
+                }}"
+            >
+
+                <div>
+                    <div class="stock-position-name">
+                        {{ item.name }}
+                    </div>
+
+                    <div class="stock-position-code">
+                        {{ item.internal_code }}
+                        ·
+                        {{ item.item_type.name }}
+                    </div>
+                </div>
+
+                <div class="inventory-card-arrow">
+                    →
+                </div>
+
+<div class="inventory-total">
+
+    Összkészlet:
+
+    <strong>
+        {{ total_quantity }} db
+    </strong>
+
+</div>
+
+            </a>
+
+            <div class="inventory-item-actions">
+
+                <a
+                    class="button small"
+                    href="{{
+                        url_for(
+                            'admin.item_label',
+                            item_id=item.id
+                        )
+                    }}"
+                >
+                    Címke
+                </a>
+
+            </div>
+
         </div>
 
-    {% endfor %}
+{% else %}
+
+    <div class="empty-state">
+
+        {% if search or has_stock %}
+            Nincs a szűrésnek megfelelő tétel.
+        {% else %}
+            Nincs aktív tétel.
+        {% endif %}
+
+    </div>
+
+{% endfor %}
 
 </div>
 
