@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Scanner - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>Scanner</h1>
+
+    <p class="muted">
+        Tétel- vagy tárhelykód beolvasása.
+    </p>
+
+    <div class="scanner-camera-card">
+
+        <button
+            class="button primary scanner-camera-button"
+            type="button"
+            id="start-camera"
+        >
+            Kamera indítása
+        </button>
+
+        <button
+            class="button scanner-camera-button"
+            type="button"
+            id="stop-camera"
+            hidden
+        >
+            Kamera leállítása
+        </button>
+
+        <div
+            class="scanner-video-wrap"
+            id="scanner-video-wrap"
+            hidden
+        >
+
+            <video
+                id="scanner-video"
+                autoplay
+                playsinline
+                muted
+            ></video>
+
+            <div class="scanner-target">
+                <div class="scanner-target-line"></div>
+            </div>
+
+        </div>
+
+        <div
+            class="scanner-camera-status"
+            id="scanner-camera-status"
+        >
+            A kamera még nincs elindítva.
+        </div>
+
+    </div>
+
+    <form
+        method="post"
+        class="scanner-card"
+        id="scanner-form"
+    >
+
+        <label>
+            Kód
+
+            <input
+                type="text"
+                name="code"
+                id="scanner-code"
+                value="{{ code }}"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                autofocus
+                required
+            >
+        </label>
+
+        <div class="scanner-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Megnyitás
+            </button>
+
+        </div>
+
+    </form>
+
+    <div class="scanner-help">
+
+        <p>
+            Felismerhető:
+        </p>
+
+        <ul>
+            <li>
+                saját tételkód:
+                <code>ITEM-xxxxxx</code>
+            </li>
+
+            <li>
+                saját tárhelykód:
+                <code>LOC-xxxxxx</code>
+            </li>
+
+            <li>
+                gyári EAN / ISBN / egyéb vonalkód
+            </li>
+        </ul>
+
+    </div>
+
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/scanner.js') }}"
+    defer
+></script>
+
+{% endblock %}

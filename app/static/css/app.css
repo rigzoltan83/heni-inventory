@@ -789,3 +789,152 @@ h1 {
     color: #6b7280;
     font-size: 0.9rem;
 }
+
+.scanner-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.scanner-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.scanner-card input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 1.2rem;
+}
+
+.scanner-card input:focus {
+    outline: none;
+    border-color: #111827;
+}
+
+.scanner-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.scanner-actions .button {
+    width: 100%;
+}
+
+.scanner-help {
+    margin-top: 18px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    color: #6b7280;
+}
+
+.scanner-help ul {
+    margin-bottom: 0;
+}
+
+.scanner-camera-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.scanner-camera-button {
+    width: 100%;
+}
+
+.scanner-video-wrap {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #111;
+    border-radius: 12px;
+}
+
+.scanner-video-wrap video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.scanner-target {
+    position: absolute;
+    inset: 18%;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    pointer-events: none;
+}
+
+.scanner-target::before,
+.scanner-target::after {
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-color: white;
+}
+
+.scanner-target::before {
+    top: -3px;
+    left: -3px;
+    border-top: 5px solid;
+    border-left: 5px solid;
+}
+
+.scanner-target::after {
+    right: -3px;
+    bottom: -3px;
+    border-right: 5px solid;
+    border-bottom: 5px solid;
+}
+
+.scanner-target-line {
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-50%);
+}
+
+.scanner-camera-status {
+    min-height: 22px;
+    color: #6b7280;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    .scanner-camera-card {
+        padding: 12px;
+    }
+
+    .scanner-video-wrap {
+        aspect-ratio: 3 / 4;
+        max-height: 70vh;
+    }
+
+    .scanner-target {
+        inset:
+            24%
+            10%;
+    }
+}

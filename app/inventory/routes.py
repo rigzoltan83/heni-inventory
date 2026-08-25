@@ -23,6 +23,7 @@ from ..inventory_service import (
 from ..models import (
     InventoryStock,
     Item,
+    ItemIdentifier,
     Location,
 )
 from ..permissions import editor_required
@@ -614,6 +615,14 @@ def location_stock(location_id):
         for position in positions
     )
 
+    default_back_url = url_for(
+        "inventory.locations"
+    )
+
+    back_url = get_safe_return_to(
+        default_back_url
+    )
+
     current_url = url_for(
         "inventory.location_stock",
         location_id=location.id,
@@ -624,9 +633,7 @@ def location_stock(location_id):
         location=location,
         positions=positions,
         total_quantity=total_quantity,
-        back_url=url_for(
-            "inventory.locations"
-        ),
+        back_url=back_url,
         current_url=current_url,
     )
 
@@ -750,4 +757,129 @@ def location_receipt(location_id):
         items=items,
         search=search,
         back_url=return_to,
+    )
+
+@inventory_bp.route(
+    "/scanner",
+    methods=["GET", "POST"],
+)
+@login_required
+def scanner():
+    code = ""
+
+    scanner_url = url_for(
+        "inventory.scanner"
+    )
+
+    if request.method == "POST":
+        code = (
+            request.form.get(
+                "code",
+                "",
+            )
+            .strip()
+        )
+
+        if not code:
+            flash(
+                "Adj meg vagy olvass be egy kódot.",
+                "error",
+            )
+
+            return render_template(
+                "inventory/scanner.html",
+                code=code,
+                back_url=url_for("main.index"),
+            )
+
+        normalized = code.upper()
+
+        if normalized.startswith("ITEM-"):
+            try:
+                item_id = int(
+                    normalized.removeprefix(
+                        "ITEM-"
+                    )
+                )
+            except ValueError:
+                item_id = None
+
+            if item_id is not None:
+                item = db.session.get(
+                    Item,
+                    item_id,
+                )
+
+                if (
+                    item is not None
+                    and item.is_active
+                ):
+                    return redirect(
+                        url_for(
+                            "inventory.item_stock",
+                            item_id=item.id,
+                            return_to=scanner_url,
+                        )
+                    )
+
+        if normalized.startswith("LOC-"):
+            try:
+                location_id = int(
+                    normalized.removeprefix(
+                        "LOC-"
+                    )
+                )
+            except ValueError:
+                location_id = None
+
+            if location_id is not None:
+                location = db.session.get(
+                    Location,
+                    location_id,
+                )
+
+                if (
+                    location is not None
+                    and location.is_active
+                    and location.can_hold_stock
+                ):
+                    return redirect(
+                        url_for(
+                            "inventory.location_stock",
+                            location_id=location.id,
+                            return_to=scanner_url,
+                        )
+                    )
+
+        identifier = (
+            ItemIdentifier.query
+            .filter(
+                ItemIdentifier.identifier_value
+                == code,
+                ItemIdentifier.is_active.is_(True),
+            )
+            .first()
+        )
+
+        if (
+            identifier is not None
+            and identifier.item.is_active
+        ):
+            return redirect(
+                url_for(
+                    "inventory.item_stock",
+                    item_id=identifier.item.id,
+                    return_to=scanner_url,
+                )
+            )
+
+        flash(
+            f"Ismeretlen kód: {code}",
+            "error",
+        )
+
+    return render_template(
+        "inventory/scanner.html",
+        code=code,
+        back_url=url_for("main.index"),
     )
