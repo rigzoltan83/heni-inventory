@@ -246,12 +246,12 @@ def item_receipt(item_id):
                 "error",
             )
 
-        return render_template(
-            "inventory/items/receipt.html",
-            item=item,
-            locations=locations,
-            back_url=return_to,
-        )
+    return render_template(
+        "inventory/items/receipt.html",
+        item=item,
+        locations=locations,
+        back_url=return_to,
+    )
 
 
 @inventory_bp.route(
