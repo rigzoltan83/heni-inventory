@@ -30,10 +30,11 @@
         </p>
     {% endif %}
 
-    <form
-        method="post"
-        class="form-card"
-    >
+<form
+    method="post"
+    enctype="multipart/form-data"
+    class="form-card"
+>
 
         <label>
             Megnevezés
@@ -130,6 +131,83 @@
                 )
             }}</textarea>
         </label>
+
+{% if item %}
+
+    <div class="item-image-section">
+
+        <h2>Termékképek</h2>
+
+        <p class="muted">
+            Opcionális. Új kép feltöltásához válassz fájlt,
+            majd mentsd el a tételt.
+        </p>
+
+<label>
+    Fotó készítése
+
+    <input
+        type="file"
+        name="camera_image"
+        accept="image/*"
+        capture="environment"
+    >
+</label>
+
+<label>
+    Kép(ek) kiválasztása
+
+    <input
+        type="file"
+        name="image_files"
+        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+        multiple
+    >
+</label>
+
+        {% if item.images %}
+
+            <div class="item-image-grid">
+
+                {% for image in item.images %}
+
+                    <div class="item-image-card">
+
+                        <img
+                            src="{{
+                                url_for(
+                                    'admin.item_image',
+                                    item_id=item.id,
+                                    image_id=image.id
+                                )
+                            }}"
+                            alt="{{ item.name }}"
+                        >
+
+<a
+    class="button small"
+    href="{{
+        url_for(
+            'admin.item_image_delete_confirm',
+            item_id=item.id,
+            image_id=image.id
+        )
+    }}"
+>
+    Törlés
+</a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
 
         <div class="form-actions">
 

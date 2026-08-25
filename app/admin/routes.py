@@ -6,10 +6,13 @@ from flask import Response
 from flask_login import current_user
 
 from flask import (
+    abort,
+    current_app,
     flash,
     redirect,
     render_template,
     request,
+    send_from_directory,
     url_for,
 )
 
@@ -20,8 +23,14 @@ from ..models import (
     Item,
     ItemIdentifier,
     ItemType,
+    ItemImage,
     Location,
     User,
+)
+from ..image_service import (
+    ImageUploadError,
+    delete_item_image_file,
+    save_item_image,
 )
 from ..inventory_service import (
     InventoryError,
@@ -1357,7 +1366,101 @@ def item_edit(item_id):
                 elif primary_identifier is not None:
                     primary_identifier.is_active = False
 
-                db.session.commit()
+                image_files = [
+                    image_file
+                    for image_file
+                    in request.files.getlist(
+                        "image_files"
+                    )
+                    if (
+                        image_file
+                        and image_file.filename
+                    )
+                ]
+
+                camera_image = request.files.get(
+                    "camera_image"
+                )
+
+                if (
+                    camera_image
+                    and camera_image.filename
+                ):
+                    image_files.insert(
+                        0,
+                        camera_image,
+                    )
+
+                saved_image_files = []
+
+                try:
+                    next_sort_order = (
+                        max(
+                            (
+                                image.sort_order
+                                for image
+                                in item.images
+                            ),
+                            default=-1,
+                        )
+                        + 1
+                    )
+
+                    for image_file in image_files:
+                        (
+                            filename,
+                            original_filename,
+                        ) = save_item_image(
+                            image_file
+                        )
+
+                        saved_image_files.append(
+                            filename
+                        )
+
+                        image = ItemImage(
+                            item=item,
+                            filename=filename,
+                            original_filename=(
+                                original_filename
+                            ),
+                            sort_order=(
+                                next_sort_order
+                            ),
+                        )
+
+                        db.session.add(image)
+
+                        next_sort_order += 1
+
+                    db.session.commit()
+
+                except ImageUploadError as exc:
+                    db.session.rollback()
+
+                    for filename in saved_image_files:
+                        delete_item_image_file(
+                            filename
+                        )
+
+                    flash(
+                        str(exc),
+                        "error",
+                    )
+
+                    return render_template(
+                        "admin/items/form.html",
+                        item=item,
+                        item_types=item_types,
+                        barcode_value=(
+                            primary_identifier.identifier_value
+                            if primary_identifier
+                            else ""
+                        ),
+                        back_url=url_for(
+                            "admin.items"
+                        ),
+                    )
 
                 flash(
                     "A tétel módosítva.",
@@ -1380,6 +1483,49 @@ def item_edit(item_id):
             else ""
         ),
         back_url=url_for("admin.items"),
+    )
+
+
+@admin_bp.route(
+    "/items/<int:item_id>/images/<int:image_id>/delete",
+    methods=["POST"],
+)
+def item_image_delete(
+    item_id,
+    image_id,
+):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    image = db.get_or_404(
+        ItemImage,
+        image_id,
+    )
+
+    if image.item_id != item.id:
+        abort(404)
+
+    filename = image.filename
+
+    db.session.delete(image)
+    db.session.commit()
+
+    delete_item_image_file(
+        filename
+    )
+
+    flash(
+        "A kép törölve.",
+        "success",
+    )
+
+    return redirect(
+        url_for(
+            "admin.item_edit",
+            item_id=item.id,
+        )
     )
 
 
@@ -1555,3 +1701,61 @@ def item_label_print(item_id):
         back_url=return_to,
     )
 
+
+@admin_bp.route(
+    "/items/<int:item_id>/images/<int:image_id>"
+)
+def item_image(
+    item_id,
+    image_id,
+):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    image = db.get_or_404(
+        ItemImage,
+        image_id,
+    )
+
+    if image.item_id != item.id:
+        abort(404)
+
+    return send_from_directory(
+        current_app.config[
+            "ITEM_UPLOAD_FOLDER"
+        ],
+        image.filename,
+    )
+
+
+@admin_bp.route(
+    "/items/<int:item_id>/images/<int:image_id>/delete-confirm"
+)
+def item_image_delete_confirm(
+    item_id,
+    image_id,
+):
+    item = db.get_or_404(
+        Item,
+        item_id,
+    )
+
+    image = db.get_or_404(
+        ItemImage,
+        image_id,
+    )
+
+    if image.item_id != item.id:
+        abort(404)
+
+    return render_template(
+        "admin/items/image_delete_confirm.html",
+        item=item,
+        image=image,
+        back_url=url_for(
+            "admin.item_edit",
+            item_id=item.id,
+        ),
+    )

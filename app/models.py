@@ -116,6 +116,13 @@ class Item(db.Model):
         cascade="all, delete-orphan",
     )
 
+    images = db.relationship(
+        "ItemImage",
+        back_populates="item",
+        cascade="all, delete-orphan",
+        order_by="ItemImage.sort_order, ItemImage.id",
+    )
+
     @property
     def internal_code(self):
         if self.id is None:
@@ -176,6 +183,53 @@ class ItemIdentifier(db.Model):
     item = db.relationship(
         "Item",
         back_populates="identifiers",
+    )
+
+
+class ItemImage(db.Model):
+    __tablename__ = "item_images"
+
+    id = db.Column(
+        db.BigInteger,
+        primary_key=True,
+    )
+
+    item_id = db.Column(
+        db.BigInteger,
+        db.ForeignKey(
+            "items.id",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    filename = db.Column(
+        db.String(255),
+        nullable=False,
+        unique=True,
+    )
+
+    original_filename = db.Column(
+        db.String(255),
+        nullable=True,
+    )
+
+    sort_order = db.Column(
+        db.Integer,
+        nullable=False,
+        default=0,
+    )
+
+    created_at = db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        server_default=db.func.now(),
+    )
+
+    item = db.relationship(
+        "Item",
+        back_populates="images",
     )
 
 

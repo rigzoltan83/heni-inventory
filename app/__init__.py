@@ -30,6 +30,14 @@ def create_app():
         "SQLALCHEMY_TRACK_MODIFICATIONS"
     ] = False
 
+    app.config["ITEM_UPLOAD_FOLDER"] = (
+        "/opt/heni-inventory/uploads/items"
+    )
+
+    app.config["MAX_CONTENT_LENGTH"] = (
+        50 * 1024 * 1024
+    )
+
     app_prefix = os.environ.get(
         "APP_PREFIX",
         "",

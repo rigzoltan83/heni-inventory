@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Kép törlése - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>Kép törlése</h1>
+
+    <p>
+        <strong>{{ item.name }}</strong>
+    </p>
+
+    <div class="item-image-delete-preview">
+
+        <img
+            src="{{
+                url_for(
+                    'admin.item_image',
+                    item_id=item.id,
+                    image_id=image.id
+                )
+            }}"
+            alt="{{ item.name }}"
+        >
+
+    </div>
+
+    <p>
+        Biztosan törlöd ezt a képet?
+    </p>
+
+    <form
+        method="post"
+        action="{{
+            url_for(
+                'admin.item_image_delete',
+                item_id=item.id,
+                image_id=image.id
+            )
+        }}"
+        class="form-actions"
+    >
+
+        <button
+            class="button primary"
+            type="submit"
+        >
+            Törlés
+        </button>
+
+        <a
+            class="button"
+            href="{{ back_url }}"
+        >
+            Mégse
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}
