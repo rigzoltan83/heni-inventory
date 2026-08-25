@@ -672,3 +672,120 @@ h1 {
     font-size: 1.5rem;
     color: #6b7280;
 }
+
+.search-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.search-bar input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.inventory-item-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.inventory-item-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.inventory-item-actions {
+    display: flex;
+    gap: 6px;
+    padding-right: 12px;
+}
+
+@media (max-width: 700px) {
+    .search-bar {
+        flex-direction: column;
+    }
+
+    .search-bar .button {
+        width: 100%;
+    }
+
+    .inventory-item-card {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .inventory-item-actions {
+        padding:
+            0
+            12px
+            12px;
+    }
+
+    .inventory-item-actions .button {
+        width: 100%;
+    }
+}
+
+.filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    min-height: 42px;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.filter-toggle input {
+    margin: 0;
+}
+
+.inventory-total {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+.inventory-total strong {
+    color: #111827;
+}
+
+@media (max-width: 700px) {
+    .filter-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.location-path {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.admin-hint {
+    margin-top: 18px;
+    padding: 12px 14px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}

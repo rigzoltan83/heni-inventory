@@ -39,13 +39,17 @@
     </span>
 </a>
 
-    <div class="admin-card disabled">
-        <strong>Tárhelyek</strong>
+<a
+    class="admin-card"
+    href="{{ url_for('inventory.locations') }}"
+>
+    <strong>Tárhelyek</strong>
 
-        <span>
-            Tárhelystruktúra és helyazonosítók.
-        </span>
-    </div>
+    <span>
+        Tárhely kiválasztása és
+        az ott lévő készlet kezelése.
+    </span>
+</a>
 
     <div class="admin-card disabled">
         <strong>Készlet</strong>

@@ -121,6 +121,25 @@ class Item(db.Model):
         if self.id is None:
             return None
 
+    @property
+    def full_path(self):
+        names = []
+        current = self
+
+        visited = set()
+
+        while current is not None:
+            if current.id in visited:
+                break
+
+            visited.add(current.id)
+            names.append(current.name)
+            current = current.parent
+
+        return " > ".join(
+            reversed(names)
+        )
+
         return f"ITEM-{self.id:06d}"
 
 
