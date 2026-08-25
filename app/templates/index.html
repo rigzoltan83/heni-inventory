@@ -54,21 +54,29 @@
     </span>
 </a>
 
-    <div class="admin-card disabled">
-        <strong>Készlet</strong>
+<a
+    class="admin-card"
+    href="{{ url_for('inventory.stock') }}"
+>
+    <strong>Készlet</strong>
 
-        <span>
-            Aktuális készlet tárhelyenként.
-        </span>
-    </div>
+    <span>
+        Összesített készlet
+        tétel- és tárhelypozíciónként.
+    </span>
+</a>
 
-    <div class="admin-card disabled">
-        <strong>Mozgások</strong>
+<a
+    class="admin-card"
+    href="{{ url_for('inventory.movements') }}"
+>
+    <strong>Mozgások</strong>
 
-        <span>
-            Bevételezés, áthelyezés, kiadás és korrekció.
-        </span>
-    </div>
+    <span>
+        Bevételezések, áthelyezések,
+        kiadások és korrekciók naplója.
+    </span>
+</a>
 
     {% if current_user.is_admin %}
 
