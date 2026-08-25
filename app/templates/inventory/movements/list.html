@@ -16,6 +16,44 @@
         </p>
     </div>
 
+    <div class="page-header-actions">
+
+        <a
+            class="button"
+            href="{{
+                url_for(
+                    'inventory.movements_export_csv',
+                    q=search or None,
+                    movement_type=movement_type or None,
+                    location_id=selected_location_id,
+                    user_id=selected_user_id,
+                    date_from=date_from or None,
+                    date_to=date_to or None
+                )
+            }}"
+        >
+            CSV export
+        </a>
+
+        <a
+            class="button primary"
+            href="{{
+                url_for(
+                    'inventory.movements_export_xlsx',
+                    q=search or None,
+                    movement_type=movement_type or None,
+                    location_id=selected_location_id,
+                    user_id=selected_user_id,
+                    date_from=date_from or None,
+                    date_to=date_to or None
+                )
+            }}"
+        >
+            XLSX export
+        </a>
+
+    </div>
+
 </div>
 
 <form
@@ -231,28 +269,7 @@
 
                 <td>
 
-                    {% if row.movement_type == "RECEIPT" %}
-                        Bevételezés
-
-                    {% elif row.movement_type == "MOVE" %}
-                        Áthelyezés
-
-                    {% elif row.movement_type == "ISSUE" %}
-                        Kiadás
-
-                    {% elif row.movement_type
-                        == "CORRECTION_PLUS"
-                    %}
-                        Korrekció +
-
-                    {% elif row.movement_type
-                        == "CORRECTION_MINUS"
-                    %}
-                        Korrekció −
-
-                    {% else %}
-                        {{ row.movement_type }}
-                    {% endif %}
+{{ movement_type_display(row.movement_type) }}
 
                 </td>
 

@@ -1285,6 +1285,99 @@ def stock():
         back_url=url_for("main.index"),
     )
 
+MOVEMENT_TYPE_LABELS = {
+    InventoryMovement.TYPE_RECEIPT:
+        "Bevételezés",
+
+    InventoryMovement.TYPE_MOVE:
+        "Áthelyezés",
+
+    InventoryMovement.TYPE_ISSUE:
+        "Kiadás",
+
+    InventoryMovement.TYPE_CORRECTION_PLUS:
+        "Korrekció +",
+
+    InventoryMovement.TYPE_CORRECTION_MINUS:
+        "Korrekció −",
+}
+
+
+def movement_type_display(
+    movement_type,
+):
+    label = MOVEMENT_TYPE_LABELS.get(
+        movement_type
+    )
+
+    if not label:
+        return movement_type
+
+    return (
+        f"{movement_type} "
+        f"({label})"
+    )
+
+def build_movement_query(
+    search="",
+    movement_type="",
+    location_id=None,
+    user_id=None,
+    date_from=None,
+    date_to=None,
+):
+    query = (
+        InventoryMovement.query
+        .join(Item)
+    )
+
+    if search:
+        query = query.filter(
+            Item.name.ilike(
+                f"%{search}%"
+            )
+        )
+
+    if (
+        movement_type
+        in InventoryMovement.VALID_TYPES
+    ):
+        query = query.filter(
+            InventoryMovement.movement_type
+            == movement_type
+        )
+
+    if location_id is not None:
+        query = query.filter(
+            or_(
+                InventoryMovement.from_location_id
+                == location_id,
+                InventoryMovement.to_location_id
+                == location_id,
+            )
+        )
+
+    if user_id is not None:
+        query = query.filter(
+            InventoryMovement.created_by_user_id
+            == user_id
+        )
+
+    if date_from is not None:
+        query = query.filter(
+            InventoryMovement.created_at
+            >= date_from
+        )
+
+    if date_to is not None:
+        query = query.filter(
+            InventoryMovement.created_at
+            <= date_to
+        )
+
+    return query
+
+
 @inventory_bp.route("/movements")
 @login_required
 def movements():
@@ -1339,44 +1432,11 @@ def movements():
     if page < 1:
         page = 1
 
-    query = (
-        InventoryMovement.query
-        .join(Item)
-    )
-
-    if search:
-        query = query.filter(
-            Item.name.ilike(
-                f"%{search}%"
-            )
-        )
-
     if (
         movement_type
-        in InventoryMovement.VALID_TYPES
+        not in InventoryMovement.VALID_TYPES
     ):
-        query = query.filter(
-            InventoryMovement.movement_type
-            == movement_type
-        )
-    else:
         movement_type = ""
-
-    if location_id is not None:
-        query = query.filter(
-            or_(
-                InventoryMovement.from_location_id
-                == location_id,
-                InventoryMovement.to_location_id
-                == location_id,
-            )
-        )
-
-    if user_id is not None:
-        query = query.filter(
-            InventoryMovement.created_by_user_id
-            == user_id
-        )
 
     date_from = None
 
@@ -1388,12 +1448,6 @@ def movements():
             )
         except ValueError:
             date_from_raw = ""
-
-    if date_from is not None:
-        query = query.filter(
-            InventoryMovement.created_at
-            >= date_from
-        )
 
     date_to = None
 
@@ -1412,11 +1466,14 @@ def movements():
         except ValueError:
             date_to_raw = ""
 
-    if date_to is not None:
-        query = query.filter(
-            InventoryMovement.created_at
-            <= date_to
-        )
+    query = build_movement_query(
+        search=search,
+        movement_type=movement_type,
+        location_id=location_id,
+        user_id=user_id,
+        date_from=date_from,
+        date_to=date_to,
+    )
 
     per_page = 50
 
@@ -1450,25 +1507,11 @@ def movements():
 
     movement_types = [
         (
-            InventoryMovement.TYPE_RECEIPT,
-            "Bevételezés",
-        ),
-        (
-            InventoryMovement.TYPE_MOVE,
-            "Áthelyezés",
-        ),
-        (
-            InventoryMovement.TYPE_ISSUE,
-            "Kiadás",
-        ),
-        (
-            InventoryMovement.TYPE_CORRECTION_PLUS,
-            "Korrekció +",
-        ),
-        (
-            InventoryMovement.TYPE_CORRECTION_MINUS,
-            "Korrekció −",
-        ),
+            value,
+            label,
+        )
+        for value, label
+        in MOVEMENT_TYPE_LABELS.items()
     ]
 
     locations = (
@@ -1511,6 +1554,7 @@ def movements():
         search=search,
         movement_type=movement_type,
         movement_types=movement_types,
+        movement_type_display=movement_type_display,
         locations=locations,
         users=users,
         selected_location_id=location_id,
@@ -1522,6 +1566,492 @@ def movements():
         total_rows=total_rows,
         return_url=return_url,
         back_url=url_for("main.index"),
+    )
+
+
+@inventory_bp.route(
+    "/movements/export.csv"
+)
+@login_required
+def movements_export_csv():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    movement_type = (
+        request.args.get(
+            "movement_type",
+            "",
+        )
+        .strip()
+    )
+
+    location_id = request.args.get(
+        "location_id",
+        type=int,
+    )
+
+    user_id = request.args.get(
+        "user_id",
+        type=int,
+    )
+
+    date_from_raw = (
+        request.args.get(
+            "date_from",
+            "",
+        )
+        .strip()
+    )
+
+    date_to_raw = (
+        request.args.get(
+            "date_to",
+            "",
+        )
+        .strip()
+    )
+
+    date_from = None
+
+    if date_from_raw:
+        try:
+            date_from = datetime.strptime(
+                date_from_raw,
+                "%Y-%m-%d",
+            )
+        except ValueError:
+            date_from = None
+
+    date_to = None
+
+    if date_to_raw:
+        try:
+            parsed_date_to = datetime.strptime(
+                date_to_raw,
+                "%Y-%m-%d",
+            ).date()
+
+            date_to = datetime.combine(
+                parsed_date_to,
+                time.max,
+            )
+        except ValueError:
+            date_to = None
+
+    if (
+        movement_type
+        not in InventoryMovement.VALID_TYPES
+    ):
+        movement_type = ""
+
+    rows = (
+        build_movement_query(
+            search=search,
+            movement_type=movement_type,
+            location_id=location_id,
+            user_id=user_id,
+            date_from=date_from,
+            date_to=date_to,
+        )
+        .order_by(
+            InventoryMovement.created_at.desc(),
+            InventoryMovement.id.desc(),
+        )
+        .all()
+    )
+
+    output = StringIO()
+
+    writer = csv.writer(
+        output,
+        delimiter=";",
+        lineterminator="\n",
+    )
+
+    writer.writerow(
+        [
+            "Időpont",
+            "Tétel",
+            "Saját kód",
+            "Mozgástípus",
+            "Honnan",
+            "Hova",
+            "Mennyiség",
+            "Felhasználó",
+            "Megjegyzés",
+        ]
+    )
+
+    for row in rows:
+        writer.writerow(
+            [
+                row.created_at.strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                ),
+                row.item.name,
+                row.item.internal_code,
+                movement_type_display(
+                    row.movement_type
+                ),
+                (
+                    row.from_location.full_path
+                    if row.from_location
+                    else ""
+                ),
+                (
+                    row.to_location.full_path
+                    if row.to_location
+                    else ""
+                ),
+                row.quantity,
+                (
+                    row.created_by.display_name
+                    if row.created_by
+                    else ""
+                ),
+                row.note or "",
+            ]
+        )
+
+    csv_content = (
+        "\ufeff"
+        + output.getvalue()
+    )
+
+    return Response(
+        csv_content,
+        mimetype="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition":
+                'attachment; filename="heni_inventory_movements.csv"'
+        },
+    )
+
+
+@inventory_bp.route(
+    "/movements/export.xlsx"
+)
+@login_required
+def movements_export_xlsx():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    movement_type = (
+        request.args.get(
+            "movement_type",
+            "",
+        )
+        .strip()
+    )
+
+    location_id = request.args.get(
+        "location_id",
+        type=int,
+    )
+
+    user_id = request.args.get(
+        "user_id",
+        type=int,
+    )
+
+    date_from_raw = (
+        request.args.get(
+            "date_from",
+            "",
+        )
+        .strip()
+    )
+
+    date_to_raw = (
+        request.args.get(
+            "date_to",
+            "",
+        )
+        .strip()
+    )
+
+    date_from = None
+
+    if date_from_raw:
+        try:
+            date_from = datetime.strptime(
+                date_from_raw,
+                "%Y-%m-%d",
+            )
+        except ValueError:
+            date_from = None
+
+    date_to = None
+
+    if date_to_raw:
+        try:
+            parsed_date_to = datetime.strptime(
+                date_to_raw,
+                "%Y-%m-%d",
+            ).date()
+
+            date_to = datetime.combine(
+                parsed_date_to,
+                time.max,
+            )
+        except ValueError:
+            date_to = None
+
+    if (
+        movement_type
+        not in InventoryMovement.VALID_TYPES
+    ):
+        movement_type = ""
+
+    rows = (
+        build_movement_query(
+            search=search,
+            movement_type=movement_type,
+            location_id=location_id,
+            user_id=user_id,
+            date_from=date_from,
+            date_to=date_to,
+        )
+        .order_by(
+            InventoryMovement.created_at.desc(),
+            InventoryMovement.id.desc(),
+        )
+        .all()
+    )
+
+    output = BytesIO()
+
+    workbook = xlsxwriter.Workbook(
+        output,
+        {
+            "in_memory": True,
+        },
+    )
+
+    worksheet = workbook.add_worksheet(
+        "Mozgások"
+    )
+
+    header_format = workbook.add_format(
+        {
+            "bold": True,
+            "bg_color": "#E5E7EB",
+            "border": 1,
+            "align": "center",
+            "valign": "vcenter",
+        }
+    )
+
+    text_format = workbook.add_format(
+        {
+            "border": 1,
+            "valign": "top",
+        }
+    )
+
+    quantity_format = workbook.add_format(
+        {
+            "border": 1,
+            "align": "right",
+            "num_format": "0",
+        }
+    )
+
+    headers = [
+        "Időpont",
+        "Tétel",
+        "Saját kód",
+        "Mozgástípus",
+        "Honnan",
+        "Hova",
+        "Mennyiség",
+        "Felhasználó",
+        "Megjegyzés",
+    ]
+
+    for column, header in enumerate(
+        headers
+    ):
+        worksheet.write(
+            0,
+            column,
+            header,
+            header_format,
+        )
+
+    for row_number, movement in enumerate(
+        rows,
+        start=1,
+    ):
+        worksheet.write(
+            row_number,
+            0,
+            movement.created_at.strftime(
+                "%Y-%m-%d %H:%M:%S"
+            ),
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            1,
+            movement.item.name,
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            2,
+            movement.item.internal_code,
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            3,
+            movement_type_display(
+                movement.movement_type
+            ),
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            4,
+            (
+                movement.from_location.full_path
+                if movement.from_location
+                else ""
+            ),
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            5,
+            (
+                movement.to_location.full_path
+                if movement.to_location
+                else ""
+            ),
+            text_format,
+        )
+
+        worksheet.write_number(
+            row_number,
+            6,
+            movement.quantity,
+            quantity_format,
+        )
+
+        worksheet.write(
+            row_number,
+            7,
+            (
+                movement.created_by.display_name
+                if movement.created_by
+                else ""
+            ),
+            text_format,
+        )
+
+        worksheet.write(
+            row_number,
+            8,
+            movement.note or "",
+            text_format,
+        )
+
+    last_row = max(
+        len(rows),
+        1,
+    )
+
+    worksheet.autofilter(
+        0,
+        0,
+        last_row,
+        len(headers) - 1,
+    )
+
+    worksheet.freeze_panes(
+        1,
+        0,
+    )
+
+    worksheet.set_column(
+        0,
+        0,
+        20,
+    )
+
+    worksheet.set_column(
+        1,
+        1,
+        30,
+    )
+
+    worksheet.set_column(
+        2,
+        2,
+        16,
+    )
+
+    worksheet.set_column(
+        3,
+        3,
+        18,
+    )
+
+    worksheet.set_column(
+        4,
+        5,
+        38,
+    )
+
+    worksheet.set_column(
+        6,
+        6,
+        12,
+    )
+
+    worksheet.set_column(
+        7,
+        7,
+        20,
+    )
+
+    worksheet.set_column(
+        8,
+        8,
+        40,
+    )
+
+    workbook.close()
+
+    output.seek(0)
+
+    return Response(
+        output.getvalue(),
+        mimetype=(
+            "application/"
+            "vnd.openxmlformats-officedocument."
+            "spreadsheetml.sheet"
+        ),
+        headers={
+            "Content-Disposition":
+                'attachment; filename="heni_inventory_movements.xlsx"'
+        },
     )
 
 
