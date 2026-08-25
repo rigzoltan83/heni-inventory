@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tárhelyek - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Tárhelyek</h1>
+
+        <p class="muted">
+            Helyiségek, polcok és tárhelyek
+            hierarchikus kezelése.
+        </p>
+    </div>
+
+    <a
+        class="button primary"
+        href="{{ url_for('admin.location_new') }}"
+    >
+        + Új helyiség / tárhely
+    </a>
+
+</div>
+
+<div class="location-tree">
+
+    {% for row in location_tree %}
+
+        {% set location = row.location %}
+
+        <div
+            class="
+                location-row
+                {% if not location.is_active %}
+                    inactive-row
+                {% endif %}
+            "
+            style="
+                --location-level:
+                {{ row.level }};
+            "
+        >
+
+            <div class="location-main">
+
+                <div class="location-name">
+
+                    <span class="location-indent"></span>
+
+                    <strong>
+                        {{ location.name }}
+                    </strong>
+
+                    <span class="location-code">
+                        {{ location.internal_code }}
+                    </span>
+
+                </div>
+
+                <div class="location-meta">
+
+                    {% if location.location_type == "room" %}
+                        <span class="type-badge">
+                            Helyiség
+                        </span>
+                    {% elif location.location_type == "shelf" %}
+                        <span class="type-badge">
+                            Polc
+                        </span>
+                    {% else %}
+                        <span class="type-badge">
+                            Tárhely
+                        </span>
+                    {% endif %}
+
+                    {% if location.can_hold_stock %}
+                        <span class="status active">
+                            Készlet tárolható
+                        </span>
+                    {% else %}
+                        <span class="status inactive">
+                            Csak csoport
+                        </span>
+                    {% endif %}
+
+                    {% if not location.is_active %}
+                        <span class="status inactive">
+                            Inaktív
+                        </span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="location-actions">
+
+                <a
+                    class="button small"
+                    href="{{
+                        url_for(
+                            'admin.location_new',
+                            parent_id=location.id
+                        )
+                    }}"
+                >
+                    + Alárendelt hely
+                </a>
+
+                <a
+                    class="button small"
+                    href="{{
+                        url_for(
+                            'admin.location_edit',
+                            location_id=location.id
+                        )
+                    }}"
+                >
+                    Szerkesztés
+                </a>
+
+                <form
+                    method="post"
+                    action="{{
+                        url_for(
+                            'admin.location_toggle',
+                            location_id=location.id
+                        )
+                    }}"
+                >
+                    <button
+                        class="button small"
+                        type="submit"
+                    >
+                        {% if location.is_active %}
+                            Inaktiválás
+                        {% else %}
+                            Aktiválás
+                        {% endif %}
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            Még nincs létrehozott tárhely.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -325,3 +325,129 @@ h1 {
     background: white;
     font: inherit;
 }
+
+.location-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.location-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.location-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.location-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.location-indent {
+    display: inline-block;
+    width: calc(
+        var(--location-level)
+        * 28px
+    );
+    flex: 0 0 auto;
+}
+
+.location-code {
+    color: #6b7280;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.location-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+    margin-left: calc(
+        var(--location-level)
+        * 28px
+    );
+}
+
+.location-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.location-actions form {
+    margin: 0;
+}
+
+.type-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #3730a3;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.checkbox-row {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 10px !important;
+}
+
+.checkbox-row input {
+    width: auto;
+}
+
+.empty-state {
+    padding: 30px;
+    text-align: center;
+    background: white;
+    border: 1px dashed #d1d5db;
+    border-radius: 12px;
+    color: #6b7280;
+}
+
+@media (max-width: 700px) {
+    .location-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .location-actions {
+        width: 100%;
+    }
+
+    .location-actions .button,
+    .location-actions form,
+    .location-actions form button {
+        width: 100%;
+    }
+
+    .location-indent {
+        width: calc(
+            var(--location-level)
+            * 14px
+        );
+    }
+
+    .location-meta {
+        margin-left: calc(
+            var(--location-level)
+            * 14px
+        );
+    }
+}

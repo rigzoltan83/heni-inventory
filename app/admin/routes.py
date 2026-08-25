@@ -8,7 +8,7 @@ from flask import (
 
 from . import admin_bp
 from ..extensions import db
-from ..models import ItemType, User
+from ..models import ItemType, Location, User
 
 
 @admin_bp.route("/")
@@ -577,4 +577,397 @@ def user_password(user_id):
         "admin/users/password.html",
         user=user,
         back_url=url_for("admin.users"),
+    )
+
+def build_location_tree(locations):
+    by_parent = {}
+
+    for location in locations:
+        by_parent.setdefault(
+            location.parent_id,
+            [],
+        ).append(location)
+
+    for children in by_parent.values():
+        children.sort(
+            key=lambda row: (
+                row.sort_order,
+                row.name.lower(),
+            )
+        )
+
+    result = []
+
+    def walk(parent_id, level):
+        for location in by_parent.get(
+            parent_id,
+            [],
+        ):
+            result.append(
+                {
+                    "location": location,
+                    "level": level,
+                }
+            )
+
+            walk(
+                location.id,
+                level + 1,
+            )
+
+    walk(
+        None,
+        0,
+    )
+
+    return result
+
+
+@admin_bp.route("/locations")
+def locations():
+    rows = (
+        Location.query
+        .order_by(
+            Location.sort_order,
+            Location.name,
+        )
+        .all()
+    )
+
+    tree = build_location_tree(
+        rows
+    )
+
+    return render_template(
+        "admin/locations/list.html",
+        location_tree=tree,
+        back_url=url_for("admin.index"),
+    )
+
+
+@admin_bp.route(
+    "/locations/new",
+    methods=["GET", "POST"],
+)
+def location_new():
+    parent_id = request.args.get(
+        "parent_id",
+        type=int,
+    )
+
+    parent = None
+
+    if parent_id is not None:
+        parent = db.get_or_404(
+            Location,
+            parent_id,
+        )
+
+    if request.method == "POST":
+        name = (
+            request.form.get(
+                "name",
+                "",
+            )
+            .strip()
+        )
+
+        location_type = (
+            request.form.get(
+                "location_type",
+                "",
+            )
+            .strip()
+        )
+
+        parent_id_raw = (
+            request.form.get(
+                "parent_id",
+                "",
+            )
+            .strip()
+        )
+
+        sort_order_raw = (
+            request.form.get(
+                "sort_order",
+                "0",
+            )
+            .strip()
+        )
+
+        can_hold_stock = (
+            request.form.get(
+                "can_hold_stock"
+            )
+            == "on"
+        )
+
+        if not name:
+            flash(
+                "A megnevezés kötelező.",
+                "error",
+            )
+
+        elif (
+            location_type
+            not in Location.VALID_TYPES
+        ):
+            flash(
+                "Érvénytelen tárhelytípus.",
+                "error",
+            )
+
+        else:
+            try:
+                sort_order = int(
+                    sort_order_raw or 0
+                )
+            except ValueError:
+                flash(
+                    "A sorrend csak egész szám lehet.",
+                    "error",
+                )
+
+                return render_template(
+                    "admin/locations/form.html",
+                    location=None,
+                    parent=parent,
+                    locations=Location.query
+                    .order_by(
+                        Location.name
+                    )
+                    .all(),
+                    back_url=url_for(
+                        "admin.locations"
+                    ),
+                )
+
+            parent_id_value = (
+                int(parent_id_raw)
+                if parent_id_raw
+                else None
+            )
+
+            location = Location(
+                name=name,
+                location_type=location_type,
+                parent_id=parent_id_value,
+                sort_order=sort_order,
+                can_hold_stock=can_hold_stock,
+                is_active=True,
+            )
+
+            db.session.add(location)
+            db.session.commit()
+
+            flash(
+                "A tárhely létrejött.",
+                "success",
+            )
+
+            return redirect(
+                url_for(
+                    "admin.locations"
+                )
+            )
+
+    return render_template(
+        "admin/locations/form.html",
+        location=None,
+        parent=parent,
+        locations=Location.query
+        .order_by(
+            Location.name
+        )
+        .all(),
+        back_url=url_for(
+            "admin.locations"
+        ),
+    )
+
+
+@admin_bp.route(
+    "/locations/<int:location_id>/edit",
+    methods=["GET", "POST"],
+)
+def location_edit(location_id):
+    location = db.get_or_404(
+        Location,
+        location_id,
+    )
+
+    if request.method == "POST":
+        name = (
+            request.form.get(
+                "name",
+                "",
+            )
+            .strip()
+        )
+
+        location_type = (
+            request.form.get(
+                "location_type",
+                "",
+            )
+            .strip()
+        )
+
+        parent_id_raw = (
+            request.form.get(
+                "parent_id",
+                "",
+            )
+            .strip()
+        )
+
+        sort_order_raw = (
+            request.form.get(
+                "sort_order",
+                "0",
+            )
+            .strip()
+        )
+
+        can_hold_stock = (
+            request.form.get(
+                "can_hold_stock"
+            )
+            == "on"
+        )
+
+        if not name:
+            flash(
+                "A megnevezés kötelező.",
+                "error",
+            )
+
+        elif (
+            location_type
+            not in Location.VALID_TYPES
+        ):
+            flash(
+                "Érvénytelen tárhelytípus.",
+                "error",
+            )
+
+        else:
+            try:
+                sort_order = int(
+                    sort_order_raw or 0
+                )
+            except ValueError:
+                flash(
+                    "A sorrend csak egész szám lehet.",
+                    "error",
+                )
+
+                return render_template(
+                    "admin/locations/form.html",
+                    location=location,
+                    parent=None,
+                    locations=Location.query
+                    .filter(
+                        Location.id
+                        != location.id
+                    )
+                    .order_by(
+                        Location.name
+                    )
+                    .all(),
+                    back_url=url_for(
+                        "admin.locations"
+                    ),
+                )
+
+            parent_id_value = (
+                int(parent_id_raw)
+                if parent_id_raw
+                else None
+            )
+
+            if (
+                parent_id_value
+                == location.id
+            ):
+                flash(
+                    "Egy tárhely nem lehet saját maga szülője.",
+                    "error",
+                )
+            else:
+                location.name = name
+                location.location_type = (
+                    location_type
+                )
+                location.parent_id = (
+                    parent_id_value
+                )
+                location.sort_order = (
+                    sort_order
+                )
+                location.can_hold_stock = (
+                    can_hold_stock
+                )
+
+                db.session.commit()
+
+                flash(
+                    "A tárhely módosítva.",
+                    "success",
+                )
+
+                return redirect(
+                    url_for(
+                        "admin.locations"
+                    )
+                )
+
+    return render_template(
+        "admin/locations/form.html",
+        location=location,
+        parent=None,
+        locations=Location.query
+        .filter(
+            Location.id != location.id
+        )
+        .order_by(
+            Location.name
+        )
+        .all(),
+        back_url=url_for(
+            "admin.locations"
+        ),
+    )
+
+
+@admin_bp.route(
+    "/locations/<int:location_id>/toggle",
+    methods=["POST"],
+)
+def location_toggle(location_id):
+    location = db.get_or_404(
+        Location,
+        location_id,
+    )
+
+    location.is_active = (
+        not location.is_active
+    )
+
+    db.session.commit()
+
+    flash(
+        (
+            "A tárhely aktiválva."
+            if location.is_active
+            else "A tárhely inaktiválva."
+        ),
+        "success",
+    )
+
+    return redirect(
+        url_for(
+            "admin.locations"
+        )
     )

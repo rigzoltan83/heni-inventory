@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if location %}
+        Tárhely szerkesztése
+    {% else %}
+        Új tárhely
+    {% endif %}
+    - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>
+        {% if location %}
+            Tárhely szerkesztése
+        {% else %}
+            Új tárhely
+        {% endif %}
+    </h1>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Megnevezés
+
+            <input
+                type="text"
+                name="name"
+                maxlength="150"
+                required
+                value="{{
+                    request.form.get(
+                        'name',
+                        location.name
+                        if location
+                        else ''
+                    )
+                }}"
+            >
+        </label>
+
+        <label>
+            Típus
+
+            {% set selected_type =
+                request.form.get(
+                    'location_type',
+                    location.location_type
+                    if location
+                    else (
+                        'shelf'
+                        if parent
+                        else 'room'
+                    )
+                )
+            %}
+
+            <select
+                name="location_type"
+                required
+            >
+                <option
+                    value="room"
+                    {% if selected_type == "room" %}
+                        selected
+                    {% endif %}
+                >
+                    Helyiség
+                </option>
+
+                <option
+                    value="shelf"
+                    {% if selected_type == "shelf" %}
+                        selected
+                    {% endif %}
+                >
+                    Polc
+                </option>
+
+                <option
+                    value="storage"
+                    {% if selected_type == "storage" %}
+                        selected
+                    {% endif %}
+                >
+                    Tárhely
+                </option>
+            </select>
+        </label>
+
+        <label>
+            Szülő
+
+            {% set selected_parent =
+                request.form.get(
+                    'parent_id',
+                    location.parent_id
+                    if location
+                    else (
+                        parent.id
+                        if parent
+                        else ''
+                    )
+                )
+            %}
+
+            <select name="parent_id">
+
+                <option value="">
+                    — nincs, felső szint —
+                </option>
+
+                {% for row in locations %}
+
+                    <option
+                        value="{{ row.id }}"
+                        {% if
+                            selected_parent|string
+                            == row.id|string
+                        %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ row.name }}
+                        ({{ row.internal_code }})
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Sorrend
+
+            <input
+                type="number"
+                name="sort_order"
+                value="{{
+                    request.form.get(
+                        'sort_order',
+                        location.sort_order
+                        if location
+                        else 0
+                    )
+                }}"
+            >
+        </label>
+
+        <label class="checkbox-row">
+
+            {% set stock_checked =
+                (
+                    request.form.get(
+                        'can_hold_stock'
+                    )
+                    == 'on'
+                )
+                if request.method == 'POST'
+                else (
+                    location.can_hold_stock
+                    if location
+                    else false
+                )
+            %}
+
+            <input
+                type="checkbox"
+                name="can_hold_stock"
+                {% if stock_checked %}
+                    checked
+                {% endif %}
+            >
+
+            <span>
+                Készlet tárolható ezen a helyen
+            </span>
+
+        </label>
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Mentés
+            </button>
+
+            <a
+                class="button"
+                href="{{ url_for('admin.locations') }}"
+            >
+                Mégse
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

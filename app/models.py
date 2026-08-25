@@ -182,6 +182,16 @@ class ItemIdentifier(db.Model):
 class Location(db.Model):
     __tablename__ = "locations"
 
+    TYPE_ROOM = "room"
+    TYPE_SHELF = "shelf"
+    TYPE_STORAGE = "storage"
+
+    VALID_TYPES = {
+        TYPE_ROOM,
+        TYPE_SHELF,
+        TYPE_STORAGE,
+    }
+
     id = db.Column(
         db.BigInteger,
         primary_key=True,
@@ -200,6 +210,20 @@ class Location(db.Model):
     name = db.Column(
         db.String(150),
         nullable=False,
+    )
+
+    location_type = db.Column(
+        db.String(30),
+        nullable=False,
+        default="storage",
+        index=True,
+    )
+
+    can_hold_stock = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=True,
+        index=True,
     )
 
     description = db.Column(
