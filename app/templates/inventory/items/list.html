@@ -114,17 +114,24 @@
 
             <div class="inventory-item-actions">
 
-                <a
-                    class="button small"
-                    href="{{
-                        url_for(
-                            'admin.item_label',
-                            item_id=item.id
-                        )
-                    }}"
-                >
-                    Címke
-                </a>
+<a
+    class="button small"
+    href="{{
+        url_for(
+            'admin.item_label',
+            item_id=item.id,
+            return_to=url_for(
+                'inventory.items',
+                q=search,
+                has_stock='1'
+                if has_stock
+                else None
+            )
+        )
+    }}"
+>
+    Címke
+</a>
 
             </div>
 

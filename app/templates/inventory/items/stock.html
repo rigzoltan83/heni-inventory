@@ -20,17 +20,18 @@
 
 <div class="page-header-actions">
 
-    <a
-        class="button"
-        href="{{
-            url_for(
-                'admin.item_label',
-                item_id=item.id
-            )
-        }}"
-    >
-        Címke
-    </a>
+<a
+    class="button"
+    href="{{
+        url_for(
+            'admin.item_label',
+            item_id=item.id,
+            return_to=current_url
+        )
+    }}"
+>
+    Címke
+</a>
 
     {% if current_user.can_edit %}
 

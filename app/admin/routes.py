@@ -1456,6 +1456,19 @@ def item_label(item_id):
         item_id,
     )
 
+    return_to = (
+        request.args.get(
+            "return_to",
+            "",
+        )
+        .strip()
+    )
+
+    if not return_to.startswith("/"):
+        return_to = url_for(
+            "admin.items"
+        )
+
     quantity = request.args.get(
         "quantity",
         default=1,
@@ -1490,6 +1503,7 @@ def item_label(item_id):
                     "admin.item_label_print",
                     item_id=item.id,
                     quantity=quantity,
+                    return_to=return_to,
                 )
             )
 
@@ -1497,7 +1511,7 @@ def item_label(item_id):
         "admin/items/label_quantity.html",
         item=item,
         quantity=quantity,
-        back_url=url_for("admin.items"),
+        back_url=return_to,
     )
 
 
@@ -1509,6 +1523,19 @@ def item_label_print(item_id):
         Item,
         item_id,
     )
+
+    return_to = (
+        request.args.get(
+            "return_to",
+            "",
+        )
+        .strip()
+    )
+
+    if not return_to.startswith("/"):
+        return_to = url_for(
+            "admin.items"
+        )
 
     quantity = request.args.get(
         "quantity",
@@ -1525,9 +1552,6 @@ def item_label_print(item_id):
         "admin/items/label_print.html",
         item=item,
         quantity=quantity,
-        back_url=url_for(
-            "admin.item_label",
-            item_id=item.id,
-        ),
+        back_url=return_to,
     )
 
