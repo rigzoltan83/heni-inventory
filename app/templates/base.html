@@ -34,6 +34,29 @@
 
         <div class="topbar-spacer"></div>
 
+        {% if current_user.is_authenticated %}
+
+            <span class="user-info">
+                {{ current_user.display_name }}
+                ·
+                {{ current_user.role }}
+            </span>
+
+            <form
+                method="post"
+                action="{{ url_for('auth.logout') }}"
+                class="logout-form"
+            >
+                <button
+                    class="button small"
+                    type="submit"
+                >
+                    Kilépés
+                </button>
+            </form>
+
+        {% endif %}
+
         {% block topbar_actions %}
         {% endblock %}
 

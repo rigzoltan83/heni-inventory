@@ -301,3 +301,27 @@ h1 {
         padding-right: 16px;
     }
 }
+
+.user-info {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.logout-form {
+    margin: 0;
+}
+
+@media (max-width: 700px) {
+    .user-info {
+        display: none;
+    }
+}
+
+.form-card select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font: inherit;
+}

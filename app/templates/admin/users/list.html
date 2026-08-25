@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Felhasználók - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Felhasználók</h1>
+
+        <p class="muted">
+            Felhasználók és jogosultságok kezelése.
+        </p>
+    </div>
+
+    <a
+        class="button primary"
+        href="{{ url_for('admin.user_new') }}"
+    >
+        + Új felhasználó
+    </a>
+
+</div>
+
+<div class="table-wrap">
+
+    <table class="data-table">
+
+        <thead>
+            <tr>
+                <th>Felhasználónév</th>
+                <th>Megjelenő név</th>
+                <th>Szerepkör</th>
+                <th>Állapot</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for user in users %}
+
+            <tr
+                {% if not user.is_enabled %}
+                    class="inactive-row"
+                {% endif %}
+            >
+
+                <td>
+                    {{ user.username }}
+                </td>
+
+                <td>
+                    {{ user.display_name }}
+                </td>
+
+                <td>
+                    <code>
+                        {{ user.role }}
+                    </code>
+                </td>
+
+                <td>
+                    {% if user.is_enabled %}
+                        <span class="status active">
+                            Aktív
+                        </span>
+                    {% else %}
+                        <span class="status inactive">
+                            Inaktív
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td class="actions">
+
+                    <a
+                        class="button small"
+                        href="{{
+                            url_for(
+                                'admin.user_edit',
+                                user_id=user.id
+                            )
+                        }}"
+                    >
+                        Szerkesztés
+                    </a>
+
+                    <a
+                        class="button small"
+                        href="{{
+                            url_for(
+                                'admin.user_password',
+                                user_id=user.id
+                            )
+                        }}"
+                    >
+                        Jelszó
+                    </a>
+
+                    <form
+                        method="post"
+                        action="{{
+                            url_for(
+                                'admin.user_toggle',
+                                user_id=user.id
+                            )
+                        }}"
+                    >
+                        <button
+                            class="button small"
+                            type="submit"
+                        >
+                            {% if user.is_enabled %}
+                                Inaktiválás
+                            {% else %}
+                                Aktiválás
+                            {% endif %}
+                        </button>
+                    </form>
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

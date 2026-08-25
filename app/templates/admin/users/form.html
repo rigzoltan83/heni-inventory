@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if user %}
+        Felhasználó szerkesztése
+    {% else %}
+        Új felhasználó
+    {% endif %}
+    - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="content-narrow">
+
+    <h1>
+        {% if user %}
+            Felhasználó szerkesztése
+        {% else %}
+            Új felhasználó
+        {% endif %}
+    </h1>
+
+    <form
+        method="post"
+        class="form-card"
+    >
+
+        <label>
+            Felhasználónév
+
+            <input
+                type="text"
+                name="username"
+                maxlength="100"
+                required
+                value="{{
+                    request.form.get(
+                        'username',
+                        user.username
+                        if user
+                        else ''
+                    )
+                }}"
+            >
+        </label>
+
+        <label>
+            Megjelenő név
+
+            <input
+                type="text"
+                name="display_name"
+                maxlength="150"
+                required
+                value="{{
+                    request.form.get(
+                        'display_name',
+                        user.display_name
+                        if user
+                        else ''
+                    )
+                }}"
+            >
+        </label>
+
+        <label>
+            Szerepkör
+
+            <select
+                name="role"
+                required
+            >
+                {% for role_value, role_name in roles %}
+
+                    {% set selected_role =
+                        request.form.get(
+                            'role',
+                            user.role
+                            if user
+                            else 'viewer'
+                        )
+                    %}
+
+                    <option
+                        value="{{ role_value }}"
+                        {% if selected_role == role_value %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ role_name }}
+                    </option>
+
+                {% endfor %}
+            </select>
+        </label>
+
+        {% if not user %}
+
+            <label>
+                Jelszó
+
+                <input
+                    type="password"
+                    name="password"
+                    minlength="8"
+                    required
+                >
+            </label>
+
+            <label>
+                Jelszó még egyszer
+
+                <input
+                    type="password"
+                    name="password_again"
+                    minlength="8"
+                    required
+                >
+            </label>
+
+        {% endif %}
+
+        <div class="form-actions">
+
+            <button
+                class="button primary"
+                type="submit"
+            >
+                Mentés
+            </button>
+
+            <a
+                class="button"
+                href="{{ url_for('admin.users') }}"
+            >
+                Mégse
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

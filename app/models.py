@@ -1,5 +1,10 @@
-from .extensions import db
+from flask_login import UserMixin
+from werkzeug.security import (
+    check_password_hash,
+    generate_password_hash,
+)
 
+from .extensions import db
 
 class ItemType(db.Model):
     __tablename__ = "item_types"
@@ -245,3 +250,91 @@ class Location(db.Model):
             return None
 
         return f"LOC-{self.id:06d}"
+
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
+
+    ROLE_ADMIN = "admin"
+    ROLE_EDITOR = "editor"
+    ROLE_VIEWER = "viewer"
+
+    VALID_ROLES = {
+        ROLE_ADMIN,
+        ROLE_EDITOR,
+        ROLE_VIEWER,
+    }
+
+    id = db.Column(
+        db.BigInteger,
+        primary_key=True,
+    )
+
+    username = db.Column(
+        db.String(100),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    display_name = db.Column(
+        db.String(150),
+        nullable=False,
+    )
+
+    password_hash = db.Column(
+        db.String(255),
+        nullable=False,
+    )
+
+    role = db.Column(
+        db.String(20),
+        nullable=False,
+        default=ROLE_VIEWER,
+        index=True,
+    )
+
+    is_enabled = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=True,
+        index=True,
+    )
+
+    created_at = db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        server_default=db.func.now(),
+    )
+
+    updated_at = db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        server_default=db.func.now(),
+        onupdate=db.func.now(),
+    )
+
+    @property
+    def is_active(self):
+        return self.is_enabled
+
+    @property
+    def is_admin(self):
+        return self.role == self.ROLE_ADMIN
+
+    @property
+    def can_edit(self):
+        return self.role in {
+            self.ROLE_ADMIN,
+            self.ROLE_EDITOR,
+        }
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(
+            password
+        )
+
+    def check_password(self, password):
+        return check_password_hash(
+            self.password_hash,
+            password,
+        )

@@ -41,13 +41,16 @@
         </span>
     </div>
 
-    <div class="admin-card disabled">
-        <strong>Felhasználók</strong>
+<a
+    class="admin-card"
+    href="{{ url_for('admin.users') }}"
+>
+    <strong>Felhasználók</strong>
 
-        <span>
-            Admin / Editor / Viewer jogosultságok.
-        </span>
-    </div>
+    <span>
+        Admin / Editor / Viewer jogosultságok.
+    </span>
+</a>
 
 </div>
 
