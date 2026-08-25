@@ -175,7 +175,11 @@
                             url_for(
                                 'inventory.item_stock',
                                 item_id=row.item.id,
-                                return_to=request.full_path
+return_to=url_for(
+    'inventory.stock',
+    q=search or None,
+    location_id=selected_location_id
+)
                             )
                         }}"
                     >
@@ -188,7 +192,11 @@
                             url_for(
                                 'inventory.location_stock',
                                 location_id=row.location.id,
-                                return_to=request.full_path
+return_to=url_for(
+    'inventory.stock',
+    q=search or None,
+    location_id=selected_location_id
+)
                             )
                         }}"
                     >

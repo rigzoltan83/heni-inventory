@@ -61,6 +61,9 @@ def get_safe_return_to(default_url):
     if not return_to.startswith("/"):
         return default_url
 
+    if return_to.endswith("?"):
+        return_to = return_to[:-1]
+
     return return_to
 
 
