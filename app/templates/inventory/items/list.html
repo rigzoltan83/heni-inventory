@@ -86,6 +86,22 @@
 
                 <div>
                     <div class="stock-position-name">
+{% if item.images %}
+
+    <img
+        class="item-list-thumbnail"
+        src="{{
+            url_for(
+                'admin.item_image',
+                item_id=item.id,
+                image_id=item.images[0].id
+            )
+        }}"
+        alt=""
+        loading="lazy"
+    >
+
+{% endif %}
                         {{ item.name }}
                     </div>
 

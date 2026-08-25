@@ -18,6 +18,63 @@
         </p>
     </div>
 
+{% if item.images %}
+
+    <div class="item-stock-images">
+
+        {% for image in item.images %}
+
+            <button
+                class="item-image-button"
+                type="button"
+                data-image-src="{{
+                    url_for(
+                        'admin.item_image',
+                        item_id=item.id,
+                        image_id=image.id
+                    )
+                }}"
+                aria-label="Kép nagyítása"
+            >
+                <img
+                    src="{{
+                        url_for(
+                            'admin.item_image',
+                            item_id=item.id,
+                            image_id=image.id
+                        )
+                    }}"
+                    alt="{{ item.name }}"
+                    loading="lazy"
+                >
+            </button>
+
+        {% endfor %}
+
+    </div>
+
+    <div
+        class="item-image-viewer"
+        id="item-image-viewer"
+        hidden
+    >
+        <button
+            class="item-image-viewer-close"
+            type="button"
+            aria-label="Bezárás"
+        >
+            ×
+        </button>
+
+        <img
+            class="item-image-viewer-image"
+            src=""
+            alt="{{ item.name }}"
+        >
+    </div>
+
+{% endif %}
+
 <div class="page-header-actions">
 
     <a
@@ -146,4 +203,14 @@
 
 </div>
 
+<script
+    src="{{
+        url_for(
+            'static',
+            filename='js/item-images.js'
+        )
+    }}"
+></script>
+
 {% endblock %}
+
