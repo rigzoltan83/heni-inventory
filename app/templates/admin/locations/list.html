@@ -19,6 +19,22 @@
 
 <div class="page-header-actions">
 
+<button
+    class="button"
+    type="button"
+    id="location-tree-expand-all"
+>
+    Mind kinyit
+</button>
+
+<button
+    class="button"
+    type="button"
+    id="location-tree-collapse-all"
+>
+    Mind összecsuk
+</button>
+
     <a
         class="button"
         href="{{ url_for('admin.location_labels') }}"
@@ -43,28 +59,58 @@
 
         {% set location = row.location %}
 
-        <div
-            class="
-                location-row
-                {% if not location.is_active %}
-                    inactive-row
-                {% endif %}
-            "
-            style="
-                --location-level:
-                {{ row.level }};
-            "
-        >
+<div
+    class="
+        location-row
+        {% if not location.is_active %}
+            inactive-row
+        {% endif %}
+    "
+    id="location-{{ location.id }}"
+    data-location-id="{{ location.id }}"
+    data-parent-id="{{
+        location.parent_id
+        if location.parent_id
+        else ''
+    }}"
+    data-has-children="{{
+        '1'
+        if location.children
+        else '0'
+    }}"
+    style="
+        --location-level:
+        {{ row.level }};
+    "
+>
 
             <div class="location-main">
 
-                <div class="location-name">
+<div class="location-name">
 
-                    <span class="location-indent"></span>
+    <span class="location-indent"></span>
 
-                    <strong>
-                        {{ location.name }}
-                    </strong>
+    {% if location.children %}
+
+        <button
+            class="location-tree-toggle"
+            type="button"
+            aria-expanded="false"
+            title="Alárendelt helyek megjelenítése"
+        >
+            ▶
+        </button>
+
+    {% else %}
+
+        <span class="location-tree-toggle-spacer">
+        </span>
+
+    {% endif %}
+
+    <strong>
+        {{ location.name }}
+    </strong>
 
                     <span class="location-code">
                         {{ location.internal_code }}
@@ -180,5 +226,14 @@
     {% endfor %}
 
 </div>
+
+<script
+    src="{{
+        url_for(
+            'static',
+            filename='js/admin-location-tree.js'
+        )
+    }}"
+></script>
 
 {% endblock %}

@@ -343,6 +343,10 @@ h1 {
     border-radius: 10px;
 }
 
+.location-row[hidden] {
+    display: none !important;
+}
+
 .location-main {
     min-width: 0;
     flex: 1;
@@ -1161,4 +1165,74 @@ h1 {
     font-size: 40px;
     line-height: 1;
     cursor: pointer;
+}
+
+.inventory-location-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 18px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.inventory-location-card:hover {
+    border-color: #9ca3af;
+}
+
+.inventory-location-card > div:first-child {
+    min-width: 0;
+    flex: 1;
+}
+
+.inventory-location-card .inventory-card-arrow {
+    flex: 0 0 auto;
+    margin-left: 8px;
+}
+
+.inventory-location-card .location-path {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+    .inventory-location-card {
+        align-items: flex-start;
+        padding: 14px 16px;
+    }
+
+    .inventory-location-card .inventory-card-arrow {
+        margin-top: 2px;
+    }
+}
+
+.location-tree-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: #4b5563;
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.location-tree-toggle:hover {
+    background: #f3f4f6;
+}
+
+.location-tree-toggle-spacer {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
 }

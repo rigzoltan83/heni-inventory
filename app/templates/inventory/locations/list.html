@@ -73,8 +73,8 @@
 
     {% for location, total_quantity, item_count in rows %}
 
-        <a
-            class="inventory-item-card"
+<a
+    class="inventory-location-card"
             href="{{
                 url_for(
                     'inventory.location_stock',
