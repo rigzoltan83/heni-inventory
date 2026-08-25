@@ -362,3 +362,205 @@ class User(UserMixin, db.Model):
             self.password_hash,
             password,
         )
+
+class InventoryStock(db.Model):
+    __tablename__ = "inventory_stock"
+
+    id = db.Column(
+        db.BigInteger,
+        primary_key=True,
+    )
+
+    item_id = db.Column(
+        db.BigInteger,
+        db.ForeignKey(
+            "items.id",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    location_id = db.Column(
+        db.BigInteger,
+        db.ForeignKey(
+            "locations.id",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    quantity = db.Column(
+        db.Integer,
+        nullable=False,
+        default=0,
+    )
+
+    created_at = db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        server_default=db.func.now(),
+    )
+
+    updated_at = db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        server_default=db.func.now(),
+        onupdate=db.func.now(),
+    )
+
+    item = db.relationship(
+        "Item",
+        backref="stock_positions",
+    )
+
+    location = db.relationship(
+        "Location",
+        backref="stock_positions",
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint(
+            "item_id",
+            "location_id",
+            name="uq_inventory_stock_item_location",
+        ),
+        db.CheckConstraint(
+            "quantity >= 0",
+            name="ck_inventory_stock_quantity_nonnegative",
+        ),
+    )
+
+
+class InventoryMovement(db.Model):
+    __tablename__ = "inventory_movements"
+
+    TYPE_RECEIPT = "RECEIPT"
+    TYPE_MOVE = "MOVE"
+    TYPE_ISSUE = "ISSUE"
+    TYPE_CORRECTION_PLUS = "CORRECTION_PLUS"
+    TYPE_CORRECTION_MINUS = "CORRECTION_MINUS"
+
+    VALID_TYPES = {
+        TYPE_RECEIPT,
+        TYPE_MOVE,
+        TYPE_ISSUE,
+        TYPE_CORRECTION_PLUS,
+        TYPE_CORRECTION_MINUS,
+    }
+
+    id = db.Column(
+        db.BigInteger,
+        primary_key=True,
+    )
+
+    item_id = db.Column(
+        db.BigInteger,
+        db.ForeignKey(
+            "items.id",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    movement_type = db.Column(
+        db.String(30),
+        nullable=False,
+        index=True,
+    )
+
+    from_location_id = db.Column(
+        db.BigInteger,
+        db.ForeignKey(
+            "locations.id",
+            ondelete="RESTRICT",
+        ),
+        nullable=True,
+        index=True,
+    )
+
+    to_location_id = db.Column(
+        db.BigInteger,
+        db.ForeignKey(
+            "locations.id",
+            ondelete="RESTRICT",
+        ),
+        nullable=True,
+        index=True,
+    )
+
+    quantity = db.Column(
+        db.Integer,
+        nullable=False,
+    )
+
+    source_quantity_before = db.Column(
+        db.Integer,
+        nullable=True,
+    )
+
+    source_quantity_after = db.Column(
+        db.Integer,
+        nullable=True,
+    )
+
+    destination_quantity_before = db.Column(
+        db.Integer,
+        nullable=True,
+    )
+
+    destination_quantity_after = db.Column(
+        db.Integer,
+        nullable=True,
+    )
+
+    note = db.Column(
+        db.Text,
+        nullable=True,
+    )
+
+    created_by_user_id = db.Column(
+        db.BigInteger,
+        db.ForeignKey(
+            "users.id",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    created_at = db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        server_default=db.func.now(),
+        index=True,
+    )
+
+    item = db.relationship(
+        "Item",
+        backref="movements",
+    )
+
+    from_location = db.relationship(
+        "Location",
+        foreign_keys=[from_location_id],
+    )
+
+    to_location = db.relationship(
+        "Location",
+        foreign_keys=[to_location_id],
+    )
+
+    created_by = db.relationship(
+        "User",
+        backref="inventory_movements",
+    )
+
+    __table_args__ = (
+        db.CheckConstraint(
+            "quantity > 0",
+            name="ck_inventory_movements_quantity_positive",
+        ),
+    )
