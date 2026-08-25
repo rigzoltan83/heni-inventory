@@ -939,3 +939,86 @@ h1 {
     }
 }
 
+.search-bar select {
+    min-width: 220px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font: inherit;
+}
+
+.small-text {
+    margin-top: 3px;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 700px) {
+    .search-bar select {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+.movement-filter-card {
+    margin-bottom: 18px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.movement-filter-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(200px, 1fr)
+        );
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.movement-filter-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.movement-filter-grid input,
+.movement-filter-grid select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font: inherit;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.pagination-info {
+    color: #6b7280;
+}
+
+@media (max-width: 700px) {
+    .movement-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pagination {
+        flex-direction: column;
+    }
+
+    .pagination .button {
+        width: 100%;
+    }
+}

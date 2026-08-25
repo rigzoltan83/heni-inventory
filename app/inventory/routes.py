@@ -10,6 +10,8 @@ from flask_login import (
     login_required,
 )
 
+from datetime import datetime, time
+from sqlalchemy import or_
 from urllib.parse import urlparse
 from . import inventory_bp
 from ..extensions import db
@@ -21,10 +23,12 @@ from ..inventory_service import (
     set_counted_quantity,
 )
 from ..models import (
+    InventoryMovement,
     InventoryStock,
     Item,
     ItemIdentifier,
     Location,
+    User,
 )
 from ..permissions import editor_required
 
@@ -881,5 +885,325 @@ def scanner():
     return render_template(
         "inventory/scanner.html",
         code=code,
+        back_url=url_for("main.index"),
+    )
+
+@inventory_bp.route("/stock")
+@login_required
+def stock():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    location_id = request.args.get(
+        "location_id",
+        type=int,
+    )
+
+    query = (
+        InventoryStock.query
+        .join(Item)
+        .join(Location)
+        .filter(
+            InventoryStock.quantity > 0,
+            Item.is_active.is_(True),
+            Location.is_active.is_(True),
+        )
+    )
+
+    if search:
+        query = query.filter(
+            or_(
+                Item.name.ilike(
+                    f"%{search}%"
+                ),
+                Location.name.ilike(
+                    f"%{search}%"
+                ),
+            )
+        )
+
+    if location_id is not None:
+        query = query.filter(
+            InventoryStock.location_id
+            == location_id
+        )
+
+    rows = (
+        query
+        .order_by(
+            Item.name,
+            Location.name,
+        )
+        .all()
+    )
+
+    locations = (
+        Location.query
+        .filter(
+            Location.is_active.is_(True),
+            Location.can_hold_stock.is_(True),
+        )
+        .order_by(
+            Location.name
+        )
+        .all()
+    )
+
+    total_quantity = sum(
+        row.quantity
+        for row in rows
+    )
+
+    return render_template(
+        "inventory/stock/list.html",
+        rows=rows,
+        locations=locations,
+        search=search,
+        selected_location_id=location_id,
+        total_quantity=total_quantity,
+        back_url=url_for("main.index"),
+    )
+
+@inventory_bp.route("/movements")
+@login_required
+def movements():
+    search = (
+        request.args.get(
+            "q",
+            "",
+        )
+        .strip()
+    )
+
+    movement_type = (
+        request.args.get(
+            "movement_type",
+            "",
+        )
+        .strip()
+    )
+
+    location_id = request.args.get(
+        "location_id",
+        type=int,
+    )
+
+    user_id = request.args.get(
+        "user_id",
+        type=int,
+    )
+
+    date_from_raw = (
+        request.args.get(
+            "date_from",
+            "",
+        )
+        .strip()
+    )
+
+    date_to_raw = (
+        request.args.get(
+            "date_to",
+            "",
+        )
+        .strip()
+    )
+
+    page = request.args.get(
+        "page",
+        default=1,
+        type=int,
+    )
+
+    if page < 1:
+        page = 1
+
+    query = (
+        InventoryMovement.query
+        .join(Item)
+    )
+
+    if search:
+        query = query.filter(
+            Item.name.ilike(
+                f"%{search}%"
+            )
+        )
+
+    if (
+        movement_type
+        in InventoryMovement.VALID_TYPES
+    ):
+        query = query.filter(
+            InventoryMovement.movement_type
+            == movement_type
+        )
+    else:
+        movement_type = ""
+
+    if location_id is not None:
+        query = query.filter(
+            or_(
+                InventoryMovement.from_location_id
+                == location_id,
+                InventoryMovement.to_location_id
+                == location_id,
+            )
+        )
+
+    if user_id is not None:
+        query = query.filter(
+            InventoryMovement.created_by_user_id
+            == user_id
+        )
+
+    date_from = None
+
+    if date_from_raw:
+        try:
+            date_from = datetime.strptime(
+                date_from_raw,
+                "%Y-%m-%d",
+            )
+        except ValueError:
+            date_from_raw = ""
+
+    if date_from is not None:
+        query = query.filter(
+            InventoryMovement.created_at
+            >= date_from
+        )
+
+    date_to = None
+
+    if date_to_raw:
+        try:
+            parsed_date_to = datetime.strptime(
+                date_to_raw,
+                "%Y-%m-%d",
+            ).date()
+
+            date_to = datetime.combine(
+                parsed_date_to,
+                time.max,
+            )
+
+        except ValueError:
+            date_to_raw = ""
+
+    if date_to is not None:
+        query = query.filter(
+            InventoryMovement.created_at
+            <= date_to
+        )
+
+    per_page = 50
+
+    total_rows = query.count()
+
+    total_pages = max(
+        1,
+        (
+            total_rows
+            + per_page
+            - 1
+        )
+        // per_page
+    )
+
+    if page > total_pages:
+        page = total_pages
+
+    rows = (
+        query
+        .order_by(
+            InventoryMovement.created_at.desc(),
+            InventoryMovement.id.desc(),
+        )
+        .offset(
+            (page - 1) * per_page
+        )
+        .limit(per_page)
+        .all()
+    )
+
+    movement_types = [
+        (
+            InventoryMovement.TYPE_RECEIPT,
+            "Bevételezés",
+        ),
+        (
+            InventoryMovement.TYPE_MOVE,
+            "Áthelyezés",
+        ),
+        (
+            InventoryMovement.TYPE_ISSUE,
+            "Kiadás",
+        ),
+        (
+            InventoryMovement.TYPE_CORRECTION_PLUS,
+            "Korrekció +",
+        ),
+        (
+            InventoryMovement.TYPE_CORRECTION_MINUS,
+            "Korrekció −",
+        ),
+    ]
+
+    locations = (
+        Location.query
+        .filter(
+            Location.is_active.is_(True),
+            Location.can_hold_stock.is_(True),
+        )
+        .order_by(
+            Location.name
+        )
+        .all()
+    )
+
+    users = (
+        User.query
+        .filter(
+            User.is_enabled.is_(True)
+        )
+        .order_by(
+            User.display_name
+        )
+        .all()
+    )
+
+    return_url = url_for(
+        "inventory.movements",
+        q=search or None,
+        movement_type=movement_type or None,
+        location_id=location_id,
+        user_id=user_id,
+        date_from=date_from_raw or None,
+        date_to=date_to_raw or None,
+        page=page,
+    )
+
+    return render_template(
+        "inventory/movements/list.html",
+        rows=rows,
+        search=search,
+        movement_type=movement_type,
+        movement_types=movement_types,
+        locations=locations,
+        users=users,
+        selected_location_id=location_id,
+        selected_user_id=user_id,
+        date_from=date_from_raw,
+        date_to=date_to_raw,
+        page=page,
+        total_pages=total_pages,
+        total_rows=total_rows,
+        return_url=return_url,
         back_url=url_for("main.index"),
     )

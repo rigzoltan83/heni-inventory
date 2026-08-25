@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Készlet - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Összesített készlet</h1>
+
+        <p class="muted">
+            Aktuális készlet tétel- és tárhelypozíciónként.
+        </p>
+    </div>
+
+</div>
+
+<form
+    method="get"
+    class="search-bar"
+>
+
+    <input
+        type="search"
+        name="q"
+        placeholder="Keresés tételre vagy tárhelyre..."
+        value="{{ search }}"
+    >
+
+    <select name="location_id">
+
+        <option value="">
+            — minden tárhely —
+        </option>
+
+        {% for location in locations %}
+
+            <option
+                value="{{ location.id }}"
+                {% if
+                    selected_location_id == location.id
+                %}
+                    selected
+                {% endif %}
+            >
+                {{ location.full_path }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+    <button
+        class="button primary"
+        type="submit"
+    >
+        Szűrés
+    </button>
+
+    {% if search or selected_location_id %}
+
+        <a
+            class="button"
+            href="{{ url_for('inventory.stock') }}"
+        >
+            Szűrés törlése
+        </a>
+
+    {% endif %}
+
+</form>
+
+<div class="stock-summary">
+
+    <span>
+        A szűrés szerinti összes darabszám
+    </span>
+
+    <strong>
+        {{ total_quantity }} db
+    </strong>
+
+</div>
+
+<div class="table-wrap">
+
+    <table class="data-table">
+
+        <thead>
+            <tr>
+                <th>Tétel</th>
+                <th>Saját kód</th>
+                <th>Tárhely</th>
+                <th>Mennyiség</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for row in rows %}
+
+            <tr>
+
+                <td>
+                    <strong>
+                        {{ row.item.name }}
+                    </strong>
+
+                    <div class="muted small-text">
+                        {{ row.item.item_type.name }}
+                    </div>
+                </td>
+
+                <td>
+                    <code>
+                        {{ row.item.internal_code }}
+                    </code>
+                </td>
+
+                <td>
+                    <div>
+                        {{ row.location.full_path }}
+                    </div>
+
+                    <div class="stock-position-code">
+                        {{ row.location.internal_code }}
+                    </div>
+                </td>
+
+                <td>
+                    <strong>
+                        {{ row.quantity }} db
+                    </strong>
+                </td>
+
+                <td class="actions">
+
+                    <a
+                        class="button small"
+                        href="{{
+                            url_for(
+                                'inventory.item_stock',
+                                item_id=row.item.id,
+                                return_to=request.full_path
+                            )
+                        }}"
+                    >
+                        Tétel
+                    </a>
+
+                    <a
+                        class="button small"
+                        href="{{
+                            url_for(
+                                'inventory.location_stock',
+                                location_id=row.location.id,
+                                return_to=request.full_path
+                            )
+                        }}"
+                    >
+                        Tárhely
+                    </a>
+
+                </td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+                <td colspan="5">
+                    Nincs a szűrésnek megfelelő készlet.
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

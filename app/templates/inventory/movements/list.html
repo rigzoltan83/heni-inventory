@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mozgások - Heni Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Mozgásnapló</h1>
+
+        <p class="muted">
+            Készletmozgások keresése és szűrése.
+        </p>
+    </div>
+
+</div>
+
+<form
+    method="get"
+    class="movement-filter-card"
+>
+
+    <div class="movement-filter-grid">
+
+        <label>
+            Tételnév
+
+            <input
+                type="search"
+                name="q"
+                placeholder="Keresés tételnévre..."
+                value="{{ search }}"
+            >
+        </label>
+
+        <label>
+            Mozgástípus
+
+            <select name="movement_type">
+
+                <option value="">
+                    — minden típus —
+                </option>
+
+                {% for value, label in movement_types %}
+
+                    <option
+                        value="{{ value }}"
+                        {% if movement_type == value %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ label }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Tárhely
+
+            <select name="location_id">
+
+                <option value="">
+                    — minden tárhely —
+                </option>
+
+                {% for location in locations %}
+
+                    <option
+                        value="{{ location.id }}"
+                        {% if
+                            selected_location_id
+                            == location.id
+                        %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ location.full_path }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Felhasználó
+
+            <select name="user_id">
+
+                <option value="">
+                    — minden felhasználó —
+                </option>
+
+                {% for user in users %}
+
+                    <option
+                        value="{{ user.id }}"
+                        {% if
+                            selected_user_id
+                            == user.id
+                        %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ user.display_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </label>
+
+        <label>
+            Dátumtól
+
+            <input
+                type="date"
+                name="date_from"
+                value="{{ date_from }}"
+            >
+        </label>
+
+        <label>
+            Dátumig
+
+            <input
+                type="date"
+                name="date_to"
+                value="{{ date_to }}"
+            >
+        </label>
+
+    </div>
+
+    <div class="form-actions">
+
+        <button
+            class="button primary"
+            type="submit"
+        >
+            Szűrés
+        </button>
+
+        {% if
+            search
+            or movement_type
+            or selected_location_id
+            or selected_user_id
+            or date_from
+            or date_to
+        %}
+
+            <a
+                class="button"
+                href="{{ url_for('inventory.movements') }}"
+            >
+                Szűrés törlése
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</form>
+
+<div class="stock-summary">
+
+    <span>
+        Találatok száma
+    </span>
+
+    <strong>
+        {{ total_rows }}
+    </strong>
+
+</div>
+
+<div class="table-wrap">
+
+    <table class="data-table">
+
+        <thead>
+            <tr>
+                <th>Időpont</th>
+                <th>Tétel</th>
+                <th>Típus</th>
+                <th>Honnan</th>
+                <th>Hova</th>
+                <th>Mennyiség</th>
+                <th>Felhasználó</th>
+                <th>Megjegyzés</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for row in rows %}
+
+            <tr>
+
+                <td>
+                    {{ row.created_at.strftime(
+                        "%Y-%m-%d %H:%M"
+                    ) }}
+                </td>
+
+                <td>
+                    <a
+                        href="{{
+                            url_for(
+                                'inventory.item_stock',
+                                item_id=row.item.id,
+                                return_to=return_url
+                            )
+                        }}"
+                    >
+                        {{ row.item.name }}
+                    </a>
+
+                    <div class="muted small-text">
+                        {{ row.item.internal_code }}
+                    </div>
+                </td>
+
+                <td>
+
+                    {% if row.movement_type == "RECEIPT" %}
+                        Bevételezés
+
+                    {% elif row.movement_type == "MOVE" %}
+                        Áthelyezés
+
+                    {% elif row.movement_type == "ISSUE" %}
+                        Kiadás
+
+                    {% elif row.movement_type
+                        == "CORRECTION_PLUS"
+                    %}
+                        Korrekció +
+
+                    {% elif row.movement_type
+                        == "CORRECTION_MINUS"
+                    %}
+                        Korrekció −
+
+                    {% else %}
+                        {{ row.movement_type }}
+                    {% endif %}
+
+                </td>
+
+                <td>
+                    {% if row.from_location %}
+                        {{ row.from_location.full_path }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if row.to_location %}
+                        {{ row.to_location.full_path }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+
+                <td>
+                    <strong>
+                        {{ row.quantity }} db
+                    </strong>
+                </td>
+
+                <td>
+                    {% if row.created_by %}
+                        {{ row.created_by.display_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if row.note %}
+                        {{ row.note }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+                <td colspan="8">
+                    Nincs a szűrésnek megfelelő mozgás.
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% if total_pages > 1 %}
+
+    <div class="pagination">
+
+        {% if page > 1 %}
+
+            <a
+                class="button"
+                href="{{
+                    url_for(
+                        'inventory.movements',
+                        q=search or None,
+                        movement_type=movement_type or None,
+                        location_id=selected_location_id,
+                        user_id=selected_user_id,
+                        date_from=date_from or None,
+                        date_to=date_to or None,
+                        page=page - 1
+                    )
+                }}"
+            >
+                ← Előző
+            </a>
+
+        {% endif %}
+
+        <span class="pagination-info">
+            {{ page }} / {{ total_pages }} oldal
+        </span>
+
+        {% if page < total_pages %}
+
+            <a
+                class="button"
+                href="{{
+                    url_for(
+                        'inventory.movements',
+                        q=search or None,
+                        movement_type=movement_type or None,
+                        location_id=selected_location_id,
+                        user_id=selected_user_id,
+                        date_from=date_from or None,
+                        date_to=date_to or None,
+                        page=page + 1
+                    )
+                }}"
+            >
+                Következő →
+            </a>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+{% endblock %}
