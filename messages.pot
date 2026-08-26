@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-26 08:50+0200\n"
+"POT-Creation-Date: 2026-08-26 08:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -640,7 +640,7 @@ msgid "Termékképek"
 msgstr ""
 
 #: app/templates/admin/items/form.html:141
-msgid "Opcionális. Új kép feltöltásához válassz fájlt, majd mentsd el a tételt."
+msgid "Opcionális. Új kép feltöltéséhez válassz fájlt, majd mentsd el a tételt."
 msgstr ""
 
 #: app/templates/admin/items/form.html:145

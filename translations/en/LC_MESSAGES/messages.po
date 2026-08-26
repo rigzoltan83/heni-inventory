@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Heni Inventory VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-26 08:50+0200\n"
+"POT-Creation-Date: 2026-08-26 08:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -182,7 +182,6 @@ msgstr "Password changed."
 
 #: app/admin/routes.py:739 app/admin/routes.py:873 app/admin/routes.py:1151
 #: app/admin/routes.py:1297
-#, fuzzy
 msgid "A megnevezés kötelező."
 msgstr "Name is required."
 
@@ -643,7 +642,7 @@ msgid "Termékképek"
 msgstr "Item images"
 
 #: app/templates/admin/items/form.html:141
-msgid "Opcionális. Új kép feltöltásához válassz fájlt, majd mentsd el a tételt."
+msgid "Opcionális. Új kép feltöltéséhez válassz fájlt, majd mentsd el a tételt."
 msgstr "Optional. Select a file to upload a new image, then save the item."
 
 #: app/templates/admin/items/form.html:145
@@ -943,20 +942,19 @@ msgstr "Camera active. Point it at the code."
 
 #: app/templates/inventory/scanner.html:20
 msgid "Irányítsd a kamerát a vonalkódra."
-msgstr ""
+msgstr "Point the camera at the barcode."
 
 #: app/templates/inventory/scanner.html:21
-#, fuzzy
 msgid "Scanner indítási hiba:"
-msgstr "Start camera"
+msgstr "Scanner startup error:"
 
 #: app/templates/inventory/scanner.html:22
 msgid "A kamera használata nincs engedélyezve."
-msgstr ""
+msgstr "Camera access is not allowed."
 
 #: app/templates/inventory/scanner.html:23
 msgid "Nem található használható kamera."
-msgstr ""
+msgstr "No usable camera was found."
 
 #: app/templates/inventory/scanner.html:24
 msgid "A kamera nem indítható."
