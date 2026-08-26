@@ -1,9 +1,11 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, session
+from flask_login import current_user
 
 from .extensions import (
+    babel,
     db,
     login_manager,
     migrate,
@@ -50,6 +52,34 @@ def create_app():
     migrate.init_app(app, db)
 
     login_manager.init_app(app)
+    app.config["BABEL_DEFAULT_LOCALE"] = "hu"
+    app.config["BABEL_SUPPORTED_LOCALES"] = [
+        "hu",
+        "en",
+    ]
+
+    def select_locale():
+        if (
+            current_user.is_authenticated
+            and current_user.preferred_language
+            in {"hu", "en"}
+        ):
+            return current_user.preferred_language
+
+        language = session.get(
+            "preferred_language",
+            "hu",
+        )
+
+        if language not in {"hu", "en"}:
+            return "hu"
+
+        return language
+
+    babel.init_app(
+        app,
+        locale_selector=select_locale,
+    )
 
     @login_manager.user_loader
     def load_user(user_id):

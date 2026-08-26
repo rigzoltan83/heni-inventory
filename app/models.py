@@ -390,6 +390,13 @@ class User(UserMixin, db.Model):
         index=True,
     )
 
+    preferred_language = db.Column(
+        db.String(2),
+        nullable=False,
+        default="hu",
+        server_default="hu",
+    )
+
     is_enabled = db.Column(
         db.Boolean,
         nullable=False,
