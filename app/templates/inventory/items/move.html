@@ -1,25 +1,24 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Áthelyezés - {{ item.name }}
+    {{ _('Áthelyezés -') }} {{ item.name }}
 {% endblock %}
 
 {% block content %}
 
 <div class="content-narrow">
 
-    <h1>Áthelyezés</h1>
+    <h1>{{ _('Áthelyezés') }}</h1>
 
     <p>
         <strong>{{ item.name }}</strong>
     </p>
 
     <p class="muted">
-        Forrás:
+        {{ _('Forrás:') }}
         {{ source.name }}
-        ·
-        jelenlegi készlet:
-        {{ stock.quantity }} db
+        {{ _('· jelenlegi készlet:') }}
+        {{ stock.quantity }} {{ _('db') }}
     </p>
 
     <form
@@ -28,14 +27,14 @@
     >
 
         <label>
-            Cél tárhely
+            {{ _('Cél tárhely') }}
 
             <select
                 name="destination_id"
                 required
             >
                 <option value="">
-                    — válassz —
+                    {{ _('— válassz —') }}
                 </option>
 
                 {% for location in destinations %}
@@ -51,7 +50,7 @@
         </label>
 
         <label>
-            Mennyiség
+            {{ _('Mennyiség') }}
 
             <input
                 type="number"
@@ -63,7 +62,7 @@
         </label>
 
         <label>
-            Megjegyzés
+            {{ _('Megjegyzés') }}
 
             <textarea
                 name="note"
@@ -77,14 +76,14 @@
                 class="button primary"
                 type="submit"
             >
-                Áthelyezés
+                {{ _('Áthelyezés') }}
             </button>
 
 <a
     class="button"
     href="{{ back_url }}"
 >
-    Mégse
+    {{ _('Mégse') }}
 </a>
 
         </div>

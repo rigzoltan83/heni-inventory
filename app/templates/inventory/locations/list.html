@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tárhelyek - Heni Inventory
+    {{ _('Tárhelyek - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,11 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Tárhelyek</h1>
+        <h1>{{ _('Tárhelyek') }}</h1>
 
         <p class="muted">
-            Tárhely kiválasztása és
-            aktuális készletének megtekintése.
+            {{ _('Tárhely kiválasztása és aktuális készletének megtekintése.') }}
         </p>
     </div>
 
@@ -27,7 +26,7 @@
     <input
         type="search"
         name="q"
-        placeholder="Keresés tárhelynévre..."
+        placeholder="{{ _('Keresés tárhelynévre...') }}"
         value="{{ search }}"
     >
 
@@ -44,7 +43,7 @@
         >
 
         <span>
-            Van készlet
+            {{ _('Van készlet') }}
         </span>
 
     </label>
@@ -53,7 +52,7 @@
         class="button primary"
         type="submit"
     >
-        Keresés
+        {{ _('Keresés') }}
     </button>
 
     {% if search or has_stock %}
@@ -62,7 +61,7 @@
             class="button"
             href="{{ url_for('inventory.locations') }}"
         >
-            Szűrés törlése
+            {{ _('Szűrés törlése') }}
         </a>
 
     {% endif %}
@@ -98,10 +97,9 @@
                 </div>
 
                 <div class="inventory-total">
-                    {{ item_count }} tétel
-                    ·
+                    {{ item_count }} {{ _('tétel ·') }}
                     <strong>
-                        {{ total_quantity }} db
+                        {{ total_quantity }} {{ _('db') }}
                     </strong>
                 </div>
 
@@ -118,9 +116,9 @@
         <div class="empty-state">
 
             {% if search or has_stock %}
-                Nincs a szűrésnek megfelelő tárhely.
+                {{ _('Nincs a szűrésnek megfelelő tárhely.') }}
             {% else %}
-                Nincs aktív tárhely.
+                {{ _('Nincs aktív tárhely.') }}
             {% endif %}
 
         </div>

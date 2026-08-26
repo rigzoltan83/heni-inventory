@@ -1,8 +1,9 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, session
+from flask import Flask, request, session
 from flask_login import current_user
+from flask_babel import get_locale
 
 from .extensions import (
     babel,
@@ -58,7 +59,26 @@ def create_app():
         "en",
     ]
 
+    app.config[
+        "BABEL_TRANSLATION_DIRECTORIES"
+    ] = "../translations"
+
     def select_locale():
+        requested_language = (
+            request.values.get(
+                "lang",
+                "",
+            )
+            .strip()
+            .lower()
+        )
+
+        if requested_language in {
+            "hu",
+            "en",
+        }:
+            return requested_language
+
         if (
             current_user.is_authenticated
             and current_user.preferred_language
@@ -71,7 +91,10 @@ def create_app():
             "hu",
         )
 
-        if language not in {"hu", "en"}:
+        if language not in {
+            "hu",
+            "en",
+        }:
             return "hu"
 
         return language
@@ -80,6 +103,10 @@ def create_app():
         app,
         locale_selector=select_locale,
     )
+
+    app.jinja_env.globals[
+        "get_locale"
+    ] = get_locale
 
     @login_manager.user_loader
     def load_user(user_id):

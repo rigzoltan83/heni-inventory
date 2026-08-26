@@ -2,9 +2,9 @@
 
 {% block title %}
     {% if location %}
-        Tárhely szerkesztése
+        {{ _('Tárhely szerkesztése') }}
     {% else %}
-        Új tárhely
+        {{ _('Új tárhely') }}
     {% endif %}
     - Heni Inventory
 {% endblock %}
@@ -15,9 +15,9 @@
 
     <h1>
         {% if location %}
-            Tárhely szerkesztése
+            {{ _('Tárhely szerkesztése') }}
         {% else %}
-            Új tárhely
+            {{ _('Új tárhely') }}
         {% endif %}
     </h1>
 
@@ -27,7 +27,7 @@
     >
 
         <label>
-            Megnevezés
+            {{ _('Megnevezés') }}
 
             <input
                 type="text"
@@ -46,7 +46,7 @@
         </label>
 
         <label>
-            Típus
+            {{ _('Típus') }}
 
             {% set selected_type =
                 request.form.get(
@@ -71,7 +71,7 @@
                         selected
                     {% endif %}
                 >
-                    Helyiség
+                    {{ _('Helyiség') }}
                 </option>
 
                 <option
@@ -80,7 +80,7 @@
                         selected
                     {% endif %}
                 >
-                    Polc
+                    {{ _('Polc') }}
                 </option>
 
                 <option
@@ -89,13 +89,13 @@
                         selected
                     {% endif %}
                 >
-                    Tárhely
+                    {{ _('Tárhely') }}
                 </option>
             </select>
         </label>
 
         <label>
-            Szülő
+            {{ _('Szülő') }}
 
             {% set selected_parent =
                 request.form.get(
@@ -113,7 +113,7 @@
             <select name="parent_id">
 
                 <option value="">
-                    — nincs, felső szint —
+                    {{ _('— nincs, felső szint —') }}
                 </option>
 
                 {% for row in locations %}
@@ -137,7 +137,7 @@
         </label>
 
         <label>
-            Sorrend
+            {{ _('Sorrend') }}
 
             <input
                 type="number"
@@ -179,7 +179,7 @@
             >
 
             <span>
-                Készlet tárolható ezen a helyen
+                {{ _('Készlet tárolható ezen a helyen') }}
             </span>
 
         </label>
@@ -190,14 +190,14 @@
                 class="button primary"
                 type="submit"
             >
-                Mentés
+                {{ _('Mentés') }}
             </button>
 
             <a
                 class="button"
                 href="{{ url_for('admin.locations') }}"
             >
-                Mégse
+                {{ _('Mégse') }}
             </a>
 
         </div>

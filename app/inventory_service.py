@@ -1,5 +1,7 @@
 from sqlalchemy import select
 
+from flask_babel import gettext as _
+
 from .extensions import db
 from .models import (
     InventoryMovement,
@@ -18,12 +20,12 @@ def _validate_quantity(quantity):
         quantity = int(quantity)
     except (TypeError, ValueError):
         raise InventoryError(
-            "A mennyiség csak egész szám lehet."
+            _("A mennyiség csak egész szám lehet.")
         )
 
     if quantity <= 0:
         raise InventoryError(
-            "A mennyiségnek pozitívnak kell lennie."
+            _("A mennyiségnek pozitívnak kell lennie.")
         )
 
     return quantity
@@ -37,12 +39,12 @@ def _get_item(item_id):
 
     if item is None:
         raise InventoryError(
-            "A tétel nem található."
+            _("A tétel nem található.")
         )
 
     if not item.is_active:
         raise InventoryError(
-            "Inaktív tételen nem végezhető készletmozgás."
+            _("Inaktív tételen nem végezhető készletmozgás.")
         )
 
     return item
@@ -56,17 +58,17 @@ def _get_stock_location(location_id):
 
     if location is None:
         raise InventoryError(
-            "A tárhely nem található."
+            _("A tárhely nem található.")
         )
 
     if not location.is_active:
         raise InventoryError(
-            "Inaktív tárhely nem használható."
+            _("Inaktív tárhely nem használható.")
         )
 
     if not location.can_hold_stock:
         raise InventoryError(
-            "Ezen a helyen nem tárolható készlet."
+            _("Ezen a helyen nem tárolható készlet.")
         )
 
     return location
@@ -169,7 +171,7 @@ def move(
 
     if from_location_id == to_location_id:
         raise InventoryError(
-            "A forrás és a cél tárhely nem lehet azonos."
+            _("A forrás és a cél tárhely nem lehet azonos.")
         )
 
     _get_item(item_id)
@@ -185,12 +187,12 @@ def move(
 
         if source is None:
             raise InventoryError(
-                "A forrás tárhelyen nincs ebből a tételből készlet."
+                _("A forrás tárhelyen nincs ebből a tételből készlet.")
             )
 
         if source.quantity < quantity:
             raise InventoryError(
-                "Nincs elegendő készlet a forrás tárhelyen."
+                _("Nincs elegendő készlet a forrás tárhelyen.")
             )
 
         destination = _get_stock_position(
@@ -256,12 +258,12 @@ def issue(
 
         if stock is None:
             raise InventoryError(
-                "Ezen a tárhelyen nincs ebből a tételből készlet."
+                _("Ezen a tárhelyen nincs ebből a tételből készlet.")
             )
 
         if stock.quantity < quantity:
             raise InventoryError(
-                "Nincs elegendő készlet a kiadáshoz."
+                _("Nincs elegendő készlet a kiadáshoz.")
             )
 
         before = stock.quantity
@@ -307,12 +309,12 @@ def set_counted_quantity(
         )
     except (TypeError, ValueError):
         raise InventoryError(
-            "A tényleges mennyiség csak egész szám lehet."
+            _("A tényleges mennyiség csak egész szám lehet.")
         )
 
     if counted_quantity < 0:
         raise InventoryError(
-            "A tényleges mennyiség nem lehet negatív."
+            _("A tényleges mennyiség nem lehet negatív.")
         )
 
     _get_item(item_id)
@@ -331,7 +333,7 @@ def set_counted_quantity(
 
         if difference == 0:
             raise InventoryError(
-                "A megadott mennyiség megegyezik a jelenlegi készlettel."
+                _("A megadott mennyiség megegyezik a jelenlegi készlettel.")
             )
 
         stock.quantity = counted_quantity

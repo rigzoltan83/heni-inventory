@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tétel készletre vétele
+    {{ _('Tétel készletre vétele') }}
 {% endblock %}
 
 {% block content %}
 
 <div class="content-narrow">
 
-    <h1>Tétel készletre vétele</h1>
+    <h1>{{ _('Tétel készletre vétele') }}</h1>
 
     <p>
         <strong>
@@ -28,7 +28,7 @@
         <input
             type="search"
             name="q"
-            placeholder="Tétel keresése..."
+            placeholder="{{ _('Tétel keresése...') }}"
             value="{{ search }}"
         >
 
@@ -36,7 +36,7 @@
             class="button"
             type="submit"
         >
-            Keresés
+            {{ _('Keresés') }}
         </button>
 
 
@@ -48,14 +48,14 @@
     >
 
         <label>
-            Tétel
+            {{ _('Tétel') }}
 
             <select
                 name="item_id"
                 required
             >
                 <option value="">
-                    — válassz —
+                    {{ _('— válassz —') }}
                 </option>
 
                 {% for item in items %}
@@ -74,7 +74,7 @@
         </label>
 
         <label>
-            Mennyiség
+            {{ _('Mennyiség') }}
 
             <input
                 type="number"
@@ -85,7 +85,7 @@
         </label>
 
         <label>
-            Megjegyzés
+            {{ _('Megjegyzés') }}
 
             <textarea
                 name="note"
@@ -99,14 +99,14 @@
                 class="button primary"
                 type="submit"
             >
-                Készletre vétel
+                {{ _('Készletre vétel') }}
             </button>
 
 <a
     class="button"
     href="{{ back_url }}"
 >
-    Mégse
+    {{ _('Mégse') }}
 </a>
 
         </div>
@@ -116,9 +116,7 @@
     {% if current_user.is_admin %}
 
         <p class="admin-hint">
-            Ha a tétel még nem létezik a törzsben,
-            előbb az Admin → Tételek alatt kell
-            létrehozni.
+            {{ _('Ha a tétel még nem létezik a törzsben, előbb az Admin → Tételek alatt kell létrehozni.') }}
         </p>
 
     {% endif %}

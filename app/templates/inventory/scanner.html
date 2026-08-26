@@ -6,12 +6,30 @@
 
 {% block content %}
 
+<div
+    id="scanner-i18n"
+    hidden
+    data-camera-stopped="{{ _('A kamera leállítva.') }}"
+    data-code-detected="{{ _('Kód felismerve: __CODE__') }}"
+    data-detector-error="{{ _('Vonalkódfelismerési hiba:') }}"
+    data-no-detector="{{ _('A böngésző nem támogatja a BarcodeDetector API-t.') }}"
+    data-no-format="{{ _('A böngésző nem támogat használható vonalkódformátumot.') }}"
+    data-no-camera="{{ _('Ez a böngésző nem támogatja a kamerahasználatot.') }}"
+    data-camera-starting="{{ _('Kamera indítása...') }}"
+    data-camera-running="{{ _('Kamera aktív. Irányítsd a kódra.') }}"
+    data-camera-aim="{{ _('Irányítsd a kamerát a vonalkódra.') }}"
+    data-scanner-start-error="{{ _('Scanner indítási hiba:') }}"
+    data-camera-not-allowed="{{ _('A kamera használata nincs engedélyezve.') }}"
+    data-camera-not-found="{{ _('Nem található használható kamera.') }}"
+    data-camera-error="{{ _('A kamera nem indítható.') }}"
+></div>
+
 <div class="content-narrow">
 
-    <h1>Scanner</h1>
+    <h1>{{ _('Scanner') }}</h1>
 
     <p class="muted">
-        Tétel- vagy tárhelykód beolvasása.
+        {{ _('Tétel- vagy tárhelykód beolvasása.') }}
     </p>
 
     <div class="scanner-camera-card">
@@ -21,7 +39,7 @@
             type="button"
             id="start-camera"
         >
-            Kamera indítása
+            {{ _('Kamera indítása') }}
         </button>
 
         <button
@@ -30,7 +48,7 @@
             id="stop-camera"
             hidden
         >
-            Kamera leállítása
+            {{ _('Kamera leállítása') }}
         </button>
 
         <div
@@ -56,7 +74,7 @@
             class="scanner-camera-status"
             id="scanner-camera-status"
         >
-            A kamera még nincs elindítva.
+            {{ _('A kamera még nincs elindítva.') }}
         </div>
 
     </div>
@@ -68,7 +86,7 @@
     >
 
         <label>
-            Kód
+            {{ _('Kód') }}
 
             <input
                 type="text"
@@ -89,7 +107,7 @@
                 class="button primary"
                 type="submit"
             >
-                Megnyitás
+                {{ _('Megnyitás') }}
             </button>
 
         </div>
@@ -99,22 +117,22 @@
     <div class="scanner-help">
 
         <p>
-            Felismerhető:
+            {{ _('Felismerhető:') }}
         </p>
 
         <ul>
             <li>
-                saját tételkód:
+                {{ _('saját tételkód:') }}
                 <code>ITEM-xxxxxx</code>
             </li>
 
             <li>
-                saját tárhelykód:
+                {{ _('saját tárhelykód:') }}
                 <code>LOC-xxxxxx</code>
             </li>
 
             <li>
-                gyári EAN / ISBN / egyéb vonalkód
+                {{ _('gyári EAN / ISBN / egyéb vonalkód') }}
             </li>
         </ul>
 

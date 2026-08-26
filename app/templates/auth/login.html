@@ -1,22 +1,81 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Bejelentkezés - Heni Inventory
+    {{ _("Bejelentkezés") }} - Heni Inventory
 {% endblock %}
 
 {% block content %}
 
 <div class="content-narrow">
 
-    <h1>Bejelentkezés</h1>
+    <div class="login-heading">
+
+        <h1>
+            {{ _("Bejelentkezés") }}
+        </h1>
+
+        <div
+            class="language-switcher"
+            aria-label="Language"
+        >
+
+            <a
+                class="
+                    language-button
+                    {% if selected_language == 'hu' %}
+                        active
+                    {% endif %}
+                "
+                href="{{
+                    url_for(
+                        'auth.login',
+                        lang='hu',
+                        next=request.args.get('next')
+                    )
+                }}"
+                title="{{ _('Magyar') }}"
+                aria-label="{{ _('Magyar') }}"
+            >
+                🇭🇺
+            </a>
+
+            <a
+                class="
+                    language-button
+                    {% if selected_language == 'en' %}
+                        active
+                    {% endif %}
+                "
+                href="{{
+                    url_for(
+                        'auth.login',
+                        lang='en',
+                        next=request.args.get('next')
+                    )
+                }}"
+                title="{{ _('English') }}"
+                aria-label="{{ _('English') }}"
+            >
+                🇬🇧
+            </a>
+
+        </div>
+
+    </div>
 
     <form
         method="post"
         class="form-card"
     >
 
+        <input
+            type="hidden"
+            name="lang"
+            value="{{ selected_language }}"
+        >
+
         <label>
-            Felhasználónév
+            {{ _("Felhasználónév") }}
 
             <input
                 type="text"
@@ -28,7 +87,7 @@
         </label>
 
         <label>
-            Jelszó
+            {{ _("Jelszó") }}
 
             <input
                 type="password"
@@ -39,12 +98,14 @@
         </label>
 
         <div class="form-actions">
+
             <button
                 class="button primary"
                 type="submit"
             >
-                Bejelentkezés
+                {{ _("Bejelentkezés") }}
             </button>
+
         </div>
 
     </form>

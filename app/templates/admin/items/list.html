@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tételek - Heni Inventory
+    {{ _('Tételek - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,11 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Tételek</h1>
+        <h1>{{ _('Tételek') }}</h1>
 
         <p class="muted">
-            Könyvek, társasjátékok és egyéb
-            nyilvántartott tételek.
+            {{ _('Könyvek, társasjátékok és egyéb nyilvántartott tételek.') }}
         </p>
     </div>
 
@@ -21,7 +20,7 @@
         class="button primary"
         href="{{ url_for('admin.item_new') }}"
     >
-        + Új tétel
+        {{ _('+ Új tétel') }}
     </a>
 
 </div>
@@ -32,12 +31,12 @@
 
         <thead>
             <tr>
-                <th>Saját kód</th>
-                <th>Megnevezés</th>
-                <th>Típus</th>
-                <th>Gyári kód</th>
-                <th>Állapot</th>
-                <th>Műveletek</th>
+                <th>{{ _('Saját kód') }}</th>
+                <th>{{ _('Megnevezés') }}</th>
+                <th>{{ _('Típus') }}</th>
+                <th>{{ _('Gyári kód') }}</th>
+                <th>{{ _('Állapot') }}</th>
+                <th>{{ _('Műveletek') }}</th>
             </tr>
         </thead>
 
@@ -86,11 +85,11 @@
                 <td>
                     {% if item.is_active %}
                         <span class="status active">
-                            Aktív
+                            {{ _('Aktív') }}
                         </span>
                     {% else %}
                         <span class="status inactive">
-                            Inaktív
+                            {{ _('Inaktív') }}
                         </span>
                     {% endif %}
                 </td>
@@ -106,7 +105,7 @@
                             )
                         }}"
                     >
-                        Szerkesztés
+                        {{ _('Szerkesztés') }}
                     </a>
 
                     <a
@@ -118,7 +117,7 @@
                             )
                         }}"
                     >
-                        Címke
+                        {{ _('Címke') }}
                     </a>
 
                     <form
@@ -135,9 +134,9 @@
                             type="submit"
                         >
                             {% if item.is_active %}
-                                Inaktiválás
+                                {{ _('Inaktiválás') }}
                             {% else %}
-                                Aktiválás
+                                {{ _('Aktiválás') }}
                             {% endif %}
                         </button>
                     </form>
@@ -150,7 +149,7 @@
 
             <tr>
                 <td colspan="6">
-                    Még nincs tétel.
+                    {{ _('Még nincs tétel.') }}
                 </td>
             </tr>
 

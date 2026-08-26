@@ -3,6 +3,7 @@ from io import BytesIO
 import barcode
 from barcode.writer import SVGWriter
 from flask import Response
+from flask_babel import gettext as _
 from flask_login import current_user
 
 from flask import (
@@ -94,7 +95,7 @@ def item_type_new():
 
         if not code:
             flash(
-                "A kód megadása kötelező.",
+                _("A kód megadása kötelező."),
                 "error",
             )
 
@@ -106,7 +107,7 @@ def item_type_new():
 
         if not name:
             flash(
-                "A megnevezés megadása kötelező.",
+                _("A megnevezés megadása kötelező."),
                 "error",
             )
 
@@ -122,7 +123,7 @@ def item_type_new():
             )
         except ValueError:
             flash(
-                "A sorrend csak egész szám lehet.",
+                _("A sorrend csak egész szám lehet."),
                 "error",
             )
 
@@ -140,7 +141,7 @@ def item_type_new():
 
         if existing is not None:
             flash(
-                "Ez a tételtípus-kód már létezik.",
+                _("Ez a tételtípus-kód már létezik."),
                 "error",
             )
 
@@ -161,7 +162,7 @@ def item_type_new():
         db.session.commit()
 
         flash(
-            "A tételtípus létrejött.",
+            _("A tételtípus létrejött."),
             "success",
         )
 
@@ -210,7 +211,7 @@ def item_type_edit(item_type_id):
 
         if not code or not name:
             flash(
-                "A kód és a megnevezés kötelező.",
+                _("A kód és a megnevezés kötelező."),
                 "error",
             )
 
@@ -226,7 +227,7 @@ def item_type_edit(item_type_id):
             )
         except ValueError:
             flash(
-                "A sorrend csak egész szám lehet.",
+                _("A sorrend csak egész szám lehet."),
                 "error",
             )
 
@@ -247,7 +248,7 @@ def item_type_edit(item_type_id):
 
         if duplicate is not None:
             flash(
-                "Ez a tételtípus-kód már létezik.",
+                _("Ez a tételtípus-kód már létezik."),
                 "error",
             )
 
@@ -264,7 +265,7 @@ def item_type_edit(item_type_id):
         db.session.commit()
 
         flash(
-            "A tételtípus módosítva.",
+            _("A tételtípus módosítva."),
             "success",
         )
 
@@ -299,11 +300,11 @@ def item_type_toggle(item_type_id):
 
     if item_type.is_active:
         message = (
-            "A tételtípus aktiválva."
+            _("A tételtípus aktiválva.")
         )
     else:
         message = (
-            "A tételtípus inaktiválva."
+            _("A tételtípus inaktiválva.")
         )
 
     flash(
@@ -367,27 +368,27 @@ def user_new():
 
         if not username:
             flash(
-                "A felhasználónév kötelező.",
+                _("A felhasználónév kötelező."),
                 "error",
             )
         elif not display_name:
             flash(
-                "A megjelenő név kötelező.",
+                _("A megjelenő név kötelező."),
                 "error",
             )
         elif role not in User.VALID_ROLES:
             flash(
-                "Érvénytelen szerepkör.",
+                _("Érvénytelen szerepkör."),
                 "error",
             )
         elif len(password) < 8:
             flash(
-                "A jelszó legalább 8 karakter legyen.",
+                _("A jelszó legalább 8 karakter legyen."),
                 "error",
             )
         elif password != password_again:
             flash(
-                "A két jelszó nem egyezik.",
+                _("A két jelszó nem egyezik."),
                 "error",
             )
         elif (
@@ -397,7 +398,7 @@ def user_new():
             is not None
         ):
             flash(
-                "Ez a felhasználónév már létezik.",
+                _("Ez a felhasználónév már létezik."),
                 "error",
             )
         else:
@@ -414,7 +415,7 @@ def user_new():
             db.session.commit()
 
             flash(
-                "A felhasználó létrejött.",
+                _("A felhasználó létrejött."),
                 "success",
             )
 
@@ -471,22 +472,22 @@ def user_edit(user_id):
 
         if not username:
             flash(
-                "A felhasználónév kötelező.",
+                _("A felhasználónév kötelező."),
                 "error",
             )
         elif not display_name:
             flash(
-                "A megjelenő név kötelező.",
+                _("A megjelenő név kötelező."),
                 "error",
             )
         elif role not in User.VALID_ROLES:
             flash(
-                "Érvénytelen szerepkör.",
+                _("Érvénytelen szerepkör."),
                 "error",
             )
         elif duplicate is not None:
             flash(
-                "Ez a felhasználónév már létezik.",
+                _("Ez a felhasználónév már létezik."),
                 "error",
             )
         else:
@@ -497,7 +498,7 @@ def user_edit(user_id):
             db.session.commit()
 
             flash(
-                "A felhasználó módosítva.",
+                _("A felhasználó módosítva."),
                 "success",
             )
 
@@ -531,7 +532,7 @@ def user_toggle(user_id):
 
     if user.id == current_user.id:
         flash(
-            "A saját felhasználódat nem inaktiválhatod.",
+            _("A saját felhasználódat nem inaktiválhatod."),
             "error",
         )
 
@@ -547,9 +548,9 @@ def user_toggle(user_id):
 
     flash(
         (
-            "A felhasználó aktiválva."
+            _("A felhasználó aktiválva.")
             if user.is_enabled
-            else "A felhasználó inaktiválva."
+            else _("A felhasználó inaktiválva.")
         ),
         "success",
     )
@@ -582,12 +583,12 @@ def user_password(user_id):
 
         if len(password) < 8:
             flash(
-                "A jelszó legalább 8 karakter legyen.",
+                _("A jelszó legalább 8 karakter legyen."),
                 "error",
             )
         elif password != password_again:
             flash(
-                "A két jelszó nem egyezik.",
+                _("A két jelszó nem egyezik."),
                 "error",
             )
         else:
@@ -595,7 +596,7 @@ def user_password(user_id):
             db.session.commit()
 
             flash(
-                "A jelszó módosítva.",
+                _("A jelszó módosítva."),
                 "success",
             )
 
@@ -735,7 +736,7 @@ def location_new():
 
         if not name:
             flash(
-                "A megnevezés kötelező.",
+                _("A megnevezés kötelező."),
                 "error",
             )
 
@@ -744,7 +745,7 @@ def location_new():
             not in Location.VALID_TYPES
         ):
             flash(
-                "Érvénytelen tárhelytípus.",
+                _("Érvénytelen tárhelytípus."),
                 "error",
             )
 
@@ -755,7 +756,7 @@ def location_new():
                 )
             except ValueError:
                 flash(
-                    "A sorrend csak egész szám lehet.",
+                    _("A sorrend csak egész szám lehet."),
                     "error",
                 )
 
@@ -792,7 +793,7 @@ def location_new():
             db.session.commit()
 
             flash(
-                "A tárhely létrejött.",
+                _("A tárhely létrejött."),
                 "success",
             )
 
@@ -869,7 +870,7 @@ def location_edit(location_id):
 
         if not name:
             flash(
-                "A megnevezés kötelező.",
+                _("A megnevezés kötelező."),
                 "error",
             )
 
@@ -878,7 +879,7 @@ def location_edit(location_id):
             not in Location.VALID_TYPES
         ):
             flash(
-                "Érvénytelen tárhelytípus.",
+                _("Érvénytelen tárhelytípus."),
                 "error",
             )
 
@@ -889,7 +890,7 @@ def location_edit(location_id):
                 )
             except ValueError:
                 flash(
-                    "A sorrend csak egész szám lehet.",
+                    _("A sorrend csak egész szám lehet."),
                     "error",
                 )
 
@@ -922,7 +923,7 @@ def location_edit(location_id):
                 == location.id
             ):
                 flash(
-                    "Egy tárhely nem lehet saját maga szülője.",
+                    _("Egy tárhely nem lehet saját maga szülője."),
                     "error",
                 )
             else:
@@ -943,7 +944,7 @@ def location_edit(location_id):
                 db.session.commit()
 
                 flash(
-                    "A tárhely módosítva.",
+                    _("A tárhely módosítva."),
                     "success",
                 )
 
@@ -989,9 +990,9 @@ def location_toggle(location_id):
 
     flash(
         (
-            "A tárhely aktiválva."
+            _("A tárhely aktiválva.")
             if location.is_active
-            else "A tárhely inaktiválva."
+            else _("A tárhely inaktiválva.")
         ),
         "success",
     )
@@ -1147,13 +1148,13 @@ def item_new():
 
         if not name:
             flash(
-                "A megnevezés kötelező.",
+                _("A megnevezés kötelező."),
                 "error",
             )
 
         elif item_type_id is None:
             flash(
-                "A tételtípus kiválasztása kötelező.",
+                _("A tételtípus kiválasztása kötelező."),
                 "error",
             )
 
@@ -1168,7 +1169,7 @@ def item_new():
                 or not item_type.is_active
             ):
                 flash(
-                    "Érvénytelen tételtípus.",
+                    _("Érvénytelen tételtípus."),
                     "error",
                 )
 
@@ -1182,7 +1183,7 @@ def item_new():
                 is not None
             ):
                 flash(
-                    "Ez a vonalkód már egy másik tételhez tartozik.",
+                    _("Ez a vonalkód már egy másik tételhez tartozik."),
                     "error",
                 )
 
@@ -1213,9 +1214,9 @@ def item_new():
                 db.session.commit()
 
                 flash(
-                    (
-                        "A tétel létrejött. "
-                        f"Saját kód: {item.internal_code}"
+                    _(
+                        "A tétel létrejött. Saját kód: %(code)s",
+                        code=item.internal_code,
                     ),
                     "success",
                 )
@@ -1293,13 +1294,13 @@ def item_edit(item_id):
 
         if not name:
             flash(
-                "A megnevezés kötelező.",
+                _("A megnevezés kötelező."),
                 "error",
             )
 
         elif item_type_id is None:
             flash(
-                "A tételtípus kiválasztása kötelező.",
+                _("A tételtípus kiválasztása kötelező."),
                 "error",
             )
 
@@ -1325,13 +1326,13 @@ def item_edit(item_id):
 
             if item_type is None:
                 flash(
-                    "Érvénytelen tételtípus.",
+                    _("Érvénytelen tételtípus."),
                     "error",
                 )
 
             elif duplicate is not None:
                 flash(
-                    "Ez a vonalkód már egy másik tételhez tartozik.",
+                    _("Ez a vonalkód már egy másik tételhez tartozik."),
                     "error",
                 )
 
@@ -1463,7 +1464,7 @@ def item_edit(item_id):
                     )
 
                 flash(
-                    "A tétel módosítva.",
+                    _("A tétel módosítva."),
                     "success",
                 )
 
@@ -1517,7 +1518,7 @@ def item_image_delete(
     )
 
     flash(
-        "A kép törölve.",
+        _("A kép törölve."),
         "success",
     )
 
@@ -1547,9 +1548,9 @@ def item_toggle(item_id):
 
     flash(
         (
-            "A tétel aktiválva."
+            _("A tétel aktiválva.")
             if item.is_active
-            else "A tétel inaktiválva."
+            else _("A tétel inaktiválva.")
         ),
         "success",
     )
@@ -1629,7 +1630,7 @@ def item_label(item_id):
 
         if quantity is None or quantity < 1:
             flash(
-                "A darabszám legalább 1 legyen.",
+                _("A darabszám legalább 1 legyen."),
                 "error",
             )
 
@@ -1637,7 +1638,7 @@ def item_label(item_id):
 
         elif quantity > 200:
             flash(
-                "Egyszerre legfeljebb 200 címke nyomtatható.",
+                _("Egyszerre legfeljebb 200 címke nyomtatható."),
                 "error",
             )
 

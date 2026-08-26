@@ -3,6 +3,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from flask import current_app
+from flask_babel import gettext as _
 from PIL import Image, ImageOps, UnidentifiedImageError
 from werkzeug.utils import secure_filename
 
@@ -62,7 +63,7 @@ def _prepare_image(
         ValueError,
     ) as exc:
         raise ImageUploadError(
-            "A kiválasztott fájl nem feldolgozható kép."
+            _("A kiválasztott fájl nem feldolgozható kép.")
         ) from exc
 
 
@@ -72,7 +73,7 @@ def save_item_image(file_storage):
         or not file_storage.filename
     ):
         raise ImageUploadError(
-            "Nincs kiválasztott képfájl."
+            _("Nincs kiválasztott képfájl.")
         )
 
     original_filename = (
@@ -91,7 +92,7 @@ def save_item_image(file_storage):
 
     if suffix not in ALLOWED_EXTENSIONS:
         raise ImageUploadError(
-            "Csak JPG, JPEG, PNG vagy WebP kép tölthető fel."
+            _("Csak JPG, JPEG, PNG vagy WebP kép tölthető fel.")
         )
 
     image = _prepare_image(
@@ -151,7 +152,7 @@ def save_item_image(file_storage):
 
     except OSError as exc:
         raise ImageUploadError(
-            "A kép mentése sikertelen."
+            _("A kép mentése sikertelen.")
         ) from exc
 
     finally:

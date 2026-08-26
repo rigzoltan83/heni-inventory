@@ -40,7 +40,7 @@
         )
     }}"
 >
-    + Tétel készletre vétele
+    {{ _('+ Tétel készletre vétele') }}
 </a>
 
     {% endif %}
@@ -50,11 +50,11 @@
 <div class="stock-summary">
 
     <span>
-        Összes darabszám ezen a helyen
+        {{ _('Összes darabszám ezen a helyen') }}
     </span>
 
     <strong>
-        {{ total_quantity }} db
+        {{ total_quantity }} {{ _('db') }}
     </strong>
 
 </div>
@@ -80,7 +80,7 @@
             </div>
 
             <div class="stock-position-quantity">
-                {{ position.quantity }} db
+                {{ position.quantity }} {{ _('db') }}
             </div>
 
             <div class="stock-position-actions">
@@ -95,7 +95,7 @@
         )
     }}"
 >
-    Tétel
+    {{ _('Tétel') }}
 </a>
 
                 {% if current_user.can_edit %}
@@ -111,7 +111,7 @@
         )
     }}"
 >
-    Áthelyezés
+    {{ _('Áthelyezés') }}
 </a>
 
 <a
@@ -125,7 +125,7 @@
         )
     }}"
 >
-    Kiadás
+    {{ _('Kiadás') }}
 </a>
 
 <a
@@ -139,7 +139,7 @@
         )
     }}"
 >
-    Korrekció
+    {{ _('Korrekció') }}
 </a>
 
                 {% endif %}
@@ -151,7 +151,7 @@
     {% else %}
 
         <div class="empty-state">
-            Ezen a tárhelyen jelenleg nincs készlet.
+            {{ _('Ezen a tárhelyen jelenleg nincs készlet.') }}
         </div>
 
     {% endfor %}

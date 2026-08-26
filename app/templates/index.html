@@ -11,9 +11,9 @@
     <div>
         <h1>Heni Inventory</h1>
 
-        <p class="muted">
-            Készlet- és tárhelynyilvántartás.
-        </p>
+<p class="muted">
+    {{ _("Készlet- és tárhelynyilvántartás.") }}
+</p>
     </div>
 
 </div>
@@ -24,58 +24,65 @@
     class="admin-card"
     href="{{ url_for('inventory.scanner') }}"
 >
-    <strong>Scanner</strong>
+<strong>
+    {{ _("Scanner") }}
+</strong>
 
-    <span>
-        Tétel vagy tárhely beolvasása.
-    </span>
+<span>
+    {{ _("Tétel vagy tárhely beolvasása.") }}
+</span>
 </a>
 
 <a
     class="admin-card"
     href="{{ url_for('inventory.items') }}"
 >
-    <strong>Tételek</strong>
+<strong>
+    {{ _("Tételek") }}
+</strong>
 
-    <span>
-        Tétel kiválasztása és készletműveletek.
-    </span>
+<span>
+    {{ _("Tétel kiválasztása és készletműveletek.") }}
+</span>
 </a>
 
 <a
     class="admin-card"
     href="{{ url_for('inventory.locations') }}"
 >
-    <strong>Tárhelyek</strong>
+<strong>
+    {{ _("Tárhelyek") }}
+</strong>
 
-    <span>
-        Tárhely kiválasztása és
-        az ott lévő készlet kezelése.
-    </span>
+<span>
+    {{ _("Tárhely kiválasztása és az ott lévő készlet kezelése.") }}
+</span>
 </a>
 
 <a
     class="admin-card"
     href="{{ url_for('inventory.stock') }}"
 >
-    <strong>Készlet</strong>
+<strong>
+    {{ _("Készlet") }}
+</strong>
 
-    <span>
-        Összesített készlet
-        tétel- és tárhelypozíciónként.
-    </span>
+<span>
+    {{ _("Összesített készlet tétel- és tárhelypozíciónként.") }}
+</span>
 </a>
 
 <a
     class="admin-card"
     href="{{ url_for('inventory.movements') }}"
 >
-    <strong>Mozgások</strong>
+<strong>
+    {{ _("Mozgások") }}
+</strong>
 
-    <span>
-        Bevételezések, áthelyezések,
-        kiadások és korrekciók naplója.
-    </span>
+<span>
+    {{ _("Bevételezések, áthelyezések, kiadások és korrekciók naplója.") }}
+</span>
 </a>
 
     {% if current_user.is_admin %}
@@ -84,11 +91,13 @@
             class="admin-card"
             href="{{ url_for('admin.index') }}"
         >
-            <strong>Adminisztráció</strong>
+<strong>
+    {{ _("Adminisztráció") }}
+</strong>
 
-            <span>
-                Törzsadatok és felhasználók kezelése.
-            </span>
+<span>
+    {{ _("Törzsadatok és felhasználók kezelése.") }}
+</span>
         </a>
 
     {% endif %}

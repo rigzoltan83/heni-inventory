@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Felhasználók - Heni Inventory
+    {{ _('Felhasználók - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,10 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Felhasználók</h1>
+        <h1>{{ _('Felhasználók') }}</h1>
 
         <p class="muted">
-            Felhasználók és jogosultságok kezelése.
+            {{ _('Felhasználók és jogosultságok kezelése.') }}
         </p>
     </div>
 
@@ -20,7 +20,7 @@
         class="button primary"
         href="{{ url_for('admin.user_new') }}"
     >
-        + Új felhasználó
+        {{ _('+ Új felhasználó') }}
     </a>
 
 </div>
@@ -31,11 +31,11 @@
 
         <thead>
             <tr>
-                <th>Felhasználónév</th>
-                <th>Megjelenő név</th>
-                <th>Szerepkör</th>
-                <th>Állapot</th>
-                <th>Műveletek</th>
+                <th>{{ _('Felhasználónév') }}</th>
+                <th>{{ _('Megjelenő név') }}</th>
+                <th>{{ _('Szerepkör') }}</th>
+                <th>{{ _('Állapot') }}</th>
+                <th>{{ _('Műveletek') }}</th>
             </tr>
         </thead>
 
@@ -66,11 +66,11 @@
                 <td>
                     {% if user.is_enabled %}
                         <span class="status active">
-                            Aktív
+                            {{ _('Aktív') }}
                         </span>
                     {% else %}
                         <span class="status inactive">
-                            Inaktív
+                            {{ _('Inaktív') }}
                         </span>
                     {% endif %}
                 </td>
@@ -86,7 +86,7 @@
                             )
                         }}"
                     >
-                        Szerkesztés
+                        {{ _('Szerkesztés') }}
                     </a>
 
                     <a
@@ -98,7 +98,7 @@
                             )
                         }}"
                     >
-                        Jelszó
+                        {{ _('Jelszó') }}
                     </a>
 
                     <form
@@ -115,9 +115,9 @@
                             type="submit"
                         >
                             {% if user.is_enabled %}
-                                Inaktiválás
+                                {{ _('Inaktiválás') }}
                             {% else %}
-                                Aktiválás
+                                {{ _('Aktiválás') }}
                             {% endif %}
                         </button>
                     </form>

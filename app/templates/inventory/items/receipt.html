@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Bevételezés - {{ item.name }}
+    {{ _('Bevételezés -') }} {{ item.name }}
 {% endblock %}
 
 {% block content %}
 
 <div class="content-narrow">
 
-    <h1>Bevételezés</h1>
+    <h1>{{ _('Bevételezés') }}</h1>
 
     <p>
         <strong>{{ item.name }}</strong>
@@ -20,14 +20,14 @@
     >
 
         <label>
-            Tárhely
+            {{ _('Tárhely') }}
 
             <select
                 name="location_id"
                 required
             >
                 <option value="">
-                    — válassz —
+                    {{ _('— válassz —') }}
                 </option>
 
                 {% for location in locations %}
@@ -43,7 +43,7 @@
         </label>
 
         <label>
-            Mennyiség
+            {{ _('Mennyiség') }}
 
             <input
                 type="number"
@@ -54,7 +54,7 @@
         </label>
 
         <label>
-            Megjegyzés
+            {{ _('Megjegyzés') }}
 
             <textarea
                 name="note"
@@ -68,14 +68,14 @@
                 class="button primary"
                 type="submit"
             >
-                Bevételezés
+                {{ _('Bevételezés') }}
             </button>
 
 <a
     class="button"
     href="{{ back_url }}"
 >
-    Mégse
+    {{ _('Mégse') }}
 </a>
 
         </div>

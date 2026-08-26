@@ -1236,3 +1236,42 @@ h1 {
     height: 24px;
     flex: 0 0 24px;
 }
+
+.login-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.language-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 1;
+    opacity: 0.55;
+}
+
+.language-button:hover {
+    background: #f3f4f6;
+    opacity: 1;
+}
+
+.language-button.active {
+    border-color: #9ca3af;
+    background: white;
+    opacity: 1;
+}

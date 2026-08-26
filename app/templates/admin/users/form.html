@@ -2,9 +2,9 @@
 
 {% block title %}
     {% if user %}
-        Felhasználó szerkesztése
+        {{ _('Felhasználó szerkesztése') }}
     {% else %}
-        Új felhasználó
+        {{ _('Új felhasználó') }}
     {% endif %}
     - Heni Inventory
 {% endblock %}
@@ -15,9 +15,9 @@
 
     <h1>
         {% if user %}
-            Felhasználó szerkesztése
+            {{ _('Felhasználó szerkesztése') }}
         {% else %}
-            Új felhasználó
+            {{ _('Új felhasználó') }}
         {% endif %}
     </h1>
 
@@ -27,7 +27,7 @@
     >
 
         <label>
-            Felhasználónév
+            {{ _('Felhasználónév') }}
 
             <input
                 type="text"
@@ -46,7 +46,7 @@
         </label>
 
         <label>
-            Megjelenő név
+            {{ _('Megjelenő név') }}
 
             <input
                 type="text"
@@ -65,7 +65,7 @@
         </label>
 
         <label>
-            Szerepkör
+            {{ _('Szerepkör') }}
 
             <select
                 name="role"
@@ -98,7 +98,7 @@
         {% if not user %}
 
             <label>
-                Jelszó
+                {{ _('Jelszó') }}
 
                 <input
                     type="password"
@@ -109,7 +109,7 @@
             </label>
 
             <label>
-                Jelszó még egyszer
+                {{ _('Jelszó még egyszer') }}
 
                 <input
                     type="password"
@@ -127,14 +127,14 @@
                 class="button primary"
                 type="submit"
             >
-                Mentés
+                {{ _('Mentés') }}
             </button>
 
             <a
                 class="button"
                 href="{{ url_for('admin.users') }}"
             >
-                Mégse
+                {{ _('Mégse') }}
             </a>
 
         </div>

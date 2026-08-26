@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Korrekció - {{ item.name }}
+    {{ _('Korrekció -') }} {{ item.name }}
 {% endblock %}
 
 {% block content %}
 
 <div class="content-narrow">
 
-    <h1>Készletkorrekció</h1>
+    <h1>{{ _('Készletkorrekció') }}</h1>
 
     <p>
         <strong>{{ item.name }}</strong>
@@ -19,9 +19,9 @@
     </p>
 
     <div class="stock-current">
-        Rendszer szerinti készlet:
+        {{ _('Rendszer szerinti készlet:') }}
         <strong>
-            {{ stock.quantity }} db
+            {{ stock.quantity }} {{ _('db') }}
         </strong>
     </div>
 
@@ -31,7 +31,7 @@
     >
 
         <label>
-            Tényleges mennyiség
+            {{ _('Tényleges mennyiség') }}
 
             <input
                 type="number"
@@ -43,7 +43,7 @@
         </label>
 
         <label>
-            Megjegyzés
+            {{ _('Megjegyzés') }}
 
             <textarea
                 name="note"
@@ -57,14 +57,14 @@
                 class="button primary"
                 type="submit"
             >
-                Korrekció mentése
+                {{ _('Korrekció mentése') }}
             </button>
 
 <a
     class="button"
     href="{{ back_url }}"
 >
-    Mégse
+    {{ _('Mégse') }}
 </a>
 
         </div>

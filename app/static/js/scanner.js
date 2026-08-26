@@ -1,6 +1,18 @@
 (() => {
     "use strict";
 
+    const i18nElement = document.getElementById(
+        "scanner-i18n"
+    );
+
+    const i18n = i18nElement
+        ? i18nElement.dataset
+        : {};
+
+    function tr(key, fallback) {
+        return i18n[key] || fallback;
+    }
+
     const startButton = document.getElementById(
         "start-camera"
     );
@@ -81,7 +93,7 @@
         startButton.hidden = false;
 
         setStatus(
-            "A kamera leállítva."
+            tr("cameraStopped", "A kamera leállítva.")
         );
     }
 
@@ -111,7 +123,7 @@
         codeInput.value = value;
 
         setStatus(
-            `Kód felismerve: ${value}`
+            tr("codeDetected", "Kód felismerve: %(code)s").replace("%(code)s", value)
         );
 
         stopCamera();
@@ -164,7 +176,7 @@
 
         } catch (error) {
             console.error(
-                "Vonalkódfelismerési hiba:",
+                tr("detectorError", "Vonalkódfelismerési hiba:"),
                 error
             );
         }
@@ -182,8 +194,7 @@
             !("BarcodeDetector" in window)
         ) {
             throw new Error(
-                "A böngésző nem támogatja "
-                + "a BarcodeDetector API-t."
+                tr("noDetector", "A böngésző nem támogatja a BarcodeDetector API-t.")
             );
         }
 
@@ -208,8 +219,7 @@
 
         if (formats.length === 0) {
             throw new Error(
-                "A böngésző nem támogat "
-                + "használható vonalkódformátumot."
+                tr("noFormat", "A böngésző nem támogat használható vonalkódformátumot.")
             );
         }
 
@@ -229,8 +239,7 @@
                 .getUserMedia
         ) {
             setStatus(
-                "Ez a böngésző nem támogatja "
-                + "a kamerahasználatot."
+                tr("noCamera", "Ez a böngésző nem támogatja a kamerahasználatot.")
             );
 
             return;
@@ -239,7 +248,7 @@
         startButton.disabled = true;
 
         setStatus(
-            "Kamera indítása..."
+            tr("cameraStarting", "Kamera indítása...")
         );
 
         try {
@@ -273,15 +282,14 @@
             scanning = true;
 
             setStatus(
-                "Irányítsd a kamerát "
-                + "a vonalkódra."
+                tr("cameraAim", "Irányítsd a kamerát a vonalkódra.")
             );
 
             detectOnce();
 
         } catch (error) {
             console.error(
-                "Scanner indítási hiba:",
+                tr("scannerStartError", "Scanner indítási hiba:"),
                 error
             );
 
@@ -293,8 +301,7 @@
                 === "NotAllowedError"
             ) {
                 setStatus(
-                    "A kamera használata "
-                    + "nincs engedélyezve."
+                    tr("cameraNotAllowed", "A kamera használata nincs engedélyezve.")
                 );
 
             } else if (
@@ -303,13 +310,13 @@
                 === "NotFoundError"
             ) {
                 setStatus(
-                    "Nem található használható kamera."
+                    tr("cameraNotFound", "Nem található használható kamera.")
                 );
 
             } else {
                 setStatus(
                     error?.message
-                    || "A kamera nem indítható."
+                    || tr("cameraError", "A kamera nem indítható.")
                 );
             }
         } finally {

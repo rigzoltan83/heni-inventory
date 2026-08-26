@@ -1,6 +1,18 @@
 document.addEventListener(
     "DOMContentLoaded",
     () => {
+        const tree = document.querySelector(
+            ".location-tree"
+        );
+
+        const showTitle = tree
+            ? tree.dataset.treeShowTitle
+            : "Alárendelt helyek megjelenítése";
+
+        const hideTitle = tree
+            ? tree.dataset.treeHideTitle
+            : "Alárendelt helyek elrejtése";
+
         const rows = Array.from(
             document.querySelectorAll(
                 ".location-row[data-location-id]"
@@ -81,8 +93,8 @@ document.addEventListener(
 
                 toggle.title =
                     isExpanded
-                        ? "Alárendelt helyek elrejtése"
-                        : "Alárendelt helyek megjelenítése";
+                        ? hideTitle
+                        : showTitle;
             });
         };
 

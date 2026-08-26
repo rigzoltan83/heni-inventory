@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tárhelyek - Heni Inventory
+    {{ _('Tárhelyek - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,11 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Tárhelyek</h1>
+        <h1>{{ _('Tárhelyek') }}</h1>
 
         <p class="muted">
-            Helyiségek, polcok és tárhelyek
-            hierarchikus kezelése.
+            {{ _('Helyiségek, polcok és tárhelyek hierarchikus kezelése.') }}
         </p>
     </div>
 
@@ -24,7 +23,7 @@
     type="button"
     id="location-tree-expand-all"
 >
-    Mind kinyit
+    {{ _('Mind kinyit') }}
 </button>
 
 <button
@@ -32,28 +31,32 @@
     type="button"
     id="location-tree-collapse-all"
 >
-    Mind összecsuk
+    {{ _('Mind összecsuk') }}
 </button>
 
     <a
         class="button"
         href="{{ url_for('admin.location_labels') }}"
     >
-        Címkék nyomtatása
+        {{ _('Címkék nyomtatása') }}
     </a>
 
     <a
         class="button primary"
         href="{{ url_for('admin.location_new') }}"
     >
-        + Új helyiség / tárhely
+        {{ _('+ Új helyiség / tárhely') }}
     </a>
 
 </div>
 
 </div>
 
-<div class="location-tree">
+<div
+    class="location-tree"
+    data-tree-show-title="{{ _('Alárendelt helyek megjelenítése') }}"
+    data-tree-hide-title="{{ _('Alárendelt helyek elrejtése') }}"
+>
 
     {% for row in location_tree %}
 
@@ -96,7 +99,7 @@
             class="location-tree-toggle"
             type="button"
             aria-expanded="false"
-            title="Alárendelt helyek megjelenítése"
+            title="{{ _('Alárendelt helyek megjelenítése') }}"
         >
             ▶
         </button>
@@ -122,31 +125,31 @@
 
                     {% if location.location_type == "room" %}
                         <span class="type-badge">
-                            Helyiség
+                            {{ _('Helyiség') }}
                         </span>
                     {% elif location.location_type == "shelf" %}
                         <span class="type-badge">
-                            Polc
+                            {{ _('Polc') }}
                         </span>
                     {% else %}
                         <span class="type-badge">
-                            Tárhely
+                            {{ _('Tárhely') }}
                         </span>
                     {% endif %}
 
                     {% if location.can_hold_stock %}
                         <span class="status active">
-                            Készlet tárolható
+                            {{ _('Készlet tárolható') }}
                         </span>
                     {% else %}
                         <span class="status inactive">
-                            Csak csoport
+                            {{ _('Csak csoport') }}
                         </span>
                     {% endif %}
 
                     {% if not location.is_active %}
                         <span class="status inactive">
-                            Inaktív
+                            {{ _('Inaktív') }}
                         </span>
                     {% endif %}
 
@@ -165,7 +168,7 @@
                         )
                     }}"
                 >
-                    + Alárendelt hely
+                    {{ _('+ Alárendelt hely') }}
                 </a>
 
 <a
@@ -177,7 +180,7 @@
         )
     }}"
 >
-    Címke
+    {{ _('Címke') }}
 </a>
 
                 <a
@@ -189,7 +192,7 @@
                         )
                     }}"
                 >
-                    Szerkesztés
+                    {{ _('Szerkesztés') }}
                 </a>
 
                 <form
@@ -206,9 +209,9 @@
                         type="submit"
                     >
                         {% if location.is_active %}
-                            Inaktiválás
+                            {{ _('Inaktiválás') }}
                         {% else %}
-                            Aktiválás
+                            {{ _('Aktiválás') }}
                         {% endif %}
                     </button>
                 </form>
@@ -220,7 +223,7 @@
     {% else %}
 
         <div class="empty-state">
-            Még nincs létrehozott tárhely.
+            {{ _('Még nincs létrehozott tárhely.') }}
         </div>
 
     {% endfor %}

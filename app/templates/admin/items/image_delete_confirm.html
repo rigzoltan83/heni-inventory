@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Kép törlése - Heni Inventory
+    {{ _('Kép törlése - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
 
 <div class="content-narrow">
 
-    <h1>Kép törlése</h1>
+    <h1>{{ _('Kép törlése') }}</h1>
 
     <p>
         <strong>{{ item.name }}</strong>
@@ -30,7 +30,7 @@
     </div>
 
     <p>
-        Biztosan törlöd ezt a képet?
+        {{ _('Biztosan törlöd ezt a képet?') }}
     </p>
 
     <form
@@ -49,14 +49,14 @@
             class="button primary"
             type="submit"
         >
-            Törlés
+            {{ _('Törlés') }}
         </button>
 
         <a
             class="button"
             href="{{ back_url }}"
         >
-            Mégse
+            {{ _('Mégse') }}
         </a>
 
     </form>

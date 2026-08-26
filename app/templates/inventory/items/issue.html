@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Kiadás - {{ item.name }}
+    {{ _('Kiadás -') }} {{ item.name }}
 {% endblock %}
 
 {% block content %}
 
 <div class="content-narrow">
 
-    <h1>Kiadás</h1>
+    <h1>{{ _('Kiadás') }}</h1>
 
     <p>
         <strong>{{ item.name }}</strong>
@@ -16,9 +16,8 @@
 
     <p class="muted">
         {{ location.name }}
-        ·
-        jelenlegi készlet:
-        {{ stock.quantity }} db
+        {{ _('· jelenlegi készlet:') }}
+        {{ stock.quantity }} {{ _('db') }}
     </p>
 
     <form
@@ -27,7 +26,7 @@
     >
 
         <label>
-            Kiadandó mennyiség
+            {{ _('Kiadandó mennyiség') }}
 
             <input
                 type="number"
@@ -39,7 +38,7 @@
         </label>
 
         <label>
-            Megjegyzés
+            {{ _('Megjegyzés') }}
 
             <textarea
                 name="note"
@@ -53,14 +52,14 @@
                 class="button primary"
                 type="submit"
             >
-                Kiadás
+                {{ _('Kiadás') }}
             </button>
 
 <a
     class="button"
     href="{{ back_url }}"
 >
-    Mégse
+    {{ _('Mégse') }}
 </a>
 
         </div>

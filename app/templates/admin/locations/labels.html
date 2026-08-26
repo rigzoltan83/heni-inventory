@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tárhelycímkék - Heni Inventory
+    {{ _('Tárhelycímkék - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,11 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Tárhelycímkék</h1>
+        <h1>{{ _('Tárhelycímkék') }}</h1>
 
         <p class="muted">
-            Minden aktív tárhely nyomtatható
-            LOC-azonosítója.
+            {{ _('Minden aktív tárhely nyomtatható LOC-azonosítója.') }}
         </p>
     </div>
 
@@ -22,7 +21,7 @@
         type="button"
         onclick="window.print()"
     >
-        Nyomtatás
+        {{ _('Nyomtatás') }}
     </button>
 
 </div>
@@ -63,7 +62,7 @@
     {% else %}
 
         <div class="empty-state">
-            Nincs aktív tárhely.
+            {{ _('Nincs aktív tárhely.') }}
         </div>
 
     {% endfor %}

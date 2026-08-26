@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tételtípusok - Heni Inventory
+    {{ _('Tételtípusok - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,11 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Tételtípusok</h1>
+        <h1>{{ _('Tételtípusok') }}</h1>
 
         <p class="muted">
-            A rendszerben használható
-            tételtípusok kezelése.
+            {{ _('A rendszerben használható tételtípusok kezelése.') }}
         </p>
     </div>
 
@@ -21,7 +20,7 @@
         class="button primary"
         href="{{ url_for('admin.item_type_new') }}"
     >
-        + Új tételtípus
+        {{ _('+ Új tételtípus') }}
     </a>
 
 </div>
@@ -32,11 +31,11 @@
 
         <thead>
             <tr>
-                <th>Sorrend</th>
-                <th>Kód</th>
-                <th>Megnevezés</th>
-                <th>Állapot</th>
-                <th>Műveletek</th>
+                <th>{{ _('Sorrend') }}</th>
+                <th>{{ _('Kód') }}</th>
+                <th>{{ _('Megnevezés') }}</th>
+                <th>{{ _('Állapot') }}</th>
+                <th>{{ _('Műveletek') }}</th>
             </tr>
         </thead>
 
@@ -67,11 +66,11 @@
                 <td>
                     {% if item_type.is_active %}
                         <span class="status active">
-                            Aktív
+                            {{ _('Aktív') }}
                         </span>
                     {% else %}
                         <span class="status inactive">
-                            Inaktív
+                            {{ _('Inaktív') }}
                         </span>
                     {% endif %}
                 </td>
@@ -87,7 +86,7 @@
                             )
                         }}"
                     >
-                        Szerkesztés
+                        {{ _('Szerkesztés') }}
                     </a>
 
                     <form
@@ -105,9 +104,9 @@
                             type="submit"
                         >
                             {% if item_type.is_active %}
-                                Inaktiválás
+                                {{ _('Inaktiválás') }}
                             {% else %}
-                                Aktiválás
+                                {{ _('Aktiválás') }}
                             {% endif %}
                         </button>
 

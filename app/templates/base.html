@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="hu">
+<html lang="{{ get_locale() }}">
 <head>
     <meta charset="utf-8">
 
@@ -25,12 +25,12 @@
 <header class="topbar">
     <div class="topbar-inner">
 
-        <a
-            class="brand"
-            href="{{ url_for('main.index') }}"
-        >
-            Főmenü
-        </a>
+<a
+    class="brand"
+    href="{{ url_for('main.index') }}"
+>
+    {{ _("Főmenü") }}
+</a>
 
         <div class="topbar-spacer"></div>
 
@@ -51,7 +51,7 @@
                     class="button small"
                     type="submit"
                 >
-                    Kilépés
+{{ _("Kilépés") }}
                 </button>
             </form>
 
@@ -85,7 +85,7 @@
                 class="button back-button"
                 href="{{ back_url }}"
             >
-                ← Vissza
+← {{ _("Vissza") }}
             </a>
         </div>
     {% endif %}

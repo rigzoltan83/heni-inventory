@@ -9,11 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Adminisztráció</h1>
+        <h1>{{ _('Adminisztráció') }}</h1>
 
         <p class="muted">
-            A rendszer törzsadatainak és
-            beállításainak kezelése.
+            {{ _('A rendszer törzsadatainak és beállításainak kezelése.') }}
         </p>
     </div>
 
@@ -25,11 +24,10 @@
         class="admin-card"
         href="{{ url_for('admin.item_types') }}"
     >
-        <strong>Tételtípusok</strong>
+        <strong>{{ _('Tételtípusok') }}</strong>
 
         <span>
-            Könyv, társasjáték és további
-            tételtípusok kezelése.
+            {{ _('Könyv, társasjáték és további tételtípusok kezelése.') }}
         </span>
     </a>
 
@@ -37,10 +35,10 @@
     class="admin-card"
     href="{{ url_for('admin.locations') }}"
 >
-    <strong>Tárhelyek</strong>
+    <strong>{{ _('Tárhelyek') }}</strong>
 
     <span>
-        Helyiségek, polcok és tárhelyek kezelése.
+        {{ _('Helyiségek, polcok és tárhelyek kezelése.') }}
     </span>
 </a>
 
@@ -48,10 +46,10 @@
     class="admin-card"
     href="{{ url_for('admin.items') }}"
 >
-    <strong>Tételek</strong>
+    <strong>{{ _('Tételek') }}</strong>
 
     <span>
-        Könyvek, társasjátékok és egyéb tételek.
+        {{ _('Könyvek, társasjátékok és egyéb tételek.') }}
     </span>
 </a>
 
@@ -59,10 +57,10 @@
     class="admin-card"
     href="{{ url_for('admin.users') }}"
 >
-    <strong>Felhasználók</strong>
+    <strong>{{ _('Felhasználók') }}</strong>
 
     <span>
-        Admin / Editor / Viewer jogosultságok.
+        {{ _('Admin / Editor / Viewer jogosultságok.') }}
     </span>
 </a>
 

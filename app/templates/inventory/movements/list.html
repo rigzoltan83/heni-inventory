@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Mozgások - Heni Inventory
+    {{ _('Mozgások - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,10 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Mozgásnapló</h1>
+        <h1>{{ _('Mozgásnapló') }}</h1>
 
         <p class="muted">
-            Készletmozgások keresése és szűrése.
+            {{ _('Készletmozgások keresése és szűrése.') }}
         </p>
     </div>
 
@@ -32,7 +32,7 @@
                 )
             }}"
         >
-            CSV export
+            {{ _('CSV export') }}
         </a>
 
         <a
@@ -49,7 +49,7 @@
                 )
             }}"
         >
-            XLSX export
+            {{ _('XLSX export') }}
         </a>
 
     </div>
@@ -64,23 +64,23 @@
     <div class="movement-filter-grid">
 
         <label>
-            Tételnév
+            {{ _('Tételnév') }}
 
             <input
                 type="search"
                 name="q"
-                placeholder="Keresés tételnévre..."
+                placeholder="{{ _('Keresés tételnévre...') }}"
                 value="{{ search }}"
             >
         </label>
 
         <label>
-            Mozgástípus
+            {{ _('Mozgástípus') }}
 
             <select name="movement_type">
 
                 <option value="">
-                    — minden típus —
+                    {{ _('— minden típus —') }}
                 </option>
 
                 {% for value, label in movement_types %}
@@ -100,12 +100,12 @@
         </label>
 
         <label>
-            Tárhely
+            {{ _('Tárhely') }}
 
             <select name="location_id">
 
                 <option value="">
-                    — minden tárhely —
+                    {{ _('— minden tárhely —') }}
                 </option>
 
                 {% for location in locations %}
@@ -128,12 +128,12 @@
         </label>
 
         <label>
-            Felhasználó
+            {{ _('Felhasználó') }}
 
             <select name="user_id">
 
                 <option value="">
-                    — minden felhasználó —
+                    {{ _('— minden felhasználó —') }}
                 </option>
 
                 {% for user in users %}
@@ -156,7 +156,7 @@
         </label>
 
         <label>
-            Dátumtól
+            {{ _('Dátumtól') }}
 
             <input
                 type="date"
@@ -166,7 +166,7 @@
         </label>
 
         <label>
-            Dátumig
+            {{ _('Dátumig') }}
 
             <input
                 type="date"
@@ -183,7 +183,7 @@
             class="button primary"
             type="submit"
         >
-            Szűrés
+            {{ _('Szűrés') }}
         </button>
 
         {% if
@@ -199,7 +199,7 @@
                 class="button"
                 href="{{ url_for('inventory.movements') }}"
             >
-                Szűrés törlése
+                {{ _('Szűrés törlése') }}
             </a>
 
         {% endif %}
@@ -211,7 +211,7 @@
 <div class="stock-summary">
 
     <span>
-        Találatok száma
+        {{ _('Találatok száma') }}
     </span>
 
     <strong>
@@ -226,14 +226,14 @@
 
         <thead>
             <tr>
-                <th>Időpont</th>
-                <th>Tétel</th>
-                <th>Típus</th>
-                <th>Honnan</th>
-                <th>Hova</th>
-                <th>Mennyiség</th>
-                <th>Felhasználó</th>
-                <th>Megjegyzés</th>
+                <th>{{ _('Időpont') }}</th>
+                <th>{{ _('Tétel') }}</th>
+                <th>{{ _('Típus') }}</th>
+                <th>{{ _('Honnan') }}</th>
+                <th>{{ _('Hova') }}</th>
+                <th>{{ _('Mennyiség') }}</th>
+                <th>{{ _('Felhasználó') }}</th>
+                <th>{{ _('Megjegyzés') }}</th>
             </tr>
         </thead>
 
@@ -291,7 +291,7 @@
 
                 <td>
                     <strong>
-                        {{ row.quantity }} db
+                        {{ row.quantity }} {{ _('db') }}
                     </strong>
                 </td>
 
@@ -317,7 +317,7 @@
 
             <tr>
                 <td colspan="8">
-                    Nincs a szűrésnek megfelelő mozgás.
+                    {{ _('Nincs a szűrésnek megfelelő mozgás.') }}
                 </td>
             </tr>
 
@@ -350,13 +350,13 @@
                     )
                 }}"
             >
-                ← Előző
+                {{ _('← Előző') }}
             </a>
 
         {% endif %}
 
         <span class="pagination-info">
-            {{ page }} / {{ total_pages }} oldal
+            {{ page }} / {{ total_pages }} {{ _('oldal') }}
         </span>
 
         {% if page < total_pages %}
@@ -376,7 +376,7 @@
                     )
                 }}"
             >
-                Következő →
+                {{ _('Következő →') }}
             </a>
 
         {% endif %}

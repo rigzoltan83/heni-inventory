@@ -2,9 +2,9 @@
 
 {% block title %}
     {% if item_type %}
-        Tételtípus szerkesztése
+        {{ _('Tételtípus szerkesztése') }}
     {% else %}
-        Új tételtípus
+        {{ _('Új tételtípus') }}
     {% endif %}
     - Heni Inventory
 {% endblock %}
@@ -15,9 +15,9 @@
 
     <h1>
         {% if item_type %}
-            Tételtípus szerkesztése
+            {{ _('Tételtípus szerkesztése') }}
         {% else %}
-            Új tételtípus
+            {{ _('Új tételtípus') }}
         {% endif %}
     </h1>
 
@@ -27,7 +27,7 @@
     >
 
         <label>
-            Kód
+            {{ _('Kód') }}
 
             <input
                 type="text"
@@ -46,11 +46,11 @@
         </label>
 
         <p class="field-help">
-            Például BOOK vagy BOARD_GAME.
+            {{ _('Például BOOK vagy BOARD_GAME.') }}
         </p>
 
         <label>
-            Megnevezés
+            {{ _('Megnevezés') }}
 
             <input
                 type="text"
@@ -69,7 +69,7 @@
         </label>
 
         <label>
-            Sorrend
+            {{ _('Sorrend') }}
 
             <input
                 type="number"
@@ -91,14 +91,14 @@
                 class="button primary"
                 type="submit"
             >
-                Mentés
+                {{ _('Mentés') }}
             </button>
 
             <a
                 class="button"
                 href="{{ url_for('admin.item_types') }}"
             >
-                Mégse
+                {{ _('Mégse') }}
             </a>
 
         </div>

@@ -5,6 +5,7 @@ from flask import (
     redirect,
     render_template,
     request,
+    session,
     url_for,
 )
 from flask_login import (
@@ -12,9 +13,11 @@ from flask_login import (
     login_user,
     logout_user,
 )
+from flask_babel import gettext as _
 
 from . import auth_bp
 from ..models import User
+from ..extensions import db
 
 
 def is_safe_next_url(target):
@@ -47,6 +50,37 @@ def login():
             url_for("main.index")
         )
 
+    requested_language = (
+        request.values.get(
+            "lang",
+            "",
+        )
+        .strip()
+        .lower()
+    )
+
+    if requested_language in {
+        "hu",
+        "en",
+    }:
+        session[
+            "preferred_language"
+        ] = requested_language
+
+    selected_language = session.get(
+        "preferred_language",
+        "hu",
+    )
+
+    if selected_language not in {
+        "hu",
+        "en",
+    }:
+        selected_language = "hu"
+        session[
+            "preferred_language"
+        ] = selected_language
+
     if request.method == "POST":
         username = (
             request.form.get(
@@ -73,13 +107,27 @@ def login():
             or not user.check_password(password)
         ):
             flash(
-                "Hibás felhasználónév vagy jelszó.",
+                _(
+                    "Hibás felhasználónév vagy jelszó."
+                ),
                 "error",
             )
 
             return render_template(
                 "auth/login.html",
+                selected_language=(
+                    selected_language
+                ),
             )
+
+        if (
+            user.preferred_language
+            != selected_language
+        ):
+            user.preferred_language = (
+                selected_language
+            )
+            db.session.commit()
 
         login_user(user)
 
@@ -94,6 +142,7 @@ def login():
 
     return render_template(
         "auth/login.html",
+        selected_language=selected_language,
     )
 
 

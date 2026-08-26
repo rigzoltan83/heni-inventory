@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Készlet - Heni Inventory
+    {{ _('Készlet - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,10 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Összesített készlet</h1>
+        <h1>{{ _('Összesített készlet') }}</h1>
 
         <p class="muted">
-            Aktuális készlet tétel- és tárhelypozíciónként.
+            {{ _('Aktuális készlet tétel- és tárhelypozíciónként.') }}
         </p>
     </div>
 
@@ -28,7 +28,7 @@
             )
         }}"
     >
-        CSV export
+        {{ _('CSV export') }}
     </a>
 
     <a
@@ -41,7 +41,7 @@
             )
         }}"
     >
-        XLSX export
+        {{ _('XLSX export') }}
     </a>
 
 </div>
@@ -56,14 +56,14 @@
     <input
         type="search"
         name="q"
-        placeholder="Keresés tételre vagy tárhelyre..."
+        placeholder="{{ _('Keresés tételre vagy tárhelyre...') }}"
         value="{{ search }}"
     >
 
     <select name="location_id">
 
         <option value="">
-            — minden tárhely —
+            {{ _('— minden tárhely —') }}
         </option>
 
         {% for location in locations %}
@@ -87,7 +87,7 @@
         class="button primary"
         type="submit"
     >
-        Szűrés
+        {{ _('Szűrés') }}
     </button>
 
     {% if search or selected_location_id %}
@@ -96,7 +96,7 @@
             class="button"
             href="{{ url_for('inventory.stock') }}"
         >
-            Szűrés törlése
+            {{ _('Szűrés törlése') }}
         </a>
 
     {% endif %}
@@ -106,11 +106,11 @@
 <div class="stock-summary">
 
     <span>
-        A szűrés szerinti összes darabszám
+        {{ _('A szűrés szerinti összes darabszám') }}
     </span>
 
     <strong>
-        {{ total_quantity }} db
+        {{ total_quantity }} {{ _('db') }}
     </strong>
 
 </div>
@@ -121,11 +121,11 @@
 
         <thead>
             <tr>
-                <th>Tétel</th>
-                <th>Saját kód</th>
-                <th>Tárhely</th>
-                <th>Mennyiség</th>
-                <th>Műveletek</th>
+                <th>{{ _('Tétel') }}</th>
+                <th>{{ _('Saját kód') }}</th>
+                <th>{{ _('Tárhely') }}</th>
+                <th>{{ _('Mennyiség') }}</th>
+                <th>{{ _('Műveletek') }}</th>
             </tr>
         </thead>
 
@@ -163,7 +163,7 @@
 
                 <td>
                     <strong>
-                        {{ row.quantity }} db
+                        {{ row.quantity }} {{ _('db') }}
                     </strong>
                 </td>
 
@@ -183,7 +183,7 @@ return_to=url_for(
                             )
                         }}"
                     >
-                        Tétel
+                        {{ _('Tétel') }}
                     </a>
 
                     <a
@@ -200,7 +200,7 @@ return_to=url_for(
                             )
                         }}"
                     >
-                        Tárhely
+                        {{ _('Tárhely') }}
                     </a>
 
                 </td>
@@ -211,7 +211,7 @@ return_to=url_for(
 
             <tr>
                 <td colspan="5">
-                    Nincs a szűrésnek megfelelő készlet.
+                    {{ _('Nincs a szűrésnek megfelelő készlet.') }}
                 </td>
             </tr>
 

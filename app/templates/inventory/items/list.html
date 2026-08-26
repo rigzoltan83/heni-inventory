@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tételek - Heni Inventory
+    {{ _('Tételek - Heni Inventory') }}
 {% endblock %}
 
 {% block content %}
@@ -9,10 +9,10 @@
 <div class="page-header">
 
     <div>
-        <h1>Tételek</h1>
+        <h1>{{ _('Tételek') }}</h1>
 
         <p class="muted">
-            Aktív tételek és aktuális készletük.
+            {{ _('Aktív tételek és aktuális készletük.') }}
         </p>
     </div>
 
@@ -26,7 +26,7 @@
     <input
         type="search"
         name="q"
-        placeholder="Keresés megnevezésre..."
+        placeholder="{{ _('Keresés megnevezésre...') }}"
         value="{{ search }}"
     >
 
@@ -43,7 +43,7 @@
         >
 
         <span>
-            Van készlet
+            {{ _('Van készlet') }}
         </span>
 
     </label>
@@ -52,7 +52,7 @@
         class="button primary"
         type="submit"
     >
-        Keresés
+        {{ _('Keresés') }}
     </button>
 
     {% if search or has_stock %}
@@ -61,7 +61,7 @@
             class="button"
             href="{{ url_for('inventory.items') }}"
         >
-            Szűrés törlése
+            {{ _('Szűrés törlése') }}
         </a>
 
     {% endif %}
@@ -118,10 +118,10 @@
 
 <div class="inventory-total">
 
-    Összkészlet:
+    {{ _('Összkészlet:') }}
 
     <strong>
-        {{ total_quantity }} db
+        {{ total_quantity }} {{ _('db') }}
     </strong>
 
 </div>
@@ -146,7 +146,7 @@
         )
     }}"
 >
-    Címke
+    {{ _('Címke') }}
 </a>
 
             </div>
@@ -158,9 +158,9 @@
     <div class="empty-state">
 
         {% if search or has_stock %}
-            Nincs a szűrésnek megfelelő tétel.
+            {{ _('Nincs a szűrésnek megfelelő tétel.') }}
         {% else %}
-            Nincs aktív tétel.
+            {{ _('Nincs aktív tétel.') }}
         {% endif %}
 
     </div>

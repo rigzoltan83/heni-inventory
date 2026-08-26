@@ -2,9 +2,9 @@
 
 {% block title %}
     {% if item %}
-        Tétel szerkesztése
+        {{ _('Tétel szerkesztése') }}
     {% else %}
-        Új tétel
+        {{ _('Új tétel') }}
     {% endif %}
     - Heni Inventory
 {% endblock %}
@@ -15,15 +15,15 @@
 
     <h1>
         {% if item %}
-            Tétel szerkesztése
+            {{ _('Tétel szerkesztése') }}
         {% else %}
-            Új tétel
+            {{ _('Új tétel') }}
         {% endif %}
     </h1>
 
     {% if item %}
         <p class="muted">
-            Saját kód:
+            {{ _('Saját kód:') }}
             <strong>
                 {{ item.internal_code }}
             </strong>
@@ -37,7 +37,7 @@
 >
 
         <label>
-            Megnevezés
+            {{ _('Megnevezés') }}
 
             <input
                 type="text"
@@ -56,7 +56,7 @@
         </label>
 
         <label>
-            Tételtípus
+            {{ _('Tételtípus') }}
 
             {% set selected_type =
                 request.form.get(
@@ -72,7 +72,7 @@
                 required
             >
                 <option value="">
-                    — válassz —
+                    {{ _('— válassz —') }}
                 </option>
 
                 {% for item_type in item_types %}
@@ -95,7 +95,7 @@
         </label>
 
         <label>
-            Gyári vonalkód / azonosító
+            {{ _('Gyári vonalkód / azonosító') }}
 
             <input
                 type="text"
@@ -111,12 +111,11 @@
         </label>
 
         <p class="field-help">
-            Opcionális. A saját ITEM-kód minden
-            tételhez automatikusan létrejön.
+            {{ _('Opcionális. A saját ITEM-kód minden tételhez automatikusan létrejön.') }}
         </p>
 
         <label>
-            Megjegyzés
+            {{ _('Megjegyzés') }}
 
             <textarea
                 name="description"
@@ -136,15 +135,14 @@
 
     <div class="item-image-section">
 
-        <h2>Termékképek</h2>
+        <h2>{{ _('Termékképek') }}</h2>
 
         <p class="muted">
-            Opcionális. Új kép feltöltásához válassz fájlt,
-            majd mentsd el a tételt.
+            {{ _('Opcionális. Új kép feltöltásához válassz fájlt, majd mentsd el a tételt.') }}
         </p>
 
 <label>
-    Fotó készítése
+    {{ _('Fotó készítése') }}
 
     <input
         type="file"
@@ -155,7 +153,7 @@
 </label>
 
 <label>
-    Kép(ek) kiválasztása
+    {{ _('Kép(ek) kiválasztása') }}
 
     <input
         type="file"
@@ -194,7 +192,7 @@
         )
     }}"
 >
-    Törlés
+    {{ _('Törlés') }}
 </a>
 
                     </div>
@@ -215,14 +213,14 @@
                 class="button primary"
                 type="submit"
             >
-                Mentés
+                {{ _('Mentés') }}
             </button>
 
             <a
                 class="button"
                 href="{{ url_for('admin.items') }}"
             >
-                Mégse
+                {{ _('Mégse') }}
             </a>
 
         </div>

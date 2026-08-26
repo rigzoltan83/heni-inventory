@@ -9,6 +9,7 @@ from flask import (
     request,
     url_for,
 )
+from flask_babel import gettext as _
 from flask_login import (
     current_user,
     login_required,
@@ -286,7 +287,7 @@ def item_receipt(item_id):
             )
 
             flash(
-                "A bevételezés megtörtént.",
+                _("A bevételezés megtörtént."),
                 "success",
             )
 
@@ -381,7 +382,7 @@ def item_move(
             )
 
             flash(
-                "Az áthelyezés megtörtént.",
+                _("Az áthelyezés megtörtént."),
                 "success",
             )
 
@@ -461,7 +462,7 @@ def item_issue(
             )
 
             flash(
-                "A kiadás megtörtént.",
+                _("A kiadás megtörtént."),
                 "success",
             )
 
@@ -540,7 +541,7 @@ def item_correct(
             )
 
             flash(
-                "A készletkorrekció megtörtént.",
+                _("A készletkorrekció megtörtént."),
                 "success",
             )
 
@@ -709,7 +710,7 @@ def location_receipt(location_id):
 
     if not location.is_active:
         flash(
-            "Inaktív tárhely nem használható.",
+            _("Inaktív tárhely nem használható."),
             "error",
         )
 
@@ -717,7 +718,7 @@ def location_receipt(location_id):
 
     if not location.can_hold_stock:
         flash(
-            "Ezen a helyen nem tárolható készlet.",
+            _("Ezen a helyen nem tárolható készlet."),
             "error",
         )
 
@@ -786,7 +787,7 @@ def location_receipt(location_id):
             )
 
             flash(
-                "A készletfelvitel megtörtént.",
+                _("A készletfelvitel megtörtént."),
                 "success",
             )
 
@@ -834,7 +835,7 @@ def scanner():
 
         if not code:
             flash(
-                "Adj meg vagy olvass be egy kódot.",
+                _("Adj meg vagy olvass be egy kódot."),
                 "error",
             )
 
@@ -926,7 +927,7 @@ def scanner():
             )
 
         flash(
-            f"Ismeretlen kód: {code}",
+            _("Ismeretlen kód: %(code)s", code=code),
             "error",
         )
 
@@ -975,12 +976,12 @@ def stock_export_csv():
 
     writer.writerow(
         [
-            "Tétel",
-            "Saját kód",
-            "Típus",
-            "Tárhely",
-            "Tárhelykód",
-            "Mennyiség",
+            _("Tétel"),
+            _("Saját kód"),
+            _("Típus"),
+            _("Tárhely"),
+            _("Tárhelykód"),
+            _("Mennyiség"),
         ]
     )
 
@@ -1049,7 +1050,7 @@ def stock_export_xlsx():
     )
 
     worksheet = workbook.add_worksheet(
-        "Készlet"
+        _("Készlet")
     )
 
     header_format = workbook.add_format(
@@ -1078,12 +1079,12 @@ def stock_export_xlsx():
     )
 
     headers = [
-        "Tétel",
-        "Saját kód",
-        "Típus",
-        "Tárhely",
-        "Tárhelykód",
-        "Mennyiség",
+        _("Tétel"),
+        _("Saját kód"),
+        _("Típus"),
+        _("Tárhely"),
+        _("Tárhelykód"),
+        _("Mennyiség"),
     ]
 
     for column, header in enumerate(
@@ -1306,6 +1307,16 @@ MOVEMENT_TYPE_LABELS = {
 }
 
 
+
+def _movement_translation_markers():
+    return (
+        _("Bevételezés"),
+        _("Áthelyezés"),
+        _("Kiadás"),
+        _("Korrekció +"),
+        _("Korrekció −"),
+    )
+
 def movement_type_display(
     movement_type,
 ):
@@ -1315,6 +1326,8 @@ def movement_type_display(
 
     if not label:
         return movement_type
+
+    label = _(label)
 
     return (
         f"{movement_type} "
@@ -1511,7 +1524,7 @@ def movements():
     movement_types = [
         (
             value,
-            label,
+            _(label),
         )
         for value, label
         in MOVEMENT_TYPE_LABELS.items()
@@ -1678,15 +1691,15 @@ def movements_export_csv():
 
     writer.writerow(
         [
-            "Időpont",
-            "Tétel",
-            "Saját kód",
-            "Mozgástípus",
-            "Honnan",
-            "Hova",
-            "Mennyiség",
-            "Felhasználó",
-            "Megjegyzés",
+            _("Időpont"),
+            _("Tétel"),
+            _("Saját kód"),
+            _("Mozgástípus"),
+            _("Honnan"),
+            _("Hova"),
+            _("Mennyiség"),
+            _("Felhasználó"),
+            _("Megjegyzés"),
         ]
     )
 
@@ -1842,7 +1855,7 @@ def movements_export_xlsx():
     )
 
     worksheet = workbook.add_worksheet(
-        "Mozgások"
+        _("Mozgások")
     )
 
     header_format = workbook.add_format(
@@ -1871,15 +1884,15 @@ def movements_export_xlsx():
     )
 
     headers = [
-        "Időpont",
-        "Tétel",
-        "Saját kód",
-        "Mozgástípus",
-        "Honnan",
-        "Hova",
-        "Mennyiség",
-        "Felhasználó",
-        "Megjegyzés",
+        _("Időpont"),
+        _("Tétel"),
+        _("Saját kód"),
+        _("Mozgástípus"),
+        _("Honnan"),
+        _("Hova"),
+        _("Mennyiség"),
+        _("Felhasználó"),
+        _("Megjegyzés"),
     ]
 
     for column, header in enumerate(

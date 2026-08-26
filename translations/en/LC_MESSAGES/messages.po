@@ -1,0 +1,1278 @@
+# English translations for Heni Inventory.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the Heni Inventory
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Heni Inventory VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-08-26 08:50+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/image_service.py:66
+msgid "A kiválasztott fájl nem feldolgozható kép."
+msgstr "The selected file is not a processable image."
+
+#: app/image_service.py:76
+msgid "Nincs kiválasztott képfájl."
+msgstr "No image file selected."
+
+#: app/image_service.py:95
+msgid "Csak JPG, JPEG, PNG vagy WebP kép tölthető fel."
+msgstr "Only JPG, JPEG, PNG or WebP images can be uploaded."
+
+#: app/image_service.py:155
+msgid "A kép mentése sikertelen."
+msgstr "Failed to save the image."
+
+#: app/inventory_service.py:23
+msgid "A mennyiség csak egész szám lehet."
+msgstr "Quantity must be an integer."
+
+#: app/inventory_service.py:28
+msgid "A mennyiségnek pozitívnak kell lennie."
+msgstr "Quantity must be positive."
+
+#: app/inventory_service.py:42
+msgid "A tétel nem található."
+msgstr "Item not found."
+
+#: app/inventory_service.py:47
+msgid "Inaktív tételen nem végezhető készletmozgás."
+msgstr "Inventory movements cannot be performed on an inactive item."
+
+#: app/inventory_service.py:61
+msgid "A tárhely nem található."
+msgstr "Location not found."
+
+#: app/inventory/routes.py:713 app/inventory_service.py:66
+msgid "Inaktív tárhely nem használható."
+msgstr "Inactive locations cannot be used."
+
+#: app/inventory/routes.py:721 app/inventory_service.py:71
+msgid "Ezen a helyen nem tárolható készlet."
+msgstr "Inventory cannot be stored at this location."
+
+#: app/inventory_service.py:174
+msgid "A forrás és a cél tárhely nem lehet azonos."
+msgstr "Source and destination locations cannot be the same."
+
+#: app/inventory_service.py:190
+msgid "A forrás tárhelyen nincs ebből a tételből készlet."
+msgstr "There is no inventory of this item at the source location."
+
+#: app/inventory_service.py:195
+msgid "Nincs elegendő készlet a forrás tárhelyen."
+msgstr "Insufficient inventory at the source location."
+
+#: app/inventory_service.py:261
+msgid "Ezen a tárhelyen nincs ebből a tételből készlet."
+msgstr "There is no inventory of this item at this location."
+
+#: app/inventory_service.py:266
+msgid "Nincs elegendő készlet a kiadáshoz."
+msgstr "Insufficient inventory for the issue."
+
+#: app/inventory_service.py:312
+msgid "A tényleges mennyiség csak egész szám lehet."
+msgstr "Actual quantity must be an integer."
+
+#: app/inventory_service.py:317
+msgid "A tényleges mennyiség nem lehet negatív."
+msgstr "Actual quantity cannot be negative."
+
+#: app/inventory_service.py:336
+msgid "A megadott mennyiség megegyezik a jelenlegi készlettel."
+msgstr "The entered quantity is the same as the current inventory."
+
+#: app/admin/routes.py:98
+msgid "A kód megadása kötelező."
+msgstr "Code is required."
+
+#: app/admin/routes.py:110
+msgid "A megnevezés megadása kötelező."
+msgstr "Name is required."
+
+#: app/admin/routes.py:126 app/admin/routes.py:230 app/admin/routes.py:759
+#: app/admin/routes.py:893
+msgid "A sorrend csak egész szám lehet."
+msgstr "Order must be an integer."
+
+#: app/admin/routes.py:144 app/admin/routes.py:251
+msgid "Ez a tételtípus-kód már létezik."
+msgstr "This item type code already exists."
+
+#: app/admin/routes.py:165
+msgid "A tételtípus létrejött."
+msgstr "Item type created."
+
+#: app/admin/routes.py:214
+msgid "A kód és a megnevezés kötelező."
+msgstr "Code and name are required."
+
+#: app/admin/routes.py:268
+msgid "A tételtípus módosítva."
+msgstr "Item type updated."
+
+#: app/admin/routes.py:303
+msgid "A tételtípus aktiválva."
+msgstr "Item type activated."
+
+#: app/admin/routes.py:307
+msgid "A tételtípus inaktiválva."
+msgstr "Item type deactivated."
+
+#: app/admin/routes.py:371 app/admin/routes.py:475
+msgid "A felhasználónév kötelező."
+msgstr "Username is required."
+
+#: app/admin/routes.py:376 app/admin/routes.py:480
+msgid "A megjelenő név kötelező."
+msgstr "Display name is required."
+
+#: app/admin/routes.py:381 app/admin/routes.py:485
+msgid "Érvénytelen szerepkör."
+msgstr "Invalid role."
+
+#: app/admin/routes.py:386 app/admin/routes.py:586
+msgid "A jelszó legalább 8 karakter legyen."
+msgstr "Password must be at least 8 characters."
+
+#: app/admin/routes.py:391 app/admin/routes.py:591
+msgid "A két jelszó nem egyezik."
+msgstr "The passwords do not match."
+
+#: app/admin/routes.py:401 app/admin/routes.py:490
+msgid "Ez a felhasználónév már létezik."
+msgstr "This username already exists."
+
+#: app/admin/routes.py:418
+msgid "A felhasználó létrejött."
+msgstr "User created."
+
+#: app/admin/routes.py:501
+msgid "A felhasználó módosítva."
+msgstr "User updated."
+
+#: app/admin/routes.py:535
+msgid "A saját felhasználódat nem inaktiválhatod."
+msgstr "You cannot deactivate your own user account."
+
+#: app/admin/routes.py:551
+msgid "A felhasználó aktiválva."
+msgstr "User activated."
+
+#: app/admin/routes.py:553
+msgid "A felhasználó inaktiválva."
+msgstr "User deactivated."
+
+#: app/admin/routes.py:599
+msgid "A jelszó módosítva."
+msgstr "Password changed."
+
+#: app/admin/routes.py:739 app/admin/routes.py:873 app/admin/routes.py:1151
+#: app/admin/routes.py:1297
+#, fuzzy
+msgid "A megnevezés kötelező."
+msgstr "Name is required."
+
+#: app/admin/routes.py:748 app/admin/routes.py:882
+msgid "Érvénytelen tárhelytípus."
+msgstr "Invalid location type."
+
+#: app/admin/routes.py:796
+msgid "A tárhely létrejött."
+msgstr "Location created."
+
+#: app/admin/routes.py:926
+msgid "Egy tárhely nem lehet saját maga szülője."
+msgstr "A location cannot be its own parent."
+
+#: app/admin/routes.py:947
+msgid "A tárhely módosítva."
+msgstr "Location updated."
+
+#: app/admin/routes.py:993
+msgid "A tárhely aktiválva."
+msgstr "Location activated."
+
+#: app/admin/routes.py:995
+msgid "A tárhely inaktiválva."
+msgstr "Location deactivated."
+
+#: app/admin/routes.py:1157 app/admin/routes.py:1303
+msgid "A tételtípus kiválasztása kötelező."
+msgstr "Selecting an item type is required."
+
+#: app/admin/routes.py:1172 app/admin/routes.py:1329
+msgid "Érvénytelen tételtípus."
+msgstr "Invalid item type."
+
+#: app/admin/routes.py:1186 app/admin/routes.py:1335
+msgid "Ez a vonalkód már egy másik tételhez tartozik."
+msgstr "This barcode already belongs to another item."
+
+#: app/admin/routes.py:1218
+#, python-format
+msgid "A tétel létrejött. Saját kód: %(code)s"
+msgstr "Item created. Internal code: %(code)s"
+
+#: app/admin/routes.py:1467
+msgid "A tétel módosítva."
+msgstr "Item updated."
+
+#: app/admin/routes.py:1521
+msgid "A kép törölve."
+msgstr "Image deleted."
+
+#: app/admin/routes.py:1551
+msgid "A tétel aktiválva."
+msgstr "Item activated."
+
+#: app/admin/routes.py:1553
+msgid "A tétel inaktiválva."
+msgstr "Item deactivated."
+
+#: app/admin/routes.py:1633
+msgid "A darabszám legalább 1 legyen."
+msgstr "Quantity must be at least 1."
+
+#: app/admin/routes.py:1641
+msgid "Egyszerre legfeljebb 200 címke nyomtatható."
+msgstr "A maximum of 200 labels can be printed at once."
+
+#: app/auth/routes.py:111
+msgid "Hibás felhasználónév vagy jelszó."
+msgstr "Incorrect username or password."
+
+#: app/inventory/routes.py:290
+msgid "A bevételezés megtörtént."
+msgstr "Receipt completed."
+
+#: app/inventory/routes.py:385
+msgid "Az áthelyezés megtörtént."
+msgstr "Transfer completed."
+
+#: app/inventory/routes.py:465
+msgid "A kiadás megtörtént."
+msgstr "Issue completed."
+
+#: app/inventory/routes.py:544
+msgid "A készletkorrekció megtörtént."
+msgstr "Inventory correction completed."
+
+#: app/inventory/routes.py:790
+msgid "A készletfelvitel megtörtént."
+msgstr "Inventory receipt completed."
+
+#: app/inventory/routes.py:838
+msgid "Adj meg vagy olvass be egy kódot."
+msgstr "Enter or scan a code."
+
+#: app/inventory/routes.py:930
+#, python-format
+msgid "Ismeretlen kód: %(code)s"
+msgstr "Unknown code: %(code)s"
+
+#: app/inventory/routes.py:979 app/inventory/routes.py:1082
+#: app/inventory/routes.py:1695 app/inventory/routes.py:1888
+#: app/templates/inventory/locations/receipt.html:51
+#: app/templates/inventory/locations/stock.html:98
+#: app/templates/inventory/movements/list.html:230
+#: app/templates/inventory/stock/list.html:124
+#: app/templates/inventory/stock/list.html:186
+msgid "Tétel"
+msgstr "Item"
+
+#: app/inventory/routes.py:980 app/inventory/routes.py:1083
+#: app/inventory/routes.py:1696 app/inventory/routes.py:1889
+#: app/templates/admin/items/list.html:34
+#: app/templates/inventory/stock/list.html:125
+msgid "Saját kód"
+msgstr "Internal code"
+
+#: app/inventory/routes.py:981 app/inventory/routes.py:1084
+#: app/templates/admin/items/list.html:36
+#: app/templates/admin/locations/form.html:49
+#: app/templates/inventory/movements/list.html:231
+msgid "Típus"
+msgstr "Type"
+
+#: app/inventory/routes.py:982 app/inventory/routes.py:1085
+#: app/templates/admin/locations/form.html:92
+#: app/templates/admin/locations/list.html:136
+#: app/templates/inventory/items/receipt.html:23
+#: app/templates/inventory/movements/list.html:103
+#: app/templates/inventory/stock/list.html:126
+#: app/templates/inventory/stock/list.html:203
+msgid "Tárhely"
+msgstr "Location"
+
+#: app/inventory/routes.py:983 app/inventory/routes.py:1086
+msgid "Tárhelykód"
+msgstr "Location code"
+
+#: app/inventory/routes.py:984 app/inventory/routes.py:1087
+#: app/inventory/routes.py:1700 app/inventory/routes.py:1893
+#: app/templates/inventory/items/move.html:53
+#: app/templates/inventory/items/receipt.html:46
+#: app/templates/inventory/locations/receipt.html:77
+#: app/templates/inventory/movements/list.html:234
+#: app/templates/inventory/stock/list.html:127
+msgid "Mennyiség"
+msgstr "Quantity"
+
+#: app/inventory/routes.py:1053 app/templates/index.html:67
+msgid "Készlet"
+msgstr "Inventory"
+
+#: app/inventory/routes.py:1313 app/templates/inventory/items/receipt.html:11
+#: app/templates/inventory/items/receipt.html:71
+msgid "Bevételezés"
+msgstr "Receipt"
+
+#: app/inventory/routes.py:1314 app/templates/inventory/items/move.html:11
+#: app/templates/inventory/items/move.html:79
+#: app/templates/inventory/items/stock.html:161
+#: app/templates/inventory/locations/stock.html:114
+msgid "Áthelyezés"
+msgstr "Transfer"
+
+#: app/inventory/routes.py:1315 app/templates/inventory/items/issue.html:11
+#: app/templates/inventory/items/issue.html:55
+#: app/templates/inventory/items/stock.html:175
+#: app/templates/inventory/locations/stock.html:128
+msgid "Kiadás"
+msgstr "Issue"
+
+#: app/inventory/routes.py:1316
+msgid "Korrekció +"
+msgstr "Correction +"
+
+#: app/inventory/routes.py:1317
+msgid "Korrekció −"
+msgstr "Correction −"
+
+#: app/inventory/routes.py:1694 app/inventory/routes.py:1887
+#: app/templates/inventory/movements/list.html:229
+msgid "Időpont"
+msgstr "Timestamp"
+
+#: app/inventory/routes.py:1697 app/inventory/routes.py:1890
+#: app/templates/inventory/movements/list.html:78
+msgid "Mozgástípus"
+msgstr "Movement type"
+
+#: app/inventory/routes.py:1698 app/inventory/routes.py:1891
+#: app/templates/inventory/movements/list.html:232
+msgid "Honnan"
+msgstr "From"
+
+#: app/inventory/routes.py:1699 app/inventory/routes.py:1892
+#: app/templates/inventory/movements/list.html:233
+msgid "Hova"
+msgstr "To"
+
+#: app/inventory/routes.py:1701 app/inventory/routes.py:1894
+#: app/templates/inventory/movements/list.html:131
+#: app/templates/inventory/movements/list.html:235
+msgid "Felhasználó"
+msgstr "User"
+
+#: app/inventory/routes.py:1702 app/inventory/routes.py:1895
+#: app/templates/admin/items/form.html:118
+#: app/templates/inventory/items/correct.html:46
+#: app/templates/inventory/items/issue.html:41
+#: app/templates/inventory/items/move.html:65
+#: app/templates/inventory/items/receipt.html:57
+#: app/templates/inventory/locations/receipt.html:88
+#: app/templates/inventory/movements/list.html:236
+msgid "Megjegyzés"
+msgstr "Note"
+
+#: app/inventory/routes.py:1858 app/templates/index.html:80
+msgid "Mozgások"
+msgstr "Movements"
+
+#: app/templates/base.html:32
+msgid "Főmenü"
+msgstr "Main menu"
+
+#: app/templates/base.html:54
+msgid "Kilépés"
+msgstr "Log out"
+
+#: app/templates/base.html:88
+msgid "Vissza"
+msgstr "Back"
+
+#: app/templates/index.html:15
+msgid "Készlet- és tárhelynyilvántartás."
+msgstr "Inventory and location management."
+
+#: app/templates/index.html:28 app/templates/inventory/scanner.html:29
+msgid "Scanner"
+msgstr "Scanner"
+
+#: app/templates/index.html:32
+msgid "Tétel vagy tárhely beolvasása."
+msgstr "Scan an item or location."
+
+#: app/templates/admin/index.html:49 app/templates/admin/items/list.html:12
+#: app/templates/index.html:41 app/templates/inventory/items/list.html:12
+msgid "Tételek"
+msgstr "Items"
+
+#: app/templates/index.html:45
+msgid "Tétel kiválasztása és készletműveletek."
+msgstr "Select an item and perform inventory operations."
+
+#: app/templates/admin/index.html:38 app/templates/admin/locations/list.html:12
+#: app/templates/index.html:54 app/templates/inventory/locations/list.html:12
+msgid "Tárhelyek"
+msgstr "Locations"
+
+#: app/templates/index.html:58
+msgid "Tárhely kiválasztása és az ott lévő készlet kezelése."
+msgstr "Select a location and manage its inventory."
+
+#: app/templates/index.html:71
+msgid "Összesített készlet tétel- és tárhelypozíciónként."
+msgstr "Consolidated inventory by item and location."
+
+#: app/templates/index.html:84
+msgid "Bevételezések, áthelyezések, kiadások és korrekciók naplója."
+msgstr "Log of receipts, transfers, issues and corrections."
+
+#: app/templates/admin/index.html:12 app/templates/index.html:95
+msgid "Adminisztráció"
+msgstr "Administration"
+
+#: app/templates/index.html:99
+msgid "Törzsadatok és felhasználók kezelése."
+msgstr "Manage master data and users."
+
+#: app/templates/admin/index.html:15
+msgid "A rendszer törzsadatainak és beállításainak kezelése."
+msgstr "Manage system master data and settings."
+
+#: app/templates/admin/index.html:27
+#: app/templates/admin/item_types/list.html:12
+msgid "Tételtípusok"
+msgstr "Item types"
+
+#: app/templates/admin/index.html:30
+msgid "Könyv, társasjáték és további tételtípusok kezelése."
+msgstr "Manage books, board games and other item types."
+
+#: app/templates/admin/index.html:41
+msgid "Helyiségek, polcok és tárhelyek kezelése."
+msgstr "Manage rooms, shelves and storage locations."
+
+#: app/templates/admin/index.html:52
+msgid "Könyvek, társasjátékok és egyéb tételek."
+msgstr "Books, board games and other items."
+
+#: app/templates/admin/index.html:60 app/templates/admin/users/list.html:12
+msgid "Felhasználók"
+msgstr "Users"
+
+#: app/templates/admin/index.html:63
+msgid "Admin / Editor / Viewer jogosultságok."
+msgstr "Admin / Editor / Viewer permissions."
+
+#: app/templates/admin/item_types/form.html:5
+#: app/templates/admin/item_types/form.html:18
+msgid "Tételtípus szerkesztése"
+msgstr "Edit item type"
+
+#: app/templates/admin/item_types/form.html:7
+#: app/templates/admin/item_types/form.html:20
+msgid "Új tételtípus"
+msgstr "New item type"
+
+#: app/templates/admin/item_types/form.html:30
+#: app/templates/admin/item_types/list.html:35
+#: app/templates/inventory/scanner.html:89
+msgid "Kód"
+msgstr "Code"
+
+#: app/templates/admin/item_types/form.html:49
+msgid "Például BOOK vagy BOARD_GAME."
+msgstr "For example BOOK or BOARD_GAME."
+
+#: app/templates/admin/item_types/form.html:53
+#: app/templates/admin/item_types/list.html:36
+#: app/templates/admin/items/form.html:40
+#: app/templates/admin/items/list.html:35
+#: app/templates/admin/locations/form.html:30
+msgid "Megnevezés"
+msgstr "Name"
+
+#: app/templates/admin/item_types/form.html:72
+#: app/templates/admin/item_types/list.html:34
+#: app/templates/admin/locations/form.html:140
+msgid "Sorrend"
+msgstr "Order"
+
+#: app/templates/admin/item_types/form.html:94
+#: app/templates/admin/items/form.html:216
+#: app/templates/admin/locations/form.html:193
+#: app/templates/admin/users/form.html:130
+msgid "Mentés"
+msgstr "Save"
+
+#: app/templates/admin/item_types/form.html:101
+#: app/templates/admin/items/form.html:223
+#: app/templates/admin/items/image_delete_confirm.html:59
+#: app/templates/admin/items/label_quantity.html:53
+#: app/templates/admin/locations/form.html:200
+#: app/templates/admin/users/form.html:137
+#: app/templates/admin/users/password.html:59
+#: app/templates/inventory/items/correct.html:67
+#: app/templates/inventory/items/issue.html:62
+#: app/templates/inventory/items/move.html:86
+#: app/templates/inventory/items/receipt.html:78
+#: app/templates/inventory/locations/receipt.html:109
+msgid "Mégse"
+msgstr "Cancel"
+
+#: app/templates/admin/item_types/list.html:4
+msgid "Tételtípusok - Heni Inventory"
+msgstr "Item types - Heni Inventory"
+
+#: app/templates/admin/item_types/list.html:15
+msgid "A rendszerben használható tételtípusok kezelése."
+msgstr "Manage item types available in the system."
+
+#: app/templates/admin/item_types/list.html:23
+msgid "+ Új tételtípus"
+msgstr "+ New item type"
+
+#: app/templates/admin/item_types/list.html:37
+#: app/templates/admin/items/list.html:38
+#: app/templates/admin/users/list.html:37
+msgid "Állapot"
+msgstr "Status"
+
+#: app/templates/admin/item_types/list.html:38
+#: app/templates/admin/items/list.html:39
+#: app/templates/admin/users/list.html:38
+#: app/templates/inventory/stock/list.html:128
+msgid "Műveletek"
+msgstr "Actions"
+
+#: app/templates/admin/item_types/list.html:69
+#: app/templates/admin/items/list.html:88
+#: app/templates/admin/users/list.html:69
+msgid "Aktív"
+msgstr "Active"
+
+#: app/templates/admin/item_types/list.html:73
+#: app/templates/admin/items/list.html:92
+#: app/templates/admin/locations/list.html:152
+#: app/templates/admin/users/list.html:73
+msgid "Inaktív"
+msgstr "Inactive"
+
+#: app/templates/admin/item_types/list.html:89
+#: app/templates/admin/items/list.html:108
+#: app/templates/admin/locations/list.html:195
+#: app/templates/admin/users/list.html:89
+msgid "Szerkesztés"
+msgstr "Edit"
+
+#: app/templates/admin/item_types/list.html:107
+#: app/templates/admin/items/list.html:137
+#: app/templates/admin/locations/list.html:212
+#: app/templates/admin/users/list.html:118
+msgid "Inaktiválás"
+msgstr "Deactivate"
+
+#: app/templates/admin/item_types/list.html:109
+#: app/templates/admin/items/list.html:139
+#: app/templates/admin/locations/list.html:214
+#: app/templates/admin/users/list.html:120
+msgid "Aktiválás"
+msgstr "Activate"
+
+#: app/templates/admin/items/form.html:5 app/templates/admin/items/form.html:18
+msgid "Tétel szerkesztése"
+msgstr "Edit item"
+
+#: app/templates/admin/items/form.html:7 app/templates/admin/items/form.html:20
+msgid "Új tétel"
+msgstr "New item"
+
+#: app/templates/admin/items/form.html:26
+#: app/templates/admin/items/label_quantity.html:18
+msgid "Saját kód:"
+msgstr "Internal code:"
+
+#: app/templates/admin/items/form.html:59
+msgid "Tételtípus"
+msgstr "Item type"
+
+#: app/templates/admin/items/form.html:75
+#: app/templates/inventory/items/move.html:37
+#: app/templates/inventory/items/receipt.html:30
+#: app/templates/inventory/locations/receipt.html:58
+msgid "— válassz —"
+msgstr "— select —"
+
+#: app/templates/admin/items/form.html:98
+msgid "Gyári vonalkód / azonosító"
+msgstr "Manufacturer barcode / identifier"
+
+#: app/templates/admin/items/form.html:114
+msgid "Opcionális. A saját ITEM-kód minden tételhez automatikusan létrejön."
+msgstr "Optional. An internal ITEM code is created automatically for every item."
+
+#: app/templates/admin/items/form.html:138
+msgid "Termékképek"
+msgstr "Item images"
+
+#: app/templates/admin/items/form.html:141
+msgid "Opcionális. Új kép feltöltásához válassz fájlt, majd mentsd el a tételt."
+msgstr "Optional. Select a file to upload a new image, then save the item."
+
+#: app/templates/admin/items/form.html:145
+msgid "Fotó készítése"
+msgstr "Take photo"
+
+#: app/templates/admin/items/form.html:156
+msgid "Kép(ek) kiválasztása"
+msgstr "Select image(s)"
+
+#: app/templates/admin/items/form.html:195
+#: app/templates/admin/items/image_delete_confirm.html:52
+msgid "Törlés"
+msgstr "Delete"
+
+#: app/templates/admin/items/image_delete_confirm.html:4
+msgid "Kép törlése - Heni Inventory"
+msgstr "Delete image - Heni Inventory"
+
+#: app/templates/admin/items/image_delete_confirm.html:11
+msgid "Kép törlése"
+msgstr "Delete image"
+
+#: app/templates/admin/items/image_delete_confirm.html:33
+msgid "Biztosan törlöd ezt a képet?"
+msgstr "Are you sure you want to delete this image?"
+
+#: app/templates/admin/items/label_print.html:4
+msgid "címkék"
+msgstr "labels"
+
+#: app/templates/admin/items/label_print.html:16
+#: app/templates/admin/locations/label.html:15
+#: app/templates/admin/locations/labels.html:24
+msgid "Nyomtatás"
+msgstr "Print"
+
+#: app/templates/admin/items/label_quantity.html:4
+msgid "Tételcímke - Heni Inventory"
+msgstr "Item label - Heni Inventory"
+
+#: app/templates/admin/items/label_quantity.html:11
+msgid "Tételcímke nyomtatása"
+msgstr "Print item label"
+
+#: app/templates/admin/items/label_quantity.html:28
+msgid "Címkék száma"
+msgstr "Number of labels"
+
+#: app/templates/admin/items/label_quantity.html:46
+msgid "Nyomtatási előnézet"
+msgstr "Print preview"
+
+#: app/templates/admin/items/list.html:4
+#: app/templates/inventory/items/list.html:4
+msgid "Tételek - Heni Inventory"
+msgstr "Items - Heni Inventory"
+
+#: app/templates/admin/items/list.html:15
+msgid "Könyvek, társasjátékok és egyéb nyilvántartott tételek."
+msgstr "Books, board games and other registered items."
+
+#: app/templates/admin/items/list.html:23
+msgid "+ Új tétel"
+msgstr "+ New item"
+
+#: app/templates/admin/items/list.html:37
+msgid "Gyári kód"
+msgstr "Manufacturer code"
+
+#: app/templates/admin/items/list.html:120
+#: app/templates/admin/locations/list.html:183
+#: app/templates/inventory/items/list.html:149
+#: app/templates/inventory/items/stock.html:90
+msgid "Címke"
+msgstr "Label"
+
+#: app/templates/admin/items/list.html:152
+msgid "Még nincs tétel."
+msgstr "No items yet."
+
+#: app/templates/admin/locations/form.html:5
+#: app/templates/admin/locations/form.html:18
+msgid "Tárhely szerkesztése"
+msgstr "Edit location"
+
+#: app/templates/admin/locations/form.html:7
+#: app/templates/admin/locations/form.html:20
+msgid "Új tárhely"
+msgstr "New location"
+
+#: app/templates/admin/locations/form.html:74
+#: app/templates/admin/locations/list.html:128
+msgid "Helyiség"
+msgstr "Room"
+
+#: app/templates/admin/locations/form.html:83
+#: app/templates/admin/locations/list.html:132
+msgid "Polc"
+msgstr "Shelf"
+
+#: app/templates/admin/locations/form.html:98
+msgid "Szülő"
+msgstr "Parent"
+
+#: app/templates/admin/locations/form.html:116
+msgid "— nincs, felső szint —"
+msgstr "— none, top level —"
+
+#: app/templates/admin/locations/form.html:182
+msgid "Készlet tárolható ezen a helyen"
+msgstr "Inventory can be stored at this location"
+
+#: app/templates/admin/locations/label.html:4
+msgid "címke"
+msgstr "label"
+
+#: app/templates/admin/locations/labels.html:4
+msgid "Tárhelycímkék - Heni Inventory"
+msgstr "Location labels - Heni Inventory"
+
+#: app/templates/admin/locations/labels.html:12
+msgid "Tárhelycímkék"
+msgstr "Location labels"
+
+#: app/templates/admin/locations/labels.html:15
+msgid "Minden aktív tárhely nyomtatható LOC-azonosítója."
+msgstr "Printable LOC identifiers for all active locations."
+
+#: app/templates/admin/locations/labels.html:65
+#: app/templates/inventory/locations/list.html:121
+msgid "Nincs aktív tárhely."
+msgstr "No active locations."
+
+#: app/templates/admin/locations/list.html:4
+#: app/templates/inventory/locations/list.html:4
+msgid "Tárhelyek - Heni Inventory"
+msgstr "Locations - Heni Inventory"
+
+#: app/templates/admin/locations/list.html:15
+msgid "Helyiségek, polcok és tárhelyek hierarchikus kezelése."
+msgstr "Hierarchical management of rooms, shelves and storage locations."
+
+#: app/templates/admin/locations/list.html:26
+msgid "Mind kinyit"
+msgstr "Expand all"
+
+#: app/templates/admin/locations/list.html:34
+msgid "Mind összecsuk"
+msgstr "Collapse all"
+
+#: app/templates/admin/locations/list.html:41
+msgid "Címkék nyomtatása"
+msgstr "Print labels"
+
+#: app/templates/admin/locations/list.html:48
+msgid "+ Új helyiség / tárhely"
+msgstr "+ New room / location"
+
+#: app/templates/admin/locations/list.html:57
+#: app/templates/admin/locations/list.html:102
+msgid "Alárendelt helyek megjelenítése"
+msgstr "Show child locations"
+
+#: app/templates/admin/locations/list.html:58
+msgid "Alárendelt helyek elrejtése"
+msgstr "Hide child locations"
+
+#: app/templates/admin/locations/list.html:142
+msgid "Készlet tárolható"
+msgstr "Can hold inventory"
+
+#: app/templates/admin/locations/list.html:146
+msgid "Csak csoport"
+msgstr "Group only"
+
+#: app/templates/admin/locations/list.html:171
+msgid "+ Alárendelt hely"
+msgstr "+ Child location"
+
+#: app/templates/admin/locations/list.html:226
+msgid "Még nincs létrehozott tárhely."
+msgstr "No locations have been created yet."
+
+#: app/templates/admin/users/form.html:5 app/templates/admin/users/form.html:18
+msgid "Felhasználó szerkesztése"
+msgstr "Edit user"
+
+#: app/templates/admin/users/form.html:7 app/templates/admin/users/form.html:20
+msgid "Új felhasználó"
+msgstr "New user"
+
+#: app/templates/admin/users/form.html:30
+#: app/templates/admin/users/list.html:34 app/templates/auth/login.html:78
+msgid "Felhasználónév"
+msgstr "Username"
+
+#: app/templates/admin/users/form.html:49
+#: app/templates/admin/users/list.html:35
+msgid "Megjelenő név"
+msgstr "Display name"
+
+#: app/templates/admin/users/form.html:68
+#: app/templates/admin/users/list.html:36
+msgid "Szerepkör"
+msgstr "Role"
+
+#: app/templates/admin/users/form.html:101
+#: app/templates/admin/users/list.html:101 app/templates/auth/login.html:90
+msgid "Jelszó"
+msgstr "Password"
+
+#: app/templates/admin/users/form.html:112
+msgid "Jelszó még egyszer"
+msgstr "Password again"
+
+#: app/templates/admin/users/list.html:4
+msgid "Felhasználók - Heni Inventory"
+msgstr "Users - Heni Inventory"
+
+#: app/templates/admin/users/list.html:15
+msgid "Felhasználók és jogosultságok kezelése."
+msgstr "Manage users and permissions."
+
+#: app/templates/admin/users/list.html:23
+msgid "+ Új felhasználó"
+msgstr "+ New user"
+
+#: app/templates/admin/users/password.html:4
+msgid "Jelszó módosítása - Heni Inventory"
+msgstr "Change password - Heni Inventory"
+
+#: app/templates/admin/users/password.html:11
+msgid "Jelszó módosítása"
+msgstr "Change password"
+
+#: app/templates/admin/users/password.html:14
+msgid "Felhasználó:"
+msgstr "User:"
+
+#: app/templates/admin/users/password.html:25
+msgid "Új jelszó"
+msgstr "New password"
+
+#: app/templates/admin/users/password.html:36
+msgid "Új jelszó még egyszer"
+msgstr "New password again"
+
+#: app/templates/admin/users/password.html:52
+msgid "Jelszó mentése"
+msgstr "Save password"
+
+#: app/templates/auth/login.html:4 app/templates/auth/login.html:14
+#: app/templates/auth/login.html:106
+msgid "Bejelentkezés"
+msgstr "Login"
+
+#: app/templates/auth/login.html:36 app/templates/auth/login.html:37
+msgid "Magyar"
+msgstr "Hungarian"
+
+#: app/templates/auth/login.html:56 app/templates/auth/login.html:57
+msgid "English"
+msgstr "English"
+
+#: app/templates/inventory/scanner.html:12
+msgid "A kamera leállítva."
+msgstr "Camera stopped."
+
+#: app/templates/inventory/scanner.html:13
+msgid "Kód felismerve: __CODE__"
+msgstr "Code detected: __CODE__"
+
+#: app/templates/inventory/scanner.html:14
+msgid "Vonalkódfelismerési hiba:"
+msgstr "Barcode detection error:"
+
+#: app/templates/inventory/scanner.html:15
+msgid "A böngésző nem támogatja a BarcodeDetector API-t."
+msgstr "This browser does not support the BarcodeDetector API."
+
+#: app/templates/inventory/scanner.html:16
+msgid "A böngésző nem támogat használható vonalkódformátumot."
+msgstr "This browser does not support a usable barcode format."
+
+#: app/templates/inventory/scanner.html:17
+msgid "Ez a böngésző nem támogatja a kamerahasználatot."
+msgstr "This browser does not support camera access."
+
+#: app/templates/inventory/scanner.html:18
+msgid "Kamera indítása..."
+msgstr "Starting camera..."
+
+#: app/templates/inventory/scanner.html:19
+msgid "Kamera aktív. Irányítsd a kódra."
+msgstr "Camera active. Point it at the code."
+
+#: app/templates/inventory/scanner.html:20
+msgid "Irányítsd a kamerát a vonalkódra."
+msgstr ""
+
+#: app/templates/inventory/scanner.html:21
+#, fuzzy
+msgid "Scanner indítási hiba:"
+msgstr "Start camera"
+
+#: app/templates/inventory/scanner.html:22
+msgid "A kamera használata nincs engedélyezve."
+msgstr ""
+
+#: app/templates/inventory/scanner.html:23
+msgid "Nem található használható kamera."
+msgstr ""
+
+#: app/templates/inventory/scanner.html:24
+msgid "A kamera nem indítható."
+msgstr "The camera could not be started."
+
+#: app/templates/inventory/scanner.html:32
+msgid "Tétel- vagy tárhelykód beolvasása."
+msgstr "Scan an item or location code."
+
+#: app/templates/inventory/scanner.html:42
+msgid "Kamera indítása"
+msgstr "Start camera"
+
+#: app/templates/inventory/scanner.html:51
+msgid "Kamera leállítása"
+msgstr "Stop camera"
+
+#: app/templates/inventory/scanner.html:77
+msgid "A kamera még nincs elindítva."
+msgstr "The camera has not been started yet."
+
+#: app/templates/inventory/scanner.html:110
+msgid "Megnyitás"
+msgstr "Open"
+
+#: app/templates/inventory/scanner.html:120
+msgid "Felismerhető:"
+msgstr "Recognized formats:"
+
+#: app/templates/inventory/scanner.html:125
+msgid "saját tételkód:"
+msgstr "internal item code:"
+
+#: app/templates/inventory/scanner.html:130
+msgid "saját tárhelykód:"
+msgstr "internal location code:"
+
+#: app/templates/inventory/scanner.html:135
+msgid "gyári EAN / ISBN / egyéb vonalkód"
+msgstr "manufacturer EAN / ISBN / other barcode"
+
+#: app/templates/inventory/items/correct.html:4
+msgid "Korrekció -"
+msgstr "Correction -"
+
+#: app/templates/inventory/items/correct.html:11
+msgid "Készletkorrekció"
+msgstr "Inventory correction"
+
+#: app/templates/inventory/items/correct.html:22
+msgid "Rendszer szerinti készlet:"
+msgstr "Recorded inventory:"
+
+#: app/templates/inventory/items/correct.html:24
+#: app/templates/inventory/items/issue.html:20
+#: app/templates/inventory/items/list.html:124
+#: app/templates/inventory/items/move.html:21
+#: app/templates/inventory/items/stock.html:121
+#: app/templates/inventory/items/stock.html:145
+#: app/templates/inventory/locations/list.html:102
+#: app/templates/inventory/locations/stock.html:57
+#: app/templates/inventory/locations/stock.html:83
+#: app/templates/inventory/movements/list.html:294
+#: app/templates/inventory/stock/list.html:113
+#: app/templates/inventory/stock/list.html:166
+msgid "db"
+msgstr "pcs"
+
+#: app/templates/inventory/items/correct.html:34
+msgid "Tényleges mennyiség"
+msgstr "Actual quantity"
+
+#: app/templates/inventory/items/correct.html:60
+msgid "Korrekció mentése"
+msgstr "Save correction"
+
+#: app/templates/inventory/items/issue.html:4
+msgid "Kiadás -"
+msgstr "Issue -"
+
+#: app/templates/inventory/items/issue.html:19
+#: app/templates/inventory/items/move.html:20
+msgid "· jelenlegi készlet:"
+msgstr "· current inventory:"
+
+#: app/templates/inventory/items/issue.html:29
+msgid "Kiadandó mennyiség"
+msgstr "Quantity to issue"
+
+#: app/templates/inventory/items/list.html:15
+msgid "Aktív tételek és aktuális készletük."
+msgstr "Active items and their current inventory."
+
+#: app/templates/inventory/items/list.html:29
+msgid "Keresés megnevezésre..."
+msgstr "Search by name..."
+
+#: app/templates/inventory/items/list.html:46
+#: app/templates/inventory/locations/list.html:46
+msgid "Van készlet"
+msgstr "In stock"
+
+#: app/templates/inventory/items/list.html:55
+#: app/templates/inventory/locations/list.html:55
+#: app/templates/inventory/locations/receipt.html:39
+msgid "Keresés"
+msgstr "Search"
+
+#: app/templates/inventory/items/list.html:64
+#: app/templates/inventory/locations/list.html:64
+#: app/templates/inventory/movements/list.html:202
+#: app/templates/inventory/stock/list.html:99
+msgid "Szűrés törlése"
+msgstr "Clear filters"
+
+#: app/templates/inventory/items/list.html:121
+msgid "Összkészlet:"
+msgstr "Total inventory:"
+
+#: app/templates/inventory/items/list.html:161
+msgid "Nincs a szűrésnek megfelelő tétel."
+msgstr "No items match the filter."
+
+#: app/templates/inventory/items/list.html:163
+msgid "Nincs aktív tétel."
+msgstr "No active items."
+
+#: app/templates/inventory/items/move.html:4
+msgid "Áthelyezés -"
+msgstr "Transfer -"
+
+#: app/templates/inventory/items/move.html:18
+msgid "Forrás:"
+msgstr "Source:"
+
+#: app/templates/inventory/items/move.html:30
+msgid "Cél tárhely"
+msgstr "Destination location"
+
+#: app/templates/inventory/items/receipt.html:4
+msgid "Bevételezés -"
+msgstr "Receipt -"
+
+#: app/templates/inventory/items/stock.html:4
+msgid "készlete"
+msgstr "inventory"
+
+#: app/templates/inventory/items/stock.html:37
+msgid "Kép nagyítása"
+msgstr "Enlarge image"
+
+#: app/templates/inventory/items/stock.html:64
+msgid "Bezárás"
+msgstr "Close"
+
+#: app/templates/inventory/items/stock.html:105
+msgid "+ Bevételezés"
+msgstr "+ Receipt"
+
+#: app/templates/inventory/items/stock.html:117
+msgid "Összes készlet"
+msgstr "Total inventory"
+
+#: app/templates/inventory/items/stock.html:189
+#: app/templates/inventory/locations/stock.html:142
+msgid "Korrekció"
+msgstr "Correction"
+
+#: app/templates/inventory/items/stock.html:199
+msgid "A tételből jelenleg nincs készlet."
+msgstr "This item currently has no inventory."
+
+#: app/templates/inventory/locations/list.html:15
+msgid "Tárhely kiválasztása és aktuális készletének megtekintése."
+msgstr "Select a location and view its current inventory."
+
+#: app/templates/inventory/locations/list.html:29
+msgid "Keresés tárhelynévre..."
+msgstr "Search by location name..."
+
+#: app/templates/inventory/locations/list.html:100
+msgid "tétel ·"
+msgstr "item ·"
+
+#: app/templates/inventory/locations/list.html:119
+msgid "Nincs a szűrésnek megfelelő tárhely."
+msgstr "No locations match the filter."
+
+#: app/templates/inventory/locations/receipt.html:4
+#: app/templates/inventory/locations/receipt.html:11
+msgid "Tétel készletre vétele"
+msgstr "Receive item into inventory"
+
+#: app/templates/inventory/locations/receipt.html:31
+msgid "Tétel keresése..."
+msgstr "Search for item..."
+
+#: app/templates/inventory/locations/receipt.html:102
+msgid "Készletre vétel"
+msgstr "Receive into inventory"
+
+#: app/templates/inventory/locations/receipt.html:119
+msgid ""
+"Ha a tétel még nem létezik a törzsben, előbb az Admin → Tételek alatt "
+"kell létrehozni."
+msgstr "If the item does not exist yet, create it first under Admin → Items."
+
+#: app/templates/inventory/locations/stock.html:43
+msgid "+ Tétel készletre vétele"
+msgstr "+ Receive item into inventory"
+
+#: app/templates/inventory/locations/stock.html:53
+msgid "Összes darabszám ezen a helyen"
+msgstr "Total quantity at this location"
+
+#: app/templates/inventory/locations/stock.html:154
+msgid "Ezen a tárhelyen jelenleg nincs készlet."
+msgstr "There is currently no inventory at this location."
+
+#: app/templates/inventory/movements/list.html:4
+msgid "Mozgások - Heni Inventory"
+msgstr "Movements - Heni Inventory"
+
+#: app/templates/inventory/movements/list.html:12
+msgid "Mozgásnapló"
+msgstr "Movement log"
+
+#: app/templates/inventory/movements/list.html:15
+msgid "Készletmozgások keresése és szűrése."
+msgstr "Search and filter inventory movements."
+
+#: app/templates/inventory/movements/list.html:35
+#: app/templates/inventory/stock/list.html:31
+msgid "CSV export"
+msgstr "CSV export"
+
+#: app/templates/inventory/movements/list.html:52
+#: app/templates/inventory/stock/list.html:44
+msgid "XLSX export"
+msgstr "XLSX export"
+
+#: app/templates/inventory/movements/list.html:67
+msgid "Tételnév"
+msgstr "Item name"
+
+#: app/templates/inventory/movements/list.html:72
+msgid "Keresés tételnévre..."
+msgstr "Search by item name..."
+
+#: app/templates/inventory/movements/list.html:83
+msgid "— minden típus —"
+msgstr "— all types —"
+
+#: app/templates/inventory/movements/list.html:108
+#: app/templates/inventory/stock/list.html:66
+msgid "— minden tárhely —"
+msgstr "— all locations —"
+
+#: app/templates/inventory/movements/list.html:136
+msgid "— minden felhasználó —"
+msgstr "— all users —"
+
+#: app/templates/inventory/movements/list.html:159
+msgid "Dátumtól"
+msgstr "Date from"
+
+#: app/templates/inventory/movements/list.html:169
+msgid "Dátumig"
+msgstr "Date to"
+
+#: app/templates/inventory/movements/list.html:186
+#: app/templates/inventory/stock/list.html:90
+msgid "Szűrés"
+msgstr "Filter"
+
+#: app/templates/inventory/movements/list.html:214
+msgid "Találatok száma"
+msgstr "Number of results"
+
+#: app/templates/inventory/movements/list.html:320
+msgid "Nincs a szűrésnek megfelelő mozgás."
+msgstr "No movements match the filter."
+
+#: app/templates/inventory/movements/list.html:353
+msgid "← Előző"
+msgstr "← Previous"
+
+#: app/templates/inventory/movements/list.html:359
+msgid "oldal"
+msgstr "page"
+
+#: app/templates/inventory/movements/list.html:379
+msgid "Következő →"
+msgstr "Next →"
+
+#: app/templates/inventory/stock/list.html:4
+msgid "Készlet - Heni Inventory"
+msgstr "Inventory - Heni Inventory"
+
+#: app/templates/inventory/stock/list.html:12
+msgid "Összesített készlet"
+msgstr "Consolidated inventory"
+
+#: app/templates/inventory/stock/list.html:15
+msgid "Aktuális készlet tétel- és tárhelypozíciónként."
+msgstr "Current inventory by item and location."
+
+#: app/templates/inventory/stock/list.html:59
+msgid "Keresés tételre vagy tárhelyre..."
+msgstr "Search for item or location..."
+
+#: app/templates/inventory/stock/list.html:109
+msgid "A szűrés szerinti összes darabszám"
+msgstr "Total quantity for current filter"
+
+#: app/templates/inventory/stock/list.html:214
+msgid "Nincs a szűrésnek megfelelő készlet."
+msgstr "No inventory matches the filter."
+

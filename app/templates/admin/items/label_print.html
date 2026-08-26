@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ item.internal_code }} címkék
+    {{ item.internal_code }} {{ _('címkék') }}
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
         type="button"
         onclick="window.print()"
     >
-        Nyomtatás
+        {{ _('Nyomtatás') }}
     </button>
 
 </div>

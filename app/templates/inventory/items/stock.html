@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ item.name }} készlete
+    {{ item.name }} {{ _('készlete') }}
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,7 @@
                         image_id=image.id
                     )
                 }}"
-                aria-label="Kép nagyítása"
+                aria-label="{{ _('Kép nagyítása') }}"
             >
                 <img
                     src="{{
@@ -61,7 +61,7 @@
         <button
             class="item-image-viewer-close"
             type="button"
-            aria-label="Bezárás"
+            aria-label="{{ _('Bezárás') }}"
         >
             ×
         </button>
@@ -87,7 +87,7 @@
             )
         }}"
     >
-        Címke
+        {{ _('Címke') }}
     </a>
 
     {% if current_user.can_edit %}
@@ -102,7 +102,7 @@
                 )
             }}"
         >
-            + Bevételezés
+            {{ _('+ Bevételezés') }}
         </a>
 
     {% endif %}
@@ -114,11 +114,11 @@
 <div class="stock-summary">
 
     <span>
-        Összes készlet
+        {{ _('Összes készlet') }}
     </span>
 
     <strong>
-        {{ total_quantity }} db
+        {{ total_quantity }} {{ _('db') }}
     </strong>
 
 </div>
@@ -142,7 +142,7 @@
             </div>
 
             <div class="stock-position-quantity">
-                {{ position.quantity }} db
+                {{ position.quantity }} {{ _('db') }}
             </div>
 
             <div class="stock-position-actions">
@@ -158,7 +158,7 @@
         )
     }}"
 >
-    Áthelyezés
+    {{ _('Áthelyezés') }}
 </a>
 
 <a
@@ -172,7 +172,7 @@
         )
     }}"
 >
-    Kiadás
+    {{ _('Kiadás') }}
 </a>
 
 <a
@@ -186,7 +186,7 @@
         )
     }}"
 >
-    Korrekció
+    {{ _('Korrekció') }}
 </a>
 
             </div>
@@ -196,7 +196,7 @@
     {% else %}
 
         <div class="empty-state">
-            A tételből jelenleg nincs készlet.
+            {{ _('A tételből jelenleg nincs készlet.') }}
         </div>
 
     {% endfor %}
