@@ -23,6 +23,10 @@ def create_app():
         "SECRET_KEY"
     ]
 
+    app.config["SESSION_COOKIE_NAME"] = (
+        "heni_inventory_session"
+    )
+
     app.config[
         "SQLALCHEMY_DATABASE_URI"
     ] = os.environ[
