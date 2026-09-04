@@ -53,6 +53,25 @@ Garage
 
 Stock is tracked at the item/location level, so the same item can exist in several places.
 
+
+## Screenshots
+
+### Dashboard
+
+![Username's Inventory dashboard](docs/screenshots/dashboard.png)
+
+### Stock
+
+![Inventory stock view](docs/screenshots/stock.png)
+
+### Locations
+
+![Hierarchical storage locations](docs/screenshots/locations.png)
+
+### Movements
+
+![Inventory movement history](docs/screenshots/movements.png)
+
 ## Technology
 
 - Python
