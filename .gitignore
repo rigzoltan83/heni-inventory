@@ -25,3 +25,6 @@ import_initial_stock.py
 
 # Public environment template
 !.env.example
+
+# Local production integration test
+test_inventory.py

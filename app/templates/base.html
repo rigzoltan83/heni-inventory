@@ -1,5 +1,12 @@
 <!doctype html>
 <html lang="{{ get_locale() }}">
+
+{% set inventory_brand =
+    current_user.username ~ "'s Inventory"
+    if current_user.is_authenticated
+    else "Username's Inventory"
+%}
+
 <head>
     <meta charset="utf-8">
 
@@ -10,7 +17,7 @@
 
     <title>
         {% block title %}
-            Username's Inventory
+            {{ inventory_brand }}
         {% endblock %}
     </title>
 

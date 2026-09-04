@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Username's Inventory
+    {{ inventory_brand }}
 {% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
 <div class="page-header">
 
     <div>
-        <h1>Username's Inventory</h1>
+        <h1>{{ inventory_brand }}</h1>
 
 <p class="muted">
     {{ _("Készlet- és tárhelynyilvántartás.") }}
