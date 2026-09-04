@@ -22,3 +22,6 @@ uploads/
 backup.sh
 
 import_initial_stock.py
+
+# Public environment template
+!.env.example

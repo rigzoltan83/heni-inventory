@@ -1,0 +1,26 @@
+[Unit]
+Description=Username's Inventory Flask Application
+After=network.target
+
+[Service]
+Type=simple
+
+# Adjust these values for your installation.
+User=inventory
+Group=inventory
+
+WorkingDirectory=/opt/username-inventory
+EnvironmentFile=/opt/username-inventory/.env
+
+ExecStart=/opt/username-inventory/venv/bin/gunicorn \
+    --workers 2 \
+    --bind 127.0.0.1:5070 \
+    --access-logfile - \
+    --error-logfile - \
+    run:app
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

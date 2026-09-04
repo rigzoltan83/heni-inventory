@@ -37,8 +37,20 @@ def create_app():
         "SQLALCHEMY_TRACK_MODIFICATIONS"
     ] = False
 
+    default_upload_folder = os.path.abspath(
+        os.path.join(
+            app.root_path,
+            "..",
+            "uploads",
+            "items",
+        )
+    )
+
     app.config["ITEM_UPLOAD_FOLDER"] = (
-        "/opt/heni-inventory/uploads/items"
+        os.environ.get(
+            "ITEM_UPLOAD_FOLDER",
+            default_upload_folder,
+        )
     )
 
     app.config["MAX_CONTENT_LENGTH"] = (
