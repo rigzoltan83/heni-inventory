@@ -18,3 +18,7 @@ Thumbs.db
 .idea/
 
 uploads/
+
+backup.sh
+
+import_initial_stock.py
