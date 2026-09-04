@@ -545,7 +545,7 @@ msgid "Mégse"
 msgstr ""
 
 #: app/templates/admin/item_types/list.html:4
-msgid "Tételtípusok - Heni Inventory"
+msgid "Tételtípusok - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/item_types/list.html:15
@@ -657,7 +657,7 @@ msgid "Törlés"
 msgstr ""
 
 #: app/templates/admin/items/image_delete_confirm.html:4
-msgid "Kép törlése - Heni Inventory"
+msgid "Kép törlése - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/items/image_delete_confirm.html:11
@@ -679,7 +679,7 @@ msgid "Nyomtatás"
 msgstr ""
 
 #: app/templates/admin/items/label_quantity.html:4
-msgid "Tételcímke - Heni Inventory"
+msgid "Tételcímke - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/items/label_quantity.html:11
@@ -696,7 +696,7 @@ msgstr ""
 
 #: app/templates/admin/items/list.html:4
 #: app/templates/inventory/items/list.html:4
-msgid "Tételek - Heni Inventory"
+msgid "Tételek - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/items/list.html:15
@@ -759,7 +759,7 @@ msgid "címke"
 msgstr ""
 
 #: app/templates/admin/locations/labels.html:4
-msgid "Tárhelycímkék - Heni Inventory"
+msgid "Tárhelycímkék - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/locations/labels.html:12
@@ -777,7 +777,7 @@ msgstr ""
 
 #: app/templates/admin/locations/list.html:4
 #: app/templates/inventory/locations/list.html:4
-msgid "Tárhelyek - Heni Inventory"
+msgid "Tárhelyek - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/locations/list.html:15
@@ -858,7 +858,7 @@ msgid "Jelszó még egyszer"
 msgstr ""
 
 #: app/templates/admin/users/list.html:4
-msgid "Felhasználók - Heni Inventory"
+msgid "Felhasználók - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/users/list.html:15
@@ -870,7 +870,7 @@ msgid "+ Új felhasználó"
 msgstr ""
 
 #: app/templates/admin/users/password.html:4
-msgid "Jelszó módosítása - Heni Inventory"
+msgid "Jelszó módosítása - Username's Inventory"
 msgstr ""
 
 #: app/templates/admin/users/password.html:11
@@ -1173,7 +1173,7 @@ msgid "Ezen a tárhelyen jelenleg nincs készlet."
 msgstr ""
 
 #: app/templates/inventory/movements/list.html:4
-msgid "Mozgások - Heni Inventory"
+msgid "Mozgások - Username's Inventory"
 msgstr ""
 
 #: app/templates/inventory/movements/list.html:12
@@ -1249,7 +1249,7 @@ msgid "Következő →"
 msgstr ""
 
 #: app/templates/inventory/stock/list.html:4
-msgid "Készlet - Heni Inventory"
+msgid "Készlet - Username's Inventory"
 msgstr ""
 
 #: app/templates/inventory/stock/list.html:12

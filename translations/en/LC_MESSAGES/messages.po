@@ -1,12 +1,12 @@
-# English translations for Heni Inventory.
+# English translations for Username's Inventory.
 # Copyright (C) 2026 ORGANIZATION
-# This file is distributed under the same license as the Heni Inventory
+# This file is distributed under the same license as the Username's Inventory
 # project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Heni Inventory VERSION\n"
+"Project-Id-Version: Username's Inventory VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-26 08:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -547,8 +547,8 @@ msgid "Mégse"
 msgstr "Cancel"
 
 #: app/templates/admin/item_types/list.html:4
-msgid "Tételtípusok - Heni Inventory"
-msgstr "Item types - Heni Inventory"
+msgid "Tételtípusok - Username's Inventory"
+msgstr "Item types - Username's Inventory"
 
 #: app/templates/admin/item_types/list.html:15
 msgid "A rendszerben használható tételtípusok kezelése."
@@ -659,8 +659,8 @@ msgid "Törlés"
 msgstr "Delete"
 
 #: app/templates/admin/items/image_delete_confirm.html:4
-msgid "Kép törlése - Heni Inventory"
-msgstr "Delete image - Heni Inventory"
+msgid "Kép törlése - Username's Inventory"
+msgstr "Delete image - Username's Inventory"
 
 #: app/templates/admin/items/image_delete_confirm.html:11
 msgid "Kép törlése"
@@ -681,8 +681,8 @@ msgid "Nyomtatás"
 msgstr "Print"
 
 #: app/templates/admin/items/label_quantity.html:4
-msgid "Tételcímke - Heni Inventory"
-msgstr "Item label - Heni Inventory"
+msgid "Tételcímke - Username's Inventory"
+msgstr "Item label - Username's Inventory"
 
 #: app/templates/admin/items/label_quantity.html:11
 msgid "Tételcímke nyomtatása"
@@ -698,8 +698,8 @@ msgstr "Print preview"
 
 #: app/templates/admin/items/list.html:4
 #: app/templates/inventory/items/list.html:4
-msgid "Tételek - Heni Inventory"
-msgstr "Items - Heni Inventory"
+msgid "Tételek - Username's Inventory"
+msgstr "Items - Username's Inventory"
 
 #: app/templates/admin/items/list.html:15
 msgid "Könyvek, társasjátékok és egyéb nyilvántartott tételek."
@@ -761,8 +761,8 @@ msgid "címke"
 msgstr "label"
 
 #: app/templates/admin/locations/labels.html:4
-msgid "Tárhelycímkék - Heni Inventory"
-msgstr "Location labels - Heni Inventory"
+msgid "Tárhelycímkék - Username's Inventory"
+msgstr "Location labels - Username's Inventory"
 
 #: app/templates/admin/locations/labels.html:12
 msgid "Tárhelycímkék"
@@ -779,8 +779,8 @@ msgstr "No active locations."
 
 #: app/templates/admin/locations/list.html:4
 #: app/templates/inventory/locations/list.html:4
-msgid "Tárhelyek - Heni Inventory"
-msgstr "Locations - Heni Inventory"
+msgid "Tárhelyek - Username's Inventory"
+msgstr "Locations - Username's Inventory"
 
 #: app/templates/admin/locations/list.html:15
 msgid "Helyiségek, polcok és tárhelyek hierarchikus kezelése."
@@ -860,8 +860,8 @@ msgid "Jelszó még egyszer"
 msgstr "Password again"
 
 #: app/templates/admin/users/list.html:4
-msgid "Felhasználók - Heni Inventory"
-msgstr "Users - Heni Inventory"
+msgid "Felhasználók - Username's Inventory"
+msgstr "Users - Username's Inventory"
 
 #: app/templates/admin/users/list.html:15
 msgid "Felhasználók és jogosultságok kezelése."
@@ -872,8 +872,8 @@ msgid "+ Új felhasználó"
 msgstr "+ New user"
 
 #: app/templates/admin/users/password.html:4
-msgid "Jelszó módosítása - Heni Inventory"
-msgstr "Change password - Heni Inventory"
+msgid "Jelszó módosítása - Username's Inventory"
+msgstr "Change password - Username's Inventory"
 
 #: app/templates/admin/users/password.html:11
 msgid "Jelszó módosítása"
@@ -1175,8 +1175,8 @@ msgid "Ezen a tárhelyen jelenleg nincs készlet."
 msgstr "There is currently no inventory at this location."
 
 #: app/templates/inventory/movements/list.html:4
-msgid "Mozgások - Heni Inventory"
-msgstr "Movements - Heni Inventory"
+msgid "Mozgások - Username's Inventory"
+msgstr "Movements - Username's Inventory"
 
 #: app/templates/inventory/movements/list.html:12
 msgid "Mozgásnapló"
@@ -1251,8 +1251,8 @@ msgid "Következő →"
 msgstr "Next →"
 
 #: app/templates/inventory/stock/list.html:4
-msgid "Készlet - Heni Inventory"
-msgstr "Inventory - Heni Inventory"
+msgid "Készlet - Username's Inventory"
+msgstr "Inventory - Username's Inventory"
 
 #: app/templates/inventory/stock/list.html:12
 msgid "Összesített készlet"

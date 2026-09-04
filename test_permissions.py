@@ -182,7 +182,7 @@ def main():
 
     print()
     print(
-        "=== Heni Inventory "
+        "=== Username's Inventory "
         "jogosultság-audit ==="
     )
     print()

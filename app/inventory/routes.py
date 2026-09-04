@@ -1007,7 +1007,7 @@ def stock_export_csv():
         mimetype="text/csv; charset=utf-8",
         headers={
             "Content-Disposition":
-                'attachment; filename="heni_inventory_stock.csv"'
+                'attachment; filename="inventory_stock.csv"'
         },
     )
 
@@ -1209,7 +1209,7 @@ def stock_export_xlsx():
         ),
         headers={
             "Content-Disposition":
-                'attachment; filename="heni_inventory_stock.xlsx"'
+                'attachment; filename="inventory_stock.xlsx"'
         },
     )
 
@@ -1744,7 +1744,7 @@ def movements_export_csv():
         mimetype="text/csv; charset=utf-8",
         headers={
             "Content-Disposition":
-                'attachment; filename="heni_inventory_movements.csv"'
+                'attachment; filename="inventory_movements.csv"'
         },
     )
 
@@ -2066,7 +2066,7 @@ def movements_export_xlsx():
         ),
         headers={
             "Content-Disposition":
-                'attachment; filename="heni_inventory_movements.xlsx"'
+                'attachment; filename="inventory_movements.xlsx"'
         },
     )
 
