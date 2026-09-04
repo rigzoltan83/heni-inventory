@@ -87,6 +87,13 @@ fi
     -r "${APP_DIR}/requirements.txt"
 
 
+if [[ -e "${ENV_FILE}" ]]; then
+    echo
+    echo "ERROR: ${ENV_FILE} already exists."
+    echo "Refusing to modify an existing installation."
+    exit 1
+fi
+
 echo "[4/7] Preparing PostgreSQL database..."
 
 DB_PASSWORD="$(
@@ -140,13 +147,6 @@ fi
 
 echo "[5/7] Writing application configuration..."
 
-if [[ -e "${ENV_FILE}" ]]; then
-    echo
-    echo "ERROR: ${ENV_FILE} already exists."
-    echo "Installer will not overwrite an existing configuration."
-    echo
-    exit 1
-fi
 
 SECRET_KEY="$(
     "${VENV_DIR}/bin/python" - <<'PY2'
