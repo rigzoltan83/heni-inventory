@@ -4,7 +4,7 @@ Egyszerű, saját szerveren futtatható készlet- és tárhelynyilvántartó ren
 
 A rendszer fő célja annak gyors megválaszolása, hogy **miből mennyi van, és pontosan hol található**.
 
-> **Kiadás:** `0.1.0-alpha.1`  
+> **Kiadás:** `0.1.0-alpha.1`
 > Ez egy korai publikus alpha kiadás. Fontos adatok esetén frissítés előtt mindig készíts mentést.
 
 ## Fő funkciók
@@ -54,6 +54,19 @@ Egy tétel egyszerre több tárhelyen is rendelkezhet készlettel.
 - XlsxWriter
 
 ## Telepítés
+
+Új Ubuntu telepítésnél a mellékelt installer létre tudja hozni a Python környezetet, a PostgreSQL adatbázist, a konfigurációt és lefuttatja a migrációkat:
+
+```bash
+./install.sh
+```
+
+Az első admin felhasználót külön kell létrehozni:
+
+```bash
+venv/bin/python create_admin.py
+```
+
 
 Részletes útmutató:
 

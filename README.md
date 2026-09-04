@@ -4,7 +4,7 @@ A lightweight self-hosted inventory and storage-location manager for households,
 
 Username's Inventory is built with Flask and PostgreSQL and provides a browser-based interface suitable for both desktop and mobile use.
 
-> **Release status:** `0.1.0-alpha.1`  
+> **Release status:** `0.1.0-alpha.1`
 > This is an early public release. Back up important data before upgrades.
 
 ## Main features
@@ -72,6 +72,18 @@ Ubuntu installation instructions are available here:
 
 - [Installation guide](docs/INSTALL.md)
 - [Magyar telepítési útmutató](docs/INSTALL.hu.md)
+
+For a new Ubuntu installation, the included installer can prepare the virtual environment, PostgreSQL database, configuration and migrations:
+
+```bash
+./install.sh
+```
+
+The installer does not create the first administrator automatically. After installation run:
+
+```bash
+venv/bin/python create_admin.py
+```
 
 A minimal manual setup is:
 
